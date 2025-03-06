@@ -1,7 +1,8 @@
 
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
-import 'package:edu_platt/presentation/Student/screen/chat/chat.dart';
+import 'package:edu_platt/presentation/Private_chat/Chat_List.dart';
+import 'package:edu_platt/presentation/Student/screen/chat/chatScreen.dart';
 import 'package:edu_platt/presentation/Student/screen/home/drawer.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/levels.dart';
 import 'package:edu_platt/presentation/profile/profile.dart';
@@ -21,9 +22,9 @@ class _HomeStudentState extends State<HomeStudentScreen>
     with SingleTickerProviderStateMixin {
   List<Widget> tabs = [
     Levels(),
-    const Notes(),
-    const Chat(),
-    Profile()
+     const Notes(),
+     ChatList(),
+    const Profile()
   ];
   int selectedIndex = 0;
   late AnimationController _controller;
@@ -56,12 +57,12 @@ class _HomeStudentState extends State<HomeStudentScreen>
       drawer: const Drawerr(),
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: selectedIndex == 3
+        backgroundColor: selectedIndex == 2
             ? color.primaryColor
             : (selectedIndex == 1 ? color.primaryColor : Colors.transparent),
         scrolledUnderElevation: 0,
         toolbarHeight:
-            selectedIndex == 3 ? 60.h : (selectedIndex == 1 ? 80.h : 130.h),
+            selectedIndex == 3 ||selectedIndex == 2? 60.h : (selectedIndex == 1 ? 80.h : 130.h),
         // التحكم بالارتفاع
         shape: selectedIndex == 1
             ? null // إزالة الـ Border Radius لصفحة Notes
@@ -73,34 +74,41 @@ class _HomeStudentState extends State<HomeStudentScreen>
               ),
         title: selectedIndex == 3
             ? Text(
-                "Profile", //
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-              )
+          "Profile",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: Colors.white,
+            fontSize: 22.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        )
+            : (selectedIndex == 2
+            ? Text(
+          "Chat",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: Colors.white,
+            fontSize: 22.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        )
             : (selectedIndex == 1
-                ? Text(
-                    "Notes",
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Colors.white,
-                          fontSize: 22.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+            ? Text(
+          "Notes",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: Colors.white,
+            fontSize: 22.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        )
+            : Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 30.h),
             ScaleTransition(
-                        scale: _animation,
-                        child: Image.asset(
-                          AppAssets.logo,
-                        ),
-                      ),
-                    ],
-                  )),
+              scale: _animation,
+              child: Image.asset(AppAssets.logo),
+            ),
+          ],
+        ))),
         centerTitle: true,
         actions: [
           Padding(

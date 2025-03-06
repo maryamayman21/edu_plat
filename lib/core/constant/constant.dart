@@ -19,4 +19,11 @@ class ApiConstants {
   static const String  addNoteEndPoint  = '/Todo/Add-new-todo';
   static const String  deleteNoteEndPoint  = '/Todo/Delete/';
   static const String  updateNoteEndPoint  = '/Todo/Update/';
+  static const String  studentregisterCoursesEndPoint  = '/StudentCourse/Register';
+  static const String  studentCoursesEndPoint  = '/StudentCourse/MyCourses';
+  static const String  studentdeleteCourseEndPoint= '/StudentCourse/DeleteCourse';
+
+
+
+
 }

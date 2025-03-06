@@ -1,11 +1,11 @@
 import 'package:edu_platt/presentation/Doctor/features/home/presentation/widgets/appBar.dart';
+import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
+import 'package:edu_platt/presentation/Student/screen/levels/presentation/Studentcourses_listView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../Routes/custom_AppRoutes.dart';
-import '../widgets/courses_listView.dart';
 
-class Viewallcourses extends StatelessWidget {
-  const Viewallcourses({super.key});
+class StudentViewallcourses extends StatelessWidget {
+  const StudentViewallcourses({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class Viewallcourses extends StatelessWidget {
       appBar:
       MyAppBar(title: 'All Courses', onPressed: () {
         //Navigation to Courses screen
-        Navigator.pushReplacementNamed(context, AppRouters.doctorHomeRoute);
+        Navigator.pushReplacementNamed(context, AppRouters.HomeStudent);
       },),
 
 
@@ -25,12 +25,9 @@ class Viewallcourses extends StatelessWidget {
               children: [
 
                 SizedBox(height: 15.h),
-                // state is CoursesSuccess ?
-                // const CustomSearchBar() :
-                // SizedBox(height: 190.h),
-                CoursesListview(
+                StudentCoursesListview(
                   viewAll: true,
-                  page: AppRouters.doctorCourseDetailsRoute,),
+                  page: AppRouters.studentCourseDetailsRoute,),
               ],
             ),
           )
