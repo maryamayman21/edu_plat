@@ -19,4 +19,8 @@ class ApiConstants {
   static const String  addNoteEndPoint  = '/Todo/Add-new-todo';
   static const String  deleteNoteEndPoint  = '/Todo/Delete/';
   static const String  updateNoteEndPoint  = '/Todo/Update/';
+  static const String uploadFileEndpoint = '/Materials/UploadFile/Doctors';
+  static const String updateFileEndpoint = '/Materials/updateFile';
+  static const String deleteFileEndpoint = '/Materials/delete/';
+  static const String fetchCourseMaterialByType = '/Materials/Get-Material-ByType/courseCode/typeFile?courseCode=COMP201&typeFile=Lectures';
 }

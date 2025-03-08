@@ -53,9 +53,10 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
     final role = await SecureStorageService.read('role');
 
     if (role == 'Student') {
-    Navigator.pushReplacementNamed(context , AppRouters.HomeStudent);
+      Navigator.pushNamedAndRemoveUntil(context, AppRouters.HomeStudent, (route) => false);
+   // Navigator.pushReplacementNamed(context , AppRouters.HomeStudent);
     } else  {
-      Navigator.pushReplacementNamed(context , AppRouters.doctorHomeRoute);
+      Navigator.pushNamedAndRemoveUntil(context, AppRouters.doctorHomeRoute, (route) => false);
 
     }}
     else if (state is AuthFailure) {

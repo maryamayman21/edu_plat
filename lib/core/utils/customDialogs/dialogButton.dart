@@ -19,10 +19,10 @@ class CustomDialogButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(15), // Rounded corners
         ),
         padding: const EdgeInsets.symmetric(
-            horizontal: 20, vertical: 12), // Button padding
+            horizontal: 12, vertical: 12), // Button padding
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
         child: Text(
          text,
           style: const TextStyle(

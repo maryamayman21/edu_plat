@@ -2,6 +2,7 @@
 import 'package:edu_platt/config/theme/theme.dart';
 import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
+import 'package:edu_platt/presentation/Doctor/features/course_details/domain/entities/course_details_entity.dart';
 import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/cubit/notes_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/data/notes_repository/notes_repository.dart';
@@ -9,10 +10,21 @@ import 'package:edu_platt/presentation/Student/screen/notes/data/notes_web_servi
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 
 
 
-void main() {
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(CourseDetailsEntityAdapter());
+  await Hive.deleteBoxFromDisk('Lectures');
+  await Hive.deleteBoxFromDisk('Labs');
+  await Hive.deleteBoxFromDisk('Exams');
+  await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Lectures');
+  await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Labs');
+  await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Exams');
   runApp(const MyApp());
 }
 

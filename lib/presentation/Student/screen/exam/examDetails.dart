@@ -161,7 +161,7 @@ class _ExamdetailsState extends State<Examdetails>
           SizedBox(
             height: 175.h,
           ),
-          Questionwidget(text: currentQuestion["question"] as String),
+       //  Questionwidget(text: currentQuestion["question"] as String),
           Expanded(
             child: ListView.builder(
               itemCount: (currentQuestion["answers"] as List<String>).length,

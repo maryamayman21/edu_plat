@@ -1,4 +1,7 @@
 
+import 'package:edu_platt/presentation/Doctor/features/login/presentation/login_view.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/make_online_exam.dart';
+import 'package:edu_platt/presentation/Student/screen/CourseDetails/doctor_courses.dart';
 import 'package:edu_platt/presentation/Student/screen/home/homeStudent.dart';
 import 'package:flutter/material.dart';
 
@@ -63,11 +66,15 @@ class AppRouters {
   static const String doctorCoursesRegisterSuccessRoute = '/doctorCourseRegisterSuccessRoute';
   static const String doctorCourseDetailsRoute = '/doctorCourseDetailsRoute';
   static const String doctorCourseContentPreview ='/doctorCourseContentPreview';
+  static const String doctorLogin ='/doctorLogin';
   static const String studentCourseDetails = '/studentCourseDetails';
   static const String changePasswordRoute = '/changePasswordRoute';
   static const String changePasswordSuccRoute = '/changePasswordSuccRoute';
+  static const String doctorMakeAnOnlineExamRoute = '/makeAnOnlineExamRoute';
   static const String StartExam = '/startExamRoute';
-  static Route<dynamic> generateRoute(RouteSettings settings) {
+  static const String doctorCoursesScreen = '/doctorCoursesRoute';
+
+  static Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case registerRoute:
         return CustomPageRoute(page: RegisterScreen());
@@ -93,6 +100,9 @@ class AppRouters {
         return MaterialPageRoute(builder: (context) =>  const PasswordResetSuccess(),);
       case doctorCoursesRegisterSuccessRoute:
         return MaterialPageRoute(builder: (context) => const Courseregisteredscuccess(),);
+      case doctorMakeAnOnlineExamRoute:
+        return MaterialPageRoute(builder: (context) => MakeOnlineExam(),);
+
       case doctorCourseRegisterationRoute:
         final semesterID = settings.arguments as int;
         return CustomPageRoute(page: Courseregisterationscreen(semesterID: semesterID,));
@@ -101,7 +111,7 @@ class AppRouters {
       case doctorViewAllCoursesRoute:
         return CustomPageRoute(page: const Viewallcourses());
       case doctorSemesterRoute:
-        return CustomPageRoute(page: const Semesterscreen());
+        return CustomPageRoute(page: const SemesterScreen());
       case doctorCourseDetailsRoute:
         final courseCode = settings.arguments as String;
         return CustomPageRoute(
@@ -126,9 +136,8 @@ class AppRouters {
         return CustomPageRoute(page:VerifyEmail( arguemnt: userDate,));
       case studentCourseDetails :
         final courseCode = settings.arguments as String;
-        final creditHours = settings.arguments as String;
-        final courseDescription = settings.arguments as String;
-        return CustomPageRoute(page: Coursedetails());
+        final doctorId = settings.arguments as String;
+        return CustomPageRoute(page: Coursedetails(courseCode: courseCode, doctorId: doctorId,));
       case ExamScreen:
         return CustomPageRoute(page: const Examscreen());
       case ExamDetails:
@@ -142,11 +151,18 @@ class AppRouters {
             builder: (context) => const HomeStudentScreen());
       case changePasswordRoute:
         return CustomPageRoute(page: const Changepassword());
+        case doctorCoursesScreen:
+          final courseCode = settings.arguments as String;
+        return CustomPageRoute(page: DoctorCoursesScreen(courseCode:courseCode,));
       case changePasswordSuccRoute:
         return MaterialPageRoute(
             builder: (context) => const ChangePasswordSuccess());
+      case doctorLogin:
+        return MaterialPageRoute(
+            builder: (context) => const LoginScreen());
       default:
-        return CustomPageRoute(page: const DoctorExamScreen());
+        return null;
+
     }
   }
 }

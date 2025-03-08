@@ -48,7 +48,7 @@ class _VerifypasswordState extends State<VerifyEmail> {
                       Text('Account have been registered successfully!')),
                 );
                 Navigator.pushReplacementNamed(
-                    context, AppRouters.studentOrDoctor);
+                    context, AppRouters.loginStudentRoute , arguments: false);
               }
             } else if (state is AuthFailure) {
               print('Error: ${state.error}');
@@ -57,134 +57,136 @@ class _VerifypasswordState extends State<VerifyEmail> {
               );
             }
           },
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 64.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Check your email',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium!
-                      .copyWith(fontWeight: FontWeight.bold, fontSize: 22.sp),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Text('We sent a reset code to ${widget.arguemnt[1]}',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          // fontSize: 22.sp
-                        )),
-                Text('Enter 5 digit code that mentioned in the email',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          // fontSize: 22.sp
-                        )),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: OtpTextField(
-                    fieldWidth: 60.w,
-
-                    numberOfFields: 5,
-                    borderWidth: 1,
-                    borderColor: color.primaryColor,
-                    //set to true to show as box or false to show as dash
-                    showFieldAsBox: true,
-                    //runs when a code is typed in
-                    onCodeChanged: (String code) {
-                      //handle validation or checks here
-                    },
-                    //runs when every textfield is filled
-                    onSubmit: (String verificationCode) {
-                      setState(() {
-                        code = verificationCode;
-                        //print(code);
-                      });
-                    }, // end onSubmit
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 64.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Check your email',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium!
+                        .copyWith(fontWeight: FontWeight.bold, fontSize: 22.sp),
                   ),
-                ),
-                SizedBox(
-                  height: 15.h,
-                ),
-                BlocBuilder<AuthCubit, AuthState>(
-                  builder: (context, state) {
-                    return Padding(
-                      padding: REdgeInsets.only(top: 30, bottom: 10),
-                      child: CustomButtonWidget(
-                          onPressed: state is AuthLoading
-                              ? (){}
-                              : () {
-                            if (code != null && code.length == 5) {
-                              print(code);
-                              BlocProvider.of<AuthCubit>(context)
-                                  .verifyEmail(code);
-                            }
-                          },
-                          child: state is AuthLoading?
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Verify Email', style: TextStyle(
-                                  color: Colors.white , fontSize: 20
-                              ),),
-                              SizedBox(width: 15,),
-                              SizedBox(
-                                height: 15,
-                                width: 15,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              )
-                            ],
-                          ): const Text('Verify Email', style: TextStyle(
-                              color: Colors.white , fontSize: 20
-                          ),)
-
-                      ),
-                    );
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Haven\'t got the email yet?',
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 16.sp,
-                            color: Colors.black)),
-                    BlocBuilder<AuthCubit, AuthState>(
-                  builder: (context, state) {
-                     return TextButton(
-                      onPressed: state is AuthLoading
-                          ? null
-                          : () {
-
-                          print(widget.arguemnt[0]); print(widget.arguemnt[1]); print(widget.arguemnt[2]); print(widget.arguemnt[3]);
-                          print('Done');
-                          BlocProvider.of<AuthCubit>(context)
-                              .register(widget.arguemnt[0] ,widget.arguemnt[1] , widget.arguemnt[2] , widget.arguemnt[3]);
-                          print('Done');
-
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Text('We sent a reset code to ${widget.arguemnt[1]}',
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            // fontSize: 22.sp
+                          )),
+                  Text('Enter 5 digit code that mentioned in the email',
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            // fontSize: 22.sp
+                          )),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: OtpTextField(
+                      fieldWidth: 60.w,
+            
+                      numberOfFields: 5,
+                      borderWidth: 1,
+                      borderColor: color.primaryColor,
+                      //set to true to show as box or false to show as dash
+                      showFieldAsBox: true,
+                      //runs when a code is typed in
+                      onCodeChanged: (String code) {
+                        //handle validation or checks here
                       },
-                      child: Text('Resend code',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 16.sp,
-                                  color: color.primaryColor)),
-                    );
-  },
-)
-                  ],
-                )
-              ],
+                      //runs when every textfield is filled
+                      onSubmit: (String verificationCode) {
+                        setState(() {
+                          code = verificationCode;
+                          //print(code);
+                        });
+                      }, // end onSubmit
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, state) {
+                      return Padding(
+                        padding: REdgeInsets.only(top: 30, bottom: 10),
+                        child: CustomButtonWidget(
+                            onPressed: state is AuthLoading
+                                ? (){}
+                                : () {
+                              if (code != null && code.length == 5) {
+                                print(code);
+                                BlocProvider.of<AuthCubit>(context)
+                                    .verifyEmail(code);
+                              }
+                            },
+                            child: state is AuthLoading?
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Verify Email', style: TextStyle(
+                                    color: Colors.white , fontSize: 20
+                                ),),
+                                SizedBox(width: 15,),
+                                SizedBox(
+                                  height: 15,
+                                  width: 15,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                )
+                              ],
+                            ): const Text('Verify Email', style: TextStyle(
+                                color: Colors.white , fontSize: 20
+                            ),)
+            
+                        ),
+                      );
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Haven\'t got the email yet?',
+                          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16.sp,
+                              color: Colors.black)),
+                      BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, state) {
+                       return TextButton(
+                        onPressed: state is AuthLoading
+                            ? null
+                            : () {
+            
+                            print(widget.arguemnt[0]); print(widget.arguemnt[1]); print(widget.arguemnt[2]); print(widget.arguemnt[3]);
+                            print('Done');
+                            BlocProvider.of<AuthCubit>(context)
+                                .register(widget.arguemnt[0] ,widget.arguemnt[1] , widget.arguemnt[2] , widget.arguemnt[3]);
+                            print('Done');
+            
+                        },
+                        child: Text('Resend code',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 16.sp,
+                                    color: color.primaryColor)),
+                      );
+              },
+            )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

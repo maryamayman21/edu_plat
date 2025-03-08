@@ -1,7 +1,7 @@
 import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/startExam/StartExam.dart';
 import 'package:flutter/material.dart';
-import '../../../Doctor/features/courses/presentation/widgets/tab_widget.dart';
+import '../../../../../Doctor/features/courses/presentation/widgets/tab_widget.dart';
 
 class WidgetCourseTabs extends StatelessWidget {
   const WidgetCourseTabs({

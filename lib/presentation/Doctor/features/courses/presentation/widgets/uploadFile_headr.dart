@@ -56,7 +56,7 @@ class _UploadfileHeadrState extends State<UploadfileHeadr>
     loadingController = AnimationController(
         vsync: this,
         duration: const Duration(
-          seconds: 10,
+          seconds: 3,
         ))
       ..addListener(() {
         setState(() {});
