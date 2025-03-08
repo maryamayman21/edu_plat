@@ -23,4 +23,11 @@ class ApiConstants {
   static const String updateFileEndpoint = '/Materials/updateFile';
   static const String deleteFileEndpoint = '/Materials/delete/';
   static const String fetchCourseMaterialByType = '/Materials/Get-Material-ByType/courseCode/typeFile?courseCode=COMP201&typeFile=Lectures';
+  static const String  studentregisterCoursesEndPoint  = '/StudentCourse/Register';
+  static const String  studentCoursesEndPoint  = '/StudentCourse/MyCourses';
+  static const String  studentdeleteCourseEndPoint= '/StudentCourse/DeleteCourse';
+
+
+
+
 }

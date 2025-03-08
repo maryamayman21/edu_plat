@@ -140,7 +140,16 @@ class _DrawerrState extends State<Drawerr> with SingleTickerProviderStateMixin {
                 //  Navigator.pop(context);  // no need to push new screen
                 },
               )),
-          FadeTransition(
+              FadeTransition(
+                opacity: _fadeAnimations[1],
+                child: ContainerDrawer(
+                    icons: Icons.golf_course,
+                    text: "Register Courses",
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, AppRouters.doctorSemesterRoute);
+                    }),
+              ),          FadeTransition(
             opacity: _fadeAnimations[1],
             child: ContainerDrawer(
                 icons: Icons.golf_course, text: "Courses", onTap: () {}),
@@ -161,6 +170,15 @@ class _DrawerrState extends State<Drawerr> with SingleTickerProviderStateMixin {
                 text: "Student Guide",
                 onTap: () {}),
           ),
+              FadeTransition(
+                opacity: _fadeAnimations[4],
+                child: ContainerDrawer(
+                    icons: Icons.integration_instructions_outlined,
+                    text: "GPA Calculator",
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRouters.GPA);
+                    }),
+              ),
               BlocProvider(
                 create: (context) => ProfileCubit(
                     profileRepository: ProfileRepository(ProfileWebServices()),
