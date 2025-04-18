@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../Routes/custom_AppRoutes.dart';
-import '../../../../../sharedWidget/custom_button.dart';
+import '../../../../../sharedWidget/buttons/custom_button.dart';
 class Courseregisteredscuccess extends StatelessWidget {
   const Courseregisteredscuccess({super.key});
 

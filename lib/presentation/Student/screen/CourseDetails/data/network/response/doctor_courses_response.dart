@@ -16,7 +16,7 @@ class DoctorCoursesResponse extends BaseResponse {
     return DoctorCoursesResponse(
       status: json['success'],
       message: json['message'],
-      doctorCoursesEntity: (json['doctorCourses'] as List).map((e) => DoctorCoursesEntity.fromJson(e)).toList(),
+      doctorCoursesEntity: (json['courseDoctors'] as List).map((e) => DoctorCoursesEntity.fromJson(e)).toList(),
     );
   }
 

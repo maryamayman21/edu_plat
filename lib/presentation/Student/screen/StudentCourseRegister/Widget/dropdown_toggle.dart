@@ -1,8 +1,9 @@
+import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Cubit/dropdown_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Cubit/dropdown_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../../core/utils/Color/color.dart';
+
 
 class DropdownToggle extends StatelessWidget {
   final String id; // Unique identifier for the dropdown

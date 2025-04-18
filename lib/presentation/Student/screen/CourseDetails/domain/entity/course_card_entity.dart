@@ -3,7 +3,7 @@ class CourseCardEntity {
   final int creditHours;
   final int noOfLectures;
   final String doctorName;
-  final List<Map<String, int>> grading;
+  final Map<String, dynamic> grading;
 
   CourseCardEntity(
       this.doctorName,
@@ -19,13 +19,13 @@ class CourseCardEntity {
     return CourseCardEntity(
       json['doctorName'],
       courseDescription: json['courseDescription'],
-      creditHours: json['creditHours'],
-      noOfLectures: json['noOfLectures'],
-      grading: List<Map<String, int>>.from(
-          (json['grading'] as List).map((e) => Map<String, int>.from(e))
-      ),
+      creditHours: json['courseCreditHours'],
+      noOfLectures: json['lectureCount'],
+      grading:  json['grading'] as Map<String, dynamic>
     );
   }
+
+
 
   Map<String, dynamic> toJson() {
     return {
@@ -33,7 +33,7 @@ class CourseCardEntity {
       'courseDescription': courseDescription,
       'creditHours': creditHours,
       'noOfLectures': noOfLectures,
-      'grading': grading.map((e) => Map<String, int>.from(e)).toList(),
+      'grading': grading
     };
   }
 }

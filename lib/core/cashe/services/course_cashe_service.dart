@@ -12,18 +12,19 @@ class CourseCacheService {
   /// Save courses (single or multiple) to the cache
   Future<void> saveCourses(dynamic courses) async {
     // Fetch existing cached courses
-    final cachedCourses = await _instance.getCourses() ?? <String>[];
+    final cachedCourses = await _instance.getCourses() ?? <Map<String, dynamic>>[];
 
-    // Convert the input to a list of course codes (strings)
-    final newCourses = courses is String
-        ? [courses] // Single course as a string
-        : courses is List<String>
-        ? courses // Already a list of strings
-        : [];
+    // Convert the input to a list of course maps
+    final newCourses = courses is Map<String, dynamic>
+        ? [courses] // Single course as a map
+        : courses is List<Map<String, dynamic>>
+        ? courses // Already a list of maps
+        : <Map<String, dynamic>>[];
 
-    // Add new course codes, avoiding duplicates
+    // Add new courses, avoiding duplicates based on a unique identifier (e.g., 'courseCode')
     for (final course in newCourses) {
-      if (!cachedCourses.contains(course)) {
+      final courseCode = course['courseCode']; // Assuming 'courseCode' is a unique identifier
+      if (courseCode != null && !cachedCourses.any((c) => c['courseCode'] == courseCode)) {
         cachedCourses.add(course);
       }
     }
@@ -33,10 +34,10 @@ class CourseCacheService {
   }
 
   /// Get all cached courses
-  Future<List<String>?> getCourses() async {
-    // Read and cast the cached courses to a list of strings
+  Future<List<Map<String, dynamic>>?> getCourses() async {
+    // Read and cast the cached courses to a list of maps
     final courses = await _baseCacheService.read('courses') as List<dynamic>?;
-    return courses?.cast<String>();
+    return courses?.cast<Map<String, dynamic>>();
   }
 
   /// Clear all cached courses
@@ -47,10 +48,10 @@ class CourseCacheService {
   /// Delete a course by its code
   Future<void> deleteCourseCache(String courseCode) async {
     // Fetch existing cached courses
-    final cachedCourses = await _instance.getCourses() ?? <String>[];
+    final cachedCourses = await _instance.getCourses() ?? <Map<String, dynamic>>[];
 
     // Remove the specified course if it exists
-    cachedCourses.remove(courseCode);
+    cachedCourses.removeWhere((course) => course['courseCode'] == courseCode);
 
     // Save the updated list back to the cache
     await _baseCacheService.save('courses', cachedCourses);

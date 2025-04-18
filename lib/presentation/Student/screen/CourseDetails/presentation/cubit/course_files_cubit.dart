@@ -13,24 +13,23 @@ import 'package:meta/meta.dart';
 part 'course_files_state.dart';
 
 class CourseFilesCubit extends Cubit<CourseFilesState> {
-  CourseFilesCubit(  {  required this.doctorId, required this.courseDetailsRepo,required this.courseCode, required this.indexCubit,}) : super(CourseDetailsInitial()){
+  CourseFilesCubit(  {  required this.doctorId, required this.courseDetailsRepo,required this.courseCode, required this.materialTypeCubit,}) : super(CourseDetailsInitial()){
 
-    // fetchCourseFiles(tabs[0], courseCode);
-    materialTypeSubscription = indexCubit.stream.listen((index) {
-      fetchCourseFiles(tabs[index], courseCode, doctorId);
-      index= index ;
+
+    materialTypeSubscription = materialTypeCubit.stream.listen((materialType) {
+      fetchCourseFiles(materialMap['materialType'], courseCode, doctorId);
+      materialMap= materialType ;
+      print(materialMap['materialType']);
     });
-
+    fetchCourseFiles(materialMap['materialType'], courseCode, doctorId);
   }
   final CourseDetailsRepo courseDetailsRepo;
-  //final String type = 'Lectures';
-  int index = 0 ;
+  Map<String, dynamic> materialMap = {'materialType':'Lectures', 'currentIndex': 0} ;
   final String doctorId;
   final String courseCode;
-  final tabs = ['Lectures' , 'Labs' ,'Exams' , 'Videos' ];  ///Refactor
-  //final MaterialTypeCubit materialTypeCubit;
-   final IndexCubit indexCubit;
-  late StreamSubscription<int> materialTypeSubscription;
+   final MaterialTypeCubit materialTypeCubit;
+  late StreamSubscription<Map<String, dynamic>> materialTypeSubscription;
+
 
 
   Future<void> fetchCourseFiles(String type, String courseCode, String doctorId) async {

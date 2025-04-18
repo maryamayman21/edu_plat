@@ -17,23 +17,24 @@ class CourseCardBlocBuilder extends StatelessWidget {
         }
         if(state is CourseCardSuccess) {
           final CourseCardEntity courseCardEntity = state.courseCardEntity;
-          return SliverToBoxAdapter(
-              child: Padding(
-                padding: REdgeInsets.symmetric(horizontal: 16.0.w),
-                child:
-                ///TODO::REFACTOR CARD PARAMETERS
-                CourseDetailsCard(
-                    courseTitle: 'Course Title',
-                    creditHours:courseCardEntity.creditHours,
-                    lectures: courseCardEntity.noOfLectures,
-                    doctorName: courseCardEntity.doctorName,
-                    marks:courseCardEntity.grading
+          return Padding(
+            padding: REdgeInsets.symmetric(horizontal: 16.0.w),
+            child:
+            ///TODO::REFACTOR CARD PARAMETERS
+            CourseDetailsCard(
+                courseTitle: courseCardEntity.courseDescription,
+                creditHours:courseCardEntity.creditHours,
+                lectures: courseCardEntity.noOfLectures,
+                doctorName: courseCardEntity.doctorName,
+                marks:courseCardEntity.grading
 
-                ),
-              )
+            ),
           );
         }
-        return  const CardShimmerEffect();
+        if(state is CourseCardFailure){
+          return Text(state.errorMessage);
+        }
+        return Text('Something went wrong');
       },
     );
   }

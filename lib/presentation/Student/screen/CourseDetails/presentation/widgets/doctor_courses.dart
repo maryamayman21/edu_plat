@@ -8,9 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class DoctorCoursesWidget extends StatefulWidget {
-  const DoctorCoursesWidget ({super.key, required this.doctorCoursesEntity, required this.courseCode});
+  const DoctorCoursesWidget ({super.key, required this.doctorCoursesEntity, required this.courseDetail});
    final DoctorCoursesEntity doctorCoursesEntity;
-   final String courseCode;
+   final Map<String, dynamic> courseDetail;
   @override
   State<DoctorCoursesWidget> createState() => _DoctorCoursesState();
 }
@@ -31,7 +31,7 @@ class _DoctorCoursesState extends State<DoctorCoursesWidget>
               AppRouters.studentCourseDetails,
               arguments:{
                 'doctorId' : widget.doctorCoursesEntity.doctorId,
-                'CourseCode' : widget.courseCode
+                'courseCode' : widget.courseDetail
               },
             );
           },

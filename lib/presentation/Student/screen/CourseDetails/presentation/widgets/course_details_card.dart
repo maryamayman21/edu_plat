@@ -1,3 +1,4 @@
+import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/courseDetails.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation/widgets/detail_icon_text.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation/widgets/table_mark.dart';
@@ -9,7 +10,7 @@ class CourseDetailsCard extends StatelessWidget {
   final int creditHours;
   final int lectures;
   final String doctorName;
-  final List<Map<String, int>> marks;
+  final Map<String, dynamic>marks;
 
   const CourseDetailsCard({
     Key? key,
@@ -34,11 +35,10 @@ class CourseDetailsCard extends StatelessWidget {
           children: [
             // Course Title
             Text(
-              courseTitle,
+            courseTitle,
               style: TextStyle(
-                fontSize: 20.sp, // Responsive font size
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: color.primaryColor,
+                fontSize: 22.sp,
               ),
             ),
             SizedBox(height: 16.h), // Responsive spacing

@@ -17,17 +17,17 @@ class CourseCardResponse extends BaseResponse {
     return CourseCardResponse(
       status: json['success'],
       message: json['message'],
-      courseCardEntity: CourseCardEntity.fromJson(json['courseCardEntity']),
+      courseCardEntity: CourseCardEntity.fromJson(json['courseDetails']),
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'success': status,
-      'message': message,
-      'courseCardEntity': courseCardEntity.toJson(),
-    };
-  }
+  // Map<String, dynamic> toJson() {
+  //   return {
+  //     'success': status,
+  //     'message': message,
+  //     'courseDetails': courseCardEntity.toJson(),
+  //   };
+  // }
 }
 
 

@@ -4,76 +4,106 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TableMark extends StatelessWidget {
   const TableMark({super.key, required this.marks});
-  final List<Map<String, int>> marks;
+  final Map<String, dynamic> marks; // Single map of marks
 
   @override
   Widget build(BuildContext context) {
-    // Ensure the list is not empty
-    if (marks.isEmpty) {
-      return Center(child: Text('No marks available', style: TextStyle(fontSize: 16.sp)));
-    }
-
-    // Extract the keys from the first map to create the table headers dynamically
-    final headers = marks.first.keys.toList();
+    // Extract keys and values from the map
+    final processedMarks = processGrading(marks);
+    final keys = processedMarks.keys.toList();
+    final values = processedMarks.values.toList();
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.blue.shade100,
+        color:  color.primaryColor,
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Table(
         border: TableBorder.all(color: Colors.white),
-        columnWidths: _generateColumnWidths(headers.length),
+        columnWidths: _generateColumnWidths(keys.length), // Dynamic column widths
         children: [
-          // Create the header row dynamically
+          // Header row (dynamic based on map keys)
           TableRow(
-            decoration: const BoxDecoration(
-              color: color.primaryColor,
+            decoration:  BoxDecoration(
+              color: Colors.deepPurpleAccent[50], // Header background color
             ),
-            children: headers.map((header) {
+            children: keys.map((key) {
               return TableCell(
                 child: Center(
                   child: Padding(
-                    padding: EdgeInsets.all(8.0.w),
+                    padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 20.w),
                     child: Text(
-                      header,
-                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                      key, // Display the key (e.g., 'Mid', 'Oral')
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
               );
             }).toList(),
           ),
-          // Create the data rows dynamically
-          for (var mark in marks)
-            TableRow(
-              children: headers.map((header) {
-                return TableCell(
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0.w),
-                      child: Text(
-                        mark[header].toString(),
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          color: color.primaryColor,
-                        ),
+          // Data row (dynamic based on map values)
+          TableRow(
+            children: values.map((value) {
+              return TableCell(
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.0.w),
+                    child: Text(
+                      value.toString(), // Display the value (e.g., 120, 30)
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                );
-              }).toList(),
-            ),
+                ),
+              );
+            }).toList(),
+          ),
         ],
       ),
     );
   }
 
-  // Generate column widths dynamically based on the number of columns
+  // Generate column widths dynamically based on the number of keys
   Map<int, TableColumnWidth> _generateColumnWidths(int columnCount) {
     return Map<int, TableColumnWidth>.fromIterable(
       List<int>.generate(columnCount, (index) => index),
       value: (index) => const FlexColumnWidth(),
     );
   }
+  Map<String, dynamic> processGrading(Map<String, dynamic> grading) {
+    // Create a mapping for key renaming
+    final keyMapping = {
+      'midTerm': 'Mid Term',
+      'oral': 'Oral',
+      'totalMark': 'Total Mark',
+      'lab': 'Lab',
+      'finalExam': 'Final Exam',
+    };
+
+    // Initialize an empty map for the processed grading
+    final processedGrading = <String, dynamic>{};
+
+    // Iterate over the original grading map
+    grading.forEach((key, value) {
+      // Rename the key using the mapping
+      final readableKey = keyMapping[key] ?? key;
+
+      // Check if the key is 'lab' and its value is 0
+      if (key == 'lab' && value == 0) {
+        return; // Skip adding this key-value pair to the processed grading
+      }
+
+      // Add the key-value pair to the processed grading map
+      processedGrading[readableKey] = value;
+    });
+
+    return processedGrading;
+  }
+
 }

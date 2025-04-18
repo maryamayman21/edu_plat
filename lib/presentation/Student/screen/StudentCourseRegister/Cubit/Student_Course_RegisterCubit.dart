@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
+import 'package:edu_platt/core/network_handler/network_handler.dart';
 import 'package:meta/meta.dart';
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 import 'package:edu_platt/presentation/Doctor/features/courseRegisteration/data/models/course.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/data/reposatories/repo.dart';
-import '../../../../../../core/cashe/services/course_cashe_service.dart';
-import '../../../../../../core/network_handler/network_handler.dart';
 part 'studentcourse_registeration_state.dart';
 
 class StudentCourseRegisterationCubit extends Cubit<StudentCourseRegisterationState> {

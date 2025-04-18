@@ -27,7 +27,7 @@ class StudentViewallcourses extends StatelessWidget {
                 SizedBox(height: 15.h),
                 StudentCoursesListview(
                   viewAll: true,
-                  page: AppRouters.studentCourseDetailsRoute,),
+                ),
               ],
             ),
           )

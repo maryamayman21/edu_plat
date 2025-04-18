@@ -1,15 +1,17 @@
 import 'dart:ui';
 
+import 'package:edu_platt/core/utils/Assets/appAssets.dart';
+import 'package:edu_platt/core/utils/Color/color.dart';
+import 'package:edu_platt/core/utils/customDialogs/custom_dialog.dart';
 import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Cubit/Student_Course_RegisterCubit.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Cubit/dropdown_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Cubit/dropdown_state.dart';
-import 'package:edu_platt/presentation/sharedWidget/action_button.dart';
+import 'package:edu_platt/presentation/sharedWidget/buttons/action_button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../../core/utils/Assets/appAssets.dart';
-import '../../../../../../core/utils/Color/color.dart';
-import '../../../../../../core/utils/customDialogs/custom_dialog.dart';
+
 
 class StudentCourseRegisterationActionButtons extends StatelessWidget {
   const StudentCourseRegisterationActionButtons({Key? key}) : super(key: key);

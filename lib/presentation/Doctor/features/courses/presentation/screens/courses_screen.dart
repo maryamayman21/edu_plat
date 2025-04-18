@@ -6,7 +6,7 @@ import '../../../../../../core/utils/Assets/appAssets.dart';
 import '../../../home/presentation/widgets/custom_appbar.dart';
 import '../../../home/application/app_bar_cubit.dart';
 import '../../../home/presentation/widgets/doctor_drawer.dart';
-import '../../../home/presentation/widgets/search_bar.dart';
+
 import '../widgets/courses_listView.dart';
 class CoursesScreen extends StatefulWidget {
   const CoursesScreen({super.key});
@@ -28,8 +28,6 @@ class _CoursesScreenState extends State<CoursesScreen>
         child: Column(
           children: [
 
-            SizedBox(height: 15.h),
-            const CustomSearchBar(),
             SizedBox(height: 15.h),
 
             Container(

@@ -15,7 +15,7 @@ class DoctorCoursesEntity {
  // Create a DoctorCoursesEntity object from a JSON map
  factory DoctorCoursesEntity.fromJson(Map<String, dynamic> json) {
   return DoctorCoursesEntity(
-   doctorName: json['doctorName'] as String,
+   doctorName: json['name'] as String,
    doctorId: json['doctorId'] as String,
   );
  }

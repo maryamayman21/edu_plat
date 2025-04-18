@@ -25,7 +25,7 @@ class CourseDetailsRepoImp implements CourseDetailsRepo {
   @override
   Future<Either<Failure, List<CourseFileEntity>>> fetchCourseFiles(
       FetchFileRequest request) async {
-    List<CourseFileEntity> coursesFiles;
+    //List<CourseFileEntity> coursesFiles;
    if (await _networkInfo.isConnected) {
      try {
 
@@ -35,6 +35,7 @@ class CourseDetailsRepoImp implements CourseDetailsRepo {
           return right(response.courses ?? []);
         }
         return left(ServerFailure('Something went wrong'));
+        //return right([CourseFileEntity(name: 'Lecture 1', path: 'ss', size: '10KB', extension:'png', date:'10-2-2024')]);
       } catch (e) {
         if (e is DioError) {
           return left(ServerFailure.fromDiorError(e));
@@ -51,13 +52,13 @@ class CourseDetailsRepoImp implements CourseDetailsRepo {
    // CourseFileEntity coursesFiles;
     if (await _networkInfo.isConnected) {
       try {
-
        CourseCardResponse response = await courseDetailsRemoteDataSource
             .fetchCourseDetails(request);
         if (response.status == true) {
           return right(response.courseCardEntity);
         }
         return left(ServerFailure('Something went wrong'));
+        //return right(CourseCardEntity('Hashim', courseDescription: 'Bioinformatics', creditHours: 3, noOfLectures: 6, grading: {'Mid': 10, 'Oral': 5, 'Final':110, 'TotalMark': 150}));
       } catch (e) {
         if (e is DioError) {
           return left(ServerFailure.fromDiorError(e));
@@ -77,9 +78,12 @@ class CourseDetailsRepoImp implements CourseDetailsRepo {
         DoctorCoursesResponse response = await courseDetailsRemoteDataSource
             .fetchDoctorCourses(request);
         if (response.status == true) {
+          print('HHH');
           return right(response.doctorCoursesEntity);
         }
-        return left(ServerFailure('Something went wrong'));
+        print('sssss');
+       return left(ServerFailure('Something went wrong'));
+        //return right([DoctorCoursesEntity(doctorName: 'Hashim', doctorId: '3'),DoctorCoursesEntity(doctorName: 'Dawlat', doctorId: '2')]);
       } catch (e) {
         if (e is DioError) {
           return left(ServerFailure.fromDiorError(e));

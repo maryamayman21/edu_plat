@@ -14,7 +14,7 @@ class SemesterScreen extends StatefulWidget {
 }
 
 class _SemesterScreenState extends State<SemesterScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -25,7 +25,7 @@ class CourseFileEntity {
         path: json['filePath'],
         size: json['size'],
         extension:  json['fileExtension'],
-        date: json['uploadDateFormatted'],
+        date: json['uploadDate'],
 
     );
   }

@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
+import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
 import 'package:edu_platt/core/network_handler/network_handler.dart';
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/data/repositories/course_repository.dart';
 import 'package:meta/meta.dart';
 
-import '../../../../../../core/cashe/services/course_cashe_service.dart';
+
 
 part 'Studentcourses_state.dart';
 
@@ -22,7 +23,6 @@ class StudentCoursesCubit extends Cubit<StudentCoursesState> {
   Future<void> getCachedCourses()async{
 
     try {
-      print('gettttt');
      final cachedCourses = await courseCacheService.getCourses();
      print(cachedCourses);
      print('got cached courses from cache');
@@ -46,9 +46,10 @@ class StudentCoursesCubit extends Cubit<StudentCoursesState> {
       emit(GetCoursesLoading() as StudentCoursesState);
       //try cache
       final cachedCourses = await courseCacheService.getCourses();
-      print(cachedCourses);
-      print('got cached courses from cache');
-      if (cachedCourses != null && cachedCourses.isNotEmpty) {
+     // final List<Map<String, dynamic>>? cachedCourses= [{'courseCode' : 'COMP104' , 'hasLab' : true}, {'courseCode' : 'COMP203' , 'hasLab' : false}];
+       print(  'Cached courses : $cachedCourses');
+       print('got cached courses from cache');
+       if (cachedCourses != null && cachedCourses.isNotEmpty) {
         print('Cached courses is not null');
         emit(CoursesSuccess(cachedCourses) as StudentCoursesState);
         return;
@@ -59,7 +60,9 @@ class StudentCoursesCubit extends Cubit<StudentCoursesState> {
       print('Got token');
       final response = await courseRepository.getCourses(token!);
       print('Response after get in cubit ${response.data}');
-      final List<String>? courses = List<String>.from(response.data);
+      ///TODO:: CONVERT TO LIST OF MAP
+      final List<Map<String, dynamic>>? courses = List<Map<String, dynamic>>.from(response.data);
+     // final List<Map<String, dynamic>>?  courses = [{'courseCode' : 'COMP104' , 'hasLab' : true}, {'courseCode' : 'COMP203' , 'hasLab' : false}];
       print('Courses after get in cubit $courses');
       if(courses != null && courses.isNotEmpty) {
         emit(CoursesSuccess(courses) as StudentCoursesState);
@@ -68,10 +71,9 @@ class StudentCoursesCubit extends Cubit<StudentCoursesState> {
       }
 
 
-    }catch(error){
+     }catch(error){
       if (!isClosed) emit(CoursesFailure(NetworkHandler.mapErrorToMessage(error)) as StudentCoursesState);
     }
-
 
   }
 

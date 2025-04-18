@@ -25,18 +25,18 @@ class CourseDetailsRemoteDataSourceImpl extends CourseDetailsRemoteDataSource {
   Future<FetchFileResponse> fetchCourseFiles(FetchFileRequest request) async{
     /// TODO: implement video endpoint like this
     ///final endpoint = request.type == 'Videos' ? '' : '';
-    var response = await  apiService.getFromUrl(endPoint: '${ApiConstants.baseUrl}/Materials/getDoctorMaterials/${request.courseCode}/${request.doctorId}/${request.type}');
+    var response = await  apiService.getFromUrl(endPoint: '${ApiConstants.baseUrl}/api/Materials/getDoctorMaterials/${request.courseCode}/${request.doctorId}/${request.type}');
     return FetchFileResponse.fromJson(response.data);
   }
   @override
   Future<CourseCardResponse> fetchCourseDetails(CourseCardRequest request) async{
-    var response = await  apiService.getFromUrl(endPoint: '${ApiConstants.baseUrl}/Course/Details/${request.courseCode}/${request.doctorId}');
+    var response = await  apiService.getFromUrl(endPoint: '${ApiConstants.baseUrl}/api/Course/Details/${request.courseCode}/${request.doctorId}');
     return CourseCardResponse.fromJson(response.data);
   }
 
   @override
   Future<DoctorCoursesResponse> fetchDoctorCourses(DoctorCoursesRequest request) async{
-    var response = await  apiService.getFromUrl(endPoint: '${ApiConstants.baseUrl}/Course/Details/${request.courseCode}');
+    var response = await  apiService.getFromUrl(endPoint: '${ApiConstants.baseUrl}/api/Course/Details/${request.courseCode}');
     return DoctorCoursesResponse.fromJson(response.data);
   }
 

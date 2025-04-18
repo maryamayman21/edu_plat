@@ -1,11 +1,11 @@
+import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/presentation/Doctor/features/courseRegisteration/data/models/course.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Cubit/Student_Course_RegisterCubit.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Widget/dropdown_list.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Widget/dropdown_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../../core/utils/Assets/appAssets.dart';
-import '../../../../sharedWidget/custom_button.dart';
+import '../../../../sharedWidget/buttons/custom_button.dart';
 
 
 class StudentCourseRegisterationBody extends StatefulWidget {
