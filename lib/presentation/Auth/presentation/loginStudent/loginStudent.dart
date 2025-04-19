@@ -11,7 +11,7 @@ import '../../../../core/utils/Strings/string.dart';
 import '../../../../core/utils/validations/email_validation.dart';
 import '../../../../core/utils/validations/password_validation.dart';
 import '../../../Routes/custom_AppRoutes.dart';
-import '../../../sharedWidget/custom_button.dart';
+import '../../../sharedWidget/buttons/custom_button.dart';
 import '../../../sharedWidget/custom_textfield.dart';
 import '../../cubit/auth_cubit.dart';
 import '../../data/repository/auth_repository.dart';
@@ -53,9 +53,10 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
     final role = await SecureStorageService.read('role');
 
     if (role == 'Student') {
-    Navigator.pushReplacementNamed(context , AppRouters.HomeStudent);
+      Navigator.pushNamedAndRemoveUntil(context, AppRouters.HomeStudent, (route) => false);
+   // Navigator.pushReplacementNamed(context , AppRouters.HomeStudent);
     } else  {
-      Navigator.pushReplacementNamed(context , AppRouters.doctorHomeRoute);
+      Navigator.pushNamedAndRemoveUntil(context, AppRouters.doctorHomeRoute, (route) => false);
 
     }}
     else if (state is AuthFailure) {

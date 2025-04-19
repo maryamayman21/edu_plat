@@ -30,7 +30,7 @@ class WidgetCourseHeader extends StatelessWidget {
             // borderRadius: BorderRadius.all(Radius.circular(30)),
           ),
           child: Center(
-            child: Text(courseCode ?? 'NULL',
+            child: Text(courseCode,
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                     letterSpacing: 1,
                     fontFamily: 'Roboto-Mono',

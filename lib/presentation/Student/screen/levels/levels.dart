@@ -1,9 +1,7 @@
-import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Doctor/features/home/application/app_bar_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/presentation/Studentcourses_listView.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/widgets/level_widget.dart';
-import 'package:edu_platt/presentation/sharedWidget/custom_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,10 +27,10 @@ class _LevelsState extends State<Levels> with TickerProviderStateMixin {
                           padding: REdgeInsets.only(top: 40.0),
                           child: Column(
                             children: [
-                              Container(
+                              SizedBox(
                                 height: 240.h,
                                 width: 400.w,
-                                child: LevelWidget(),
+                                child: const LevelWidget(),
                               ),
                               SizedBox(height: 25.h,),
                               Padding(
@@ -45,7 +43,7 @@ class _LevelsState extends State<Levels> with TickerProviderStateMixin {
                                         colors: [color.primaryColor, Colors.grey],
                                         tileMode: TileMode.clamp,
                                       ).createShader(bounds),
-                                      child: Text(
+                                      child: const Text(
                                         'Courses',
                                         style: TextStyle(fontSize: 28,color: Colors.white,fontWeight: FontWeight.bold
                                         ),
@@ -56,11 +54,11 @@ class _LevelsState extends State<Levels> with TickerProviderStateMixin {
                                           //Navigation to view all screen
                                           Navigator.pushNamed(context, AppRouters.studentViewAllCoursesRoute);
 
-                                        }, child: const Text('View all'))
+                                          }, child: const Text('View all'))
                                   ],
                                 ),
                               ),
-                              StudentCoursesListview( page: AppRouters.studentCourseDetailsRoute,)
+                               StudentCoursesListview()
                             ],
                           ),
                         ),

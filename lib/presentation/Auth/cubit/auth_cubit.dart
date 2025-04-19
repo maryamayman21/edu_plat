@@ -41,6 +41,9 @@ class AuthCubit extends Cubit<AuthState> {
 
 
   Future<void> login(String email, String password) async {
+    // email , password -> login -> server -> success -> response -> token  ? identify user -> flutter_secure_storage ->
+    //-> encryption
+
     emit(AuthLoading());
     try {
       // Make the login POST request
@@ -57,9 +60,8 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
-      // Save the token and expiration date using SharedPreferences
       final prefs = await SharedPreferences.getInstance();
-      //await prefs.setString('token', token);
+
       await SecureStorageService.write('token', token);
       //await prefs.setString('expiration', expiration);
       await SecureStorageService.write('expiration', expiration);

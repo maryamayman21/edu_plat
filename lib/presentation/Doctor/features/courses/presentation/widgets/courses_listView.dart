@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/utils/Color/color.dart';
 import '../../../../../../core/utils/customDialogs/custom_dialog.dart';
-import '../../../../../sharedWidget/custom_button.dart';
+import '../../../../../sharedWidget/buttons/custom_button.dart';
 
 
 import 'Courses_Grid.dart';
@@ -53,13 +53,13 @@ class CoursesListview extends StatelessWidget {
             else if(state is CoursesFailure){
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                      content: Text('${state.errorMessage}')));
+                      content: Text(state.errorMessage)));
             }
 
           },
           builder: (context, state) {
             if (state is CoursesSuccess) {
-              final courses = state.courses ?? [];
+              final List<Map<String, dynamic>> courses = state.courses ?? [];
               final finalCourses = viewAll ? courses : courses.take(2)
                   .toList();
               return CoursesGrid(

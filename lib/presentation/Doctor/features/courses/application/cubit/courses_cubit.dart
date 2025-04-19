@@ -19,24 +19,23 @@ class CoursesCubit extends Cubit<CoursesState> {
 
 
   Future<void> getCachedCourses()async{
-
     try {
-      print('gettttt');
+
      final cachedCourses = await courseCacheService.getCourses();
-     print(cachedCourses);
-     print('got cached courses from cache');
+        print(cachedCourses);
+        print('got cached courses from cache');
      if (cachedCourses != null && cachedCourses.isNotEmpty) {
-       print('Cached courses is not null');
+        print('Cached courses is not null');
         emit(CoursesSuccess(cachedCourses));
        return;
-     } else {
-       print('No cache for courses');
+      } else {
+        print('No cache for courses');
         emit(CoursesFailure("No cached courses found."));
      }
-   }catch(e){
-      print('No cache for courses');
-      emit(CoursesFailure("No cached courses found."));
-   }
+    }catch(e){
+        print('No cache for courses');
+        emit(CoursesFailure("No cached courses found."));
+    }
   }
 
 
@@ -52,37 +51,25 @@ class CoursesCubit extends Cubit<CoursesState> {
         emit(CoursesSuccess(cachedCourses));
         return;
       }
-      // emit(CoursesFailure("No cached courses found."));
-      //try server
       final token =  await TokenService().getToken();
       print('Got token');
       final response = await courseRepository.getCourses(token!);
       print('Response after get in cubit ${response.data}');
-      final List<String>? courses = List<String>.from(response.data);
-      print('Courses after get in cubit $courses');
+      final List<Map<String, dynamic>> courses = List<Map<String, dynamic>>.from(response.data);
+      //final List<String>? courses = List<String>.from(response.data);
       if(courses != null && courses.isNotEmpty) {
         emit(CoursesSuccess(courses));
       }else{
         emit(CoursesNotFound());
       }
-
-
     }catch(error){
       if (!isClosed) emit(CoursesFailure(NetworkHandler.mapErrorToMessage(error)));
     }
-
-
   }
 
 
 
-
-
-
-
-
   Future<void> deleteCachedCourse(String courseCode , dynamic courses)async{
-
     try {
       emit(CoursesLoading(courses: courses));
         //delete in server
@@ -109,6 +96,7 @@ class CoursesCubit extends Cubit<CoursesState> {
       if (!isClosed) emit(CoursesDeletionFailure(courses));
     }
   }
+
   Future<void> deleteAllCachedCourses()async{
     try {
 
@@ -121,8 +109,4 @@ class CoursesCubit extends Cubit<CoursesState> {
       }
     }
   }
-
-
-
-
 }

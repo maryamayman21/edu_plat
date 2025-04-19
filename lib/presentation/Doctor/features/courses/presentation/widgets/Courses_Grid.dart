@@ -6,19 +6,21 @@ import '../../../../../../core/utils/helper_methds/navigation_helper.dart';
 import '../../application/cubit/courses_cubit.dart';
 import 'custom_course_item.dart';
 class CoursesGrid extends StatelessWidget {
-  const CoursesGrid({super.key, required this.viewAll, this.finalCourses, required this.page});
+  const CoursesGrid({super.key, required this.viewAll, required this.finalCourses, required this.page});
 final bool viewAll;
-final finalCourses;
+final List<Map<String, dynamic>> finalCourses;
   final String page;
   @override
   Widget build(BuildContext context) {
     return  Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: 24 ),
+          horizontal: 24, vertical: 8),
       child: Column(
         children: [
-          viewAll ?  Container() : const SizedBox
+          viewAll ? const SizedBox
+          .shrink(): const SizedBox
               .shrink(),
+          const SizedBox(height: 30,),
           GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -33,7 +35,10 @@ final finalCourses;
               return CustomCourseItem(
                 onTap: () {
                   selectedCourse(
-                      context, page, finalCourses[index]);
+                    page: page,
+                      context: context,
+                      argument: finalCourses[index]
+                  );
                 },
                 onDelete: () async {
                   final coursesCubit = context.read<
@@ -43,16 +48,15 @@ final finalCourses;
                     context: context,
                     title: "Confirm Action",
                     content:
-                    "Are you sure you want to delete ${finalCourses[index]} ?",
+                    "Are you sure you want to delete ${finalCourses[index]['courseCode']} ?",
                   );
                   if (result != null && result) {
-                    /////////////////////////////////TESTTTTTTTTTT
                     await coursesCubit.deleteCachedCourse(
-                        finalCourses[index] , finalCourses);
+                        finalCourses[index]['CourseCode'] , finalCourses);
 
                   }
                 },
-                courseCode: finalCourses[index],
+                courseCode: finalCourses[index]['courseCode'],
 
               );
 

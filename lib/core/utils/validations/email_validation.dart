@@ -1,8 +1,7 @@
-String?isEmailValide(String? value) {
-  final emailRegExp = RegExp(
-      r'^(?:[a-z]+_[a-z]+|\d+)@sci\.asu\.edu\.eg$|^[a-zA-Z0-9._%+-]+@gmail\.com$');
+String? isEmailValide(String? value) {
+  final emailRegExp = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
-  if (value == null || value.trim().isEmpty) {
+  if (value!.trim().isEmpty || value == null) {
     return 'Email cannot be empty';
   } else if (!emailRegExp.hasMatch(value)) {
     return 'Please enter a valid email address';

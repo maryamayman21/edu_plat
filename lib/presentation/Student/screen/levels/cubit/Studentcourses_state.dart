@@ -19,7 +19,7 @@ final class CourseDeletionSuccess extends StudentCoursesState {
   CourseDeletionSuccess(this.successMessage , this.courses);
 }
 final class CoursesSuccess extends StudentCoursesState {
-  final  courses;
+  final  List<Map<String, dynamic>>? courses;
   CoursesSuccess(this.courses);
 }
 final class CoursesFailure extends StudentCoursesState {

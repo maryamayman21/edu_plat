@@ -7,7 +7,7 @@ import '../../../../../../core/utils/Assets/appAssets.dart';
 import '../../../../../../core/utils/Color/color.dart';
 import '../../../../../../core/utils/customDialogs/custom_dialog.dart';
 import '../../../../../Routes/custom_AppRoutes.dart';
-import '../../../../../sharedWidget/action_button.dart';
+import '../../../../../sharedWidget/buttons/action_button.dart';
 import '../../application/cubit/course_registeration_cubit.dart';
 import '../../application/cubit/dropdown_cubit.dart';
 import '../../application/cubit/dropdown_state.dart';

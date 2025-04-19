@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/utils/Assets/appAssets.dart';
-import '../../../../../../core/utils/Color/color.dart';
 import '../../../home/presentation/widgets/custom_appbar.dart';
 import '../../../home/application/app_bar_cubit.dart';
 import '../../../home/presentation/widgets/doctor_drawer.dart';
+
 import '../widgets/courses_listView.dart';
 class CoursesScreen extends StatefulWidget {
   const CoursesScreen({super.key});
@@ -27,7 +27,9 @@ class _CoursesScreenState extends State<CoursesScreen>
           body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 30.h,),
+
+            SizedBox(height: 15.h),
+
             Container(
               height: 200,
               width: 400,
@@ -43,15 +45,13 @@ class _CoursesScreenState extends State<CoursesScreen>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ShaderMask(
-                    shaderCallback: (bounds) => const LinearGradient(
-                      colors: [color.primaryColor, Colors.grey],
-                      tileMode: TileMode.clamp,
-                    ).createShader(bounds),
-                    child: Text(
-                      'Courses',
-                      style: TextStyle(fontSize: 28,color: Colors.white,fontWeight: FontWeight.bold
-                      ),
+                  Text(
+                    'Courses',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineLarge!
+                        .copyWith(fontSize: 22,
+                     fontFamily: 'Roboto-Mono'
                     ),
                   ),
                   TextButton(
@@ -63,8 +63,6 @@ class _CoursesScreenState extends State<CoursesScreen>
                 ],
               ),
             ),
-            SizedBox(height: 30.h,),
-
 
             CoursesListview( page: AppRouters.doctorCourseDetailsRoute,)
           ],

@@ -1,4 +1,5 @@
 
+import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 import 'package:edu_platt/presentation/Doctor/features/home/presentation/widgets/appBar.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Cubit/Student_Course_RegisterCubit.dart';
@@ -9,7 +10,7 @@ import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/data
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/data/web_Server.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../../core/cashe/services/course_cashe_service.dart';
+
 
 
 class StudentCourseregisteration extends StatelessWidget {

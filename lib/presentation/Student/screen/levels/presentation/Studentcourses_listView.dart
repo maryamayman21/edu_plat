@@ -1,23 +1,25 @@
 
 import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
+import 'package:edu_platt/core/utils/Color/color.dart';
+import 'package:edu_platt/core/utils/customDialogs/custom_dialog.dart';
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/cubit/Studentcourses_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/data/data_source/course_web_service.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/data/repositories/course_repository.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/presentation/StudentCourses_Grid.dart';
-import 'package:edu_platt/presentation/sharedWidget/custom_button.dart';
+import 'package:edu_platt/presentation/sharedWidget/buttons/custom_button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../../core/utils/Color/color.dart';
-import '../../../../../../core/utils/customDialogs/custom_dialog.dart';
+
 
 class StudentCoursesListview extends StatelessWidget {
-  StudentCoursesListview({super.key, this.viewAll = false, required this.page,});
+  StudentCoursesListview({super.key, this.viewAll = false,});
 
   final bool viewAll;
-  final String page;
+  //final String page;
 
 
   @override
@@ -52,17 +54,17 @@ class StudentCoursesListview extends StatelessWidget {
             else if(state is CoursesFailure){
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                      content: Text('${state.errorMessage}')));
+                      content: Text(state.errorMessage)));
             }
 
           },
           builder: (context, state) {
             if (state is CoursesSuccess) {
-              final courses = state.courses ?? [];
+              final  List<Map<String, dynamic>>  courses = state.courses ?? [];
               final finalCourses = viewAll ? courses : courses.take(2)
                   .toList();
               return StudentCoursesGrid(
-                  viewAll: viewAll, page: page, finalCourses: finalCourses);
+                  viewAll: viewAll, finalCourses: finalCourses);
             }
             else if (state is CoursesNotFound) {
               return   Column(
@@ -99,7 +101,6 @@ class StudentCoursesListview extends StatelessWidget {
             }
             else if (state is CoursesLoading) {
               return StudentCoursesGrid(viewAll: viewAll,
-                page: page,
                 finalCourses: state.courses ?? [],);
 
             }
@@ -108,19 +109,17 @@ class StudentCoursesListview extends StatelessWidget {
             }
             else if (state is CoursesDeletionFailure) {
               return StudentCoursesGrid(viewAll: viewAll,
-                page: page,
                 finalCourses: state.courses ?? [],);
             } else if (state is CourseDeletionSuccess) {
               return StudentCoursesGrid(viewAll: viewAll,
-                page: page,
                 finalCourses: state.courses ?? [],);
             }
             else if(state is CoursesFailure){
               return Column(
                 children: [
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.only(top:60.0),
-                    child: const Text('No internet connection',
+                    child: Text('No internet connection',
                       style: TextStyle(
                           color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22
                       ),

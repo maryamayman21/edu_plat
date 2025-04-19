@@ -1,15 +1,15 @@
+import 'package:edu_platt/core/utils/customDialogs/custom_dialog.dart';
+import 'package:edu_platt/core/utils/helper_methds/navigation_helper.dart';
 import 'package:edu_platt/presentation/Doctor/features/courses/presentation/widgets/custom_course_item.dart';
+import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/cubit/Studentcourses_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/utils/customDialogs/custom_dialog.dart';
-import '../../../../../../core/utils/helper_methds/navigation_helper.dart';
 class StudentCoursesGrid extends StatelessWidget {
-  const StudentCoursesGrid({super.key, required this.viewAll, this.finalCourses, required this.page});
+  const StudentCoursesGrid({super.key, required this.viewAll, required this.finalCourses,});
 final bool viewAll;
-final finalCourses;
-  final String page;
+final List<Map<String, dynamic>>finalCourses;
   @override
   Widget build(BuildContext context) {
     return  Padding(
@@ -33,7 +33,10 @@ final finalCourses;
               return CustomCourseItem(
                 onTap: () {
                   selectedCourse(
-                      context, page, finalCourses[index]);
+                      page:AppRouters.doctorCoursesScreen,
+                      context: context,
+                      argument: finalCourses[index]
+                  );
                 },
                 onDelete: () async {
                   final coursesCubit = context.read<
@@ -43,17 +46,15 @@ final finalCourses;
                     context: context,
                     title: "Confirm Action",
                     content:
-                    "Are you sure you want to delete ${finalCourses[index]} ?",
+                    "Are you sure you want to delete ${finalCourses[index]['courseCode']} ?",
                   );
                   if (result != null && result) {
-                    /////////////////////////////////TESTTTTTTTTTT
                     await coursesCubit.deleteCachedCourse(
-                        finalCourses[index] , finalCourses);
+                        finalCourses[index]['courseCode'] , finalCourses);
 
                   }
                 },
-                courseCode: finalCourses[index],
-
+                courseCode: finalCourses[index]['courseCode'],
               );
 
               // return

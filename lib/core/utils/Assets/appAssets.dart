@@ -24,6 +24,7 @@ class AppAssets {
   static const String defaultProfile = "assets/image/vasic.jpg";
   static const String noWifiConnection = "assets/image/noWifi.jpg";
   static const String nnoNotesFound = "assets/image/noNotesFound1.jpg";
+ static const String noDataFound = "assets/image/No Search Result.jpg";
   static const String chat = "assets/image/chat.png";
 
 
