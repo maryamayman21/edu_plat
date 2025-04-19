@@ -1,9 +1,12 @@
-import 'package:edu_platt/presentation/Private_chat/privateChat.dart';
+import 'package:edu_platt/presentation/Doctor/screen/chat/ConversationDoctor/convirationDocor_wedgit.dart';
+import 'package:edu_platt/presentation/Doctor/screen/chat/privateChat/Doctor_privateChat.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/C_Gpa.dart';
+import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/conviration_wedgit.dart';
+import 'package:edu_platt/presentation/Student/screen/Private_chat/privateChat.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/RegisterCourse/StudentCourseRegisteration.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/RegisterCourse/StudentcourseRegisteredScuccess.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/StudentSemesterScreen/StudentSemesterScreen.dart';
-import 'package:edu_platt/presentation/Private_chat/Chat_List.dart';
+import 'package:edu_platt/presentation/Student/screen/chat/Chat_List.dart';
 import 'package:edu_platt/presentation/Student/screen/chat/chatScreen.dart';
 import 'package:edu_platt/presentation/Student/screen/home/homeStudent.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/presentation/Studentcourse_details.dart';
@@ -50,7 +53,9 @@ class AppRouters {
   static const String passwordResetSuccess = '/passwordResetSuccess';
   static const String verifyEmail = '/verifyEmail';
   static const String HomeStudent = '/HomeStudent';
-  static const String StudentChatScreen = '/SchatScreen';
+  static const String StudentChatList = '/SchatScreen';
+  static const String ConversationStudentChat = '/ConversationStudentChat';
+  static const String ConversationDoctorChat = '/ConversationDoctorChat';
   static const String GeneralChatScreen = '/GeneralChat';
   static const String ExamScreen = '/ExamScreen';
   static const String ExamDetails = '/ExamDetails';
@@ -74,7 +79,7 @@ class AppRouters {
   static const String studentViewAllCoursesRoute="/studentViewAllCoursesRoute";
   static const String studentCourseDetailsRoute="/studentCourseDetailsRoute";
   static const String privateChat = '/privateChat';
-
+  static const String DoctorprivateChat = '/DoctorprivateChat';
 
 
 
@@ -86,17 +91,26 @@ class AppRouters {
       case loginStudentRoute:
         final isDoctor = settings.arguments as bool;
         return CustomPageRoute(page:  LoginScreenStudent( isDoctor: isDoctor,));
-      // case loginDoctorRoute:
-      //   return CustomPageRoute(page: const LoginScreenDoctor());
       case splashRoute:
         return MaterialPageRoute(builder: (context) => const Splash(),);
-      case StudentChatScreen:
+      case StudentChatList:
         return MaterialPageRoute(builder: (context) =>  ChatList(),);
-      case Privatechat:
-        final roomId = settings.arguments as String;
-        return MaterialPageRoute(builder: (context) =>  Privatechat(roomId: roomId),);
+      case DoctorprivateChat :
+        final args = settings.arguments as Map<String, dynamic>; // Cast arguments to Map
+        final studentEmail =args['studentEmail'] as String;
+        final studentName =args['studentName'] as String;
+        return MaterialPageRoute(builder: (context) =>  DoctorPrivatechat(studentEmail:studentEmail,studentName:studentName));
+      case privateChat :
+        final args = settings.arguments as Map<String, dynamic>; // Cast arguments to Map
+        final doctorEmail =args['doctorEmail'] as String;
+        final doctorName =args['doctorName'] as String;
+        return MaterialPageRoute(builder: (context) =>  Privatechat(doctorEmail: doctorEmail, doctorName: doctorName,));
       case GeneralChatScreen:
         return MaterialPageRoute(builder: (context) =>  ChatScreen());
+      case ConversationStudentChat:
+        return MaterialPageRoute(builder: (context) =>  ConvirationWedgit());
+      case ConversationDoctorChat:
+        return MaterialPageRoute(builder: (context) =>  ConvirationDoctorWedgit());
       case onBoardRoute:
         return MaterialPageRoute(builder: (context) => const onboarding(),);
       case studentOrDoctor:

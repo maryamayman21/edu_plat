@@ -18,7 +18,6 @@ class AppBarCubit extends Cubit<Animation<double>> {
     );
     _controller.forward();
 
-    // Emit the animation value to the UI
     emit(_animation);
   }
 

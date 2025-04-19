@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/utils/customDialogs/custom_dialog.dart';
 import '../../../../../../core/utils/helper_methds/navigation_helper.dart';
-import '../../../home/presentation/widgets/search_bar.dart';
 import '../../application/cubit/courses_cubit.dart';
 import 'custom_course_item.dart';
 class CoursesGrid extends StatelessWidget {
@@ -15,12 +14,11 @@ final finalCourses;
   Widget build(BuildContext context) {
     return  Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: 24, vertical: 8),
+          horizontal: 24 ),
       child: Column(
         children: [
-          viewAll ? const CustomSearchBar() : const SizedBox
+          viewAll ?  Container() : const SizedBox
               .shrink(),
-          const SizedBox(height: 30,),
           GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,

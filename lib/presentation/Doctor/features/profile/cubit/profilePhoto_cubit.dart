@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfileCubit extends Cubit<String?> {
  // final ProfileRepository repository;
 
-  ProfileCubit() : super(null) {
+  ProfileCubit({required profileRepository, required tokenService, required filePickerService}) : super(null) {
     _loadCachedPhoto();
   }
 

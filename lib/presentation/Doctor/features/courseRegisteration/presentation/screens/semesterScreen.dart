@@ -102,7 +102,7 @@ class _SemesterscreenState extends State<Semesterscreen>
                       child:  ElevatedButton(
                               onPressed: () {
                                 //Navigate to register screen
-                                Navigator.pushNamed(context, AppRouters.doctorCourseRegisterationRoute, arguments: 1);
+                                Navigator.pushNamed(context, AppRouters.studentCourseRegisterationRoute, arguments: 1);
                               },
                               style: ElevatedButton.styleFrom(
                                 elevation: 10,

@@ -1,14 +1,11 @@
+import 'package:edu_platt/presentation/Doctor/screen/chat/ChatListDoctor.dart';
 import 'package:edu_platt/presentation/Doctor/features/courses/presentation/screens/courses_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/utils/Color/color.dart';
-
 import '../../../../../profile/profile.dart';
-import '../../../../screen/chat/chat.dart';
 import '../../../../screen/exam/exam.dart';
-import '../../../profile/profile.dart';
 import '../../application/navigation_cubit.dart';
-import '../widgets/doctor_drawer.dart';
 class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -17,9 +14,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin  {
  final List<Widget> tabs = [
    const CoursesScreen(),
-    const DoctorChatScreen(),
    const DoctorExamScreen(),
-    const Profile(),
+   const Chatlistdoctor(),
+   const Profile(),
   ];
 
   @override

@@ -6,7 +6,6 @@ import '../../../../../../core/utils/Assets/appAssets.dart';
 import '../../../../../sharedWidget/custom_button.dart';
 import '../../../home/application/app_bar_cubit.dart';
 import '../../../home/presentation/widgets/custom_appbar.dart';
-import '../../../home/presentation/widgets/search_bar.dart';
 import '../../application/cubit/course_registeration_cubit.dart';
 import '../../application/cubit/dropdown_cubit.dart';
 import '../../application/cubit/dropdown_state.dart';

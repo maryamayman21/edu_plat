@@ -1,7 +1,7 @@
 
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
-import 'package:edu_platt/presentation/Private_chat/Chat_List.dart';
+import 'package:edu_platt/presentation/Student/screen/chat/Chat_List.dart';
 import 'package:edu_platt/presentation/Student/screen/chat/chatScreen.dart';
 import 'package:edu_platt/presentation/Student/screen/home/drawer.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/levels.dart';

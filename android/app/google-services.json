@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "685347292831",
+    "project_id": "chat-app-eb417",
+    "storage_bucket": "chat-app-eb417.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685347292831:android:3c16dfc1deeb029da904aa",
+        "android_client_info": {
+          "package_name": "com.example.edu_platt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1nmY8MFza_atB8pkwlMpfv47n5XqRnCI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

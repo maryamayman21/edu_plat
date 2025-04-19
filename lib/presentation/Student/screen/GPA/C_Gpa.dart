@@ -2,10 +2,12 @@ import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/CoursesGpaCalculator.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/SemesterGpaCalculator.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/cubit/gpa_cubit.dart';
+import 'package:edu_platt/presentation/Student/screen/GPA/repo/repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/cashe/services/course_cashe_service.dart';
+import '../../../../core/cashe/services/gpa_cashe_service.dart';
 import '../../../../core/cashe/services/notes_cache_service.dart';
 import '../../../../core/cashe/services/profile_cashe_service.dart';
 import '../../../../core/file_picker/file_picker_service.dart';
@@ -45,141 +47,147 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ProfileCubit(
-          profileRepository:
-          ProfileRepository(ProfileWebServices()),
-          tokenService: TokenService(),
-          filePickerService: FilePickerService(),
-          profileCacheService: ProfileCacheService(),
-          courseCacheService: CourseCacheService(),
-          notesCacheService: NotesCacheService()
-      )
-        ..getProfileData(),
-      child: BlocListener<GpaCubit, GpaState>(
-        listener: (context, state) {
-          if (state is GpaLoaded) {
-          }
-        },
-        child: Scaffold(
-          appBar: AppBar(automaticallyImplyLeading: true,
-            elevation: 0,
-            scrolledUnderElevation: 0,
-            foregroundColor: color.primaryColor,
-            title: const Text("GPA Calculator"),
-            titleTextStyle: TextStyle(fontWeight: FontWeight.bold,color: color.primaryColor,fontSize: 25.sp),
-        
-          ),
-          body: Container(
-                    decoration: BoxDecoration(
-           gradient: LinearGradient(
-             begin: Alignment.topLeft,
-             end: Alignment.bottomRight,
-             colors: [
-               Color(0xFDD9E9FB),
-               Colors.grey,
-             ],
-           ),
-                    ),
-            child: Column(
-              children: [
-                Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30.r),
-                      bottomRight: Radius.circular(30.r),)
-                ),
-                child: Padding(
-                  padding: REdgeInsets.all(30.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BlocBuilder<ProfileCubit, ProfileState>(
-                          builder: (BuildContext context, ProfileState state) {
-                            UserModel? user;
-                            if (state is ProfileLoaded) {
-                                user = state.userModel;
-                                return Text(user!.userName,style: TextStyle(color: color.primaryColor,fontSize: 22.sp,fontWeight: FontWeight.bold),textAlign: TextAlign.left,);
-                                }
-                                return Center(child: SizedBox());
-        
-                          },),
-                      Row(
-                        children: [
-                      BlocBuilder<GpaCubit, GpaState>(
-                          buildWhen: (previous, current) => current is GpaLoaded,
-                        builder: (context, state) {
-                          if (state is GpaLoading) {
-                            return Center(child: CircularProgressIndicator());
-                          } else if (state is GpaLoaded) {
-                            return AnimatedSwitcher(
-                              duration: Duration(milliseconds: 500),
-                              child: Column(
-                                  key: ValueKey(state.gpa.gpa),
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text("SGPA :",
-                                          style: TextStyle(fontWeight: FontWeight.bold,
-                                              color: Colors.pinkAccent,fontSize: 22.sp),),
-                                        Text(" ${state.gpa.gpa.toStringAsFixed(2)}",
-                                          style: TextStyle(color: color.secondColor,
-                                              fontSize: 20.sp),
-                                          textAlign: TextAlign.left,),
-                                      ],
-                                    )
-                                  ]
-                              ),
-                            );
-                          }
-                          return Center(child: SizedBox());
-                        }
-                      ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                      ),
-                Padding(
-                  padding: REdgeInsets.all(15.0),
-                  child: TabBar(
-                    dividerColor: Colors.transparent,
-                    controller: _tabController,
-                    labelColor: color.primaryColor,
-                    unselectedLabelColor: Colors.grey,
-                    indicator: UnderlineTabIndicator(
-                      borderSide: BorderSide(width: 3.0.w, color: color.secondColor),
-                    ),
-                    indicatorSize: TabBarIndicatorSize.label,
-                    tabs: const [
-                      Tab(child: Text("CGPA Calculator",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),),
-                      Tab(child: Text("SGPA Calculator",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20))),
-                    ],),
-                ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      Coursesgpacalculator(
-                      ),
-                      Semestergpacalculator(
-                        onSaveSGPA: (sgpa) {
-                          context.read<GpaCubit>().updateGpa(sgpa);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-        
-              ],
-            ),
-                  ),
-        
+    return MultiBlocProvider(
+          providers: [
+        BlocProvider(
+        create: (context) => ProfileCubit(
+        profileRepository:
+        ProfileRepository(ProfileWebServices()),
+        tokenService: TokenService(),
+        filePickerService: FilePickerService(),
+        profileCacheService: ProfileCacheService(),
+        courseCacheService: CourseCacheService(),
+        notesCacheService: NotesCacheService()
+    )
+      ..getProfileData(),
         ),
-      ),
-    );
+            BlocProvider(
+              create: (context) => GpaCubit(
+                gpaRepository: GPARepository(),
+                tokenService: TokenService(),
+                gpaCacheService: GpaCasheServer(),
+              )..fetchGpa(),
+            ),
+          ],
+          child:  Scaffold(
+            appBar: AppBar(automaticallyImplyLeading: true,
+              elevation: 0,
+              scrolledUnderElevation: 0,
+              foregroundColor: color.primaryColor,
+              title: const Text("GPA Calculator"),
+              titleTextStyle: TextStyle(fontWeight: FontWeight.bold,color: color.primaryColor,fontSize: 25.sp),
+
+            ),
+            body: Container(
+                      decoration: BoxDecoration(
+             gradient: LinearGradient(
+               begin: Alignment.topLeft,
+               end: Alignment.bottomRight,
+               colors: [
+                 Color(0xFDD9E9FB),
+                 Colors.grey,
+               ],
+             ),
+                      ),
+              child: Column(
+                children: [
+                  Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30.r),
+                        bottomRight: Radius.circular(30.r),)
+                  ),
+                  child: Padding(
+                    padding: REdgeInsets.all(30.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BlocBuilder<ProfileCubit, ProfileState>(
+                            builder: (BuildContext context, ProfileState state) {
+                              UserModel? user;
+                              if (state is ProfileLoaded) {
+                                  user = state.userModel;
+                                  return Text(user!.userName,style: TextStyle(color: color.primaryColor,fontSize: 22.sp,fontWeight: FontWeight.bold),textAlign: TextAlign.left,);
+                                  }
+                                  return Center(child: SizedBox());
+
+                            },),
+                        Row(
+                          children: [
+                        BlocBuilder<GpaCubit, GpaState>(
+                            buildWhen: (previous, current) => current is GpaLoaded,
+                          builder: (context, state) {
+                            if (state is GpaLoading) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (state is GpaLoaded) {
+                              return AnimatedSwitcher(
+                                duration: Duration(milliseconds: 500),
+                                child: Column(
+                                    key: ValueKey(state.gpa.gpa),
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text("SGPA :",
+                                            style: TextStyle(fontWeight: FontWeight.bold,
+                                                color: Colors.pinkAccent,fontSize: 22.sp),),
+                                          Text(" ${state.gpa.gpa.toStringAsFixed(2)}",
+                                            style: TextStyle(color: color.secondColor,
+                                                fontSize: 20.sp),
+                                            textAlign: TextAlign.left,),
+                                        ],
+                                      )
+                                    ]
+                                ),
+                              );
+                            }
+                            return Center(child: SizedBox());
+                          }
+                        ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                        ),
+                  Padding(
+                    padding: REdgeInsets.all(15.0),
+                    child: TabBar(
+                      dividerColor: Colors.transparent,
+                      controller: _tabController,
+                      labelColor: color.primaryColor,
+                      unselectedLabelColor: Colors.grey,
+                      indicator: UnderlineTabIndicator(
+                        borderSide: BorderSide(width: 3.0.w, color: color.secondColor),
+                      ),
+                      indicatorSize: TabBarIndicatorSize.label,
+                      tabs: const [
+                        Tab(child: Text("CGPA Calculator",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),),
+                        Tab(child: Text("SGPA Calculator",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20))),
+                      ],),
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        Coursesgpacalculator(
+                        ),
+                        Semestergpacalculator(
+                          onSaveSGPA: (sgpa) {
+                            context.read<GpaCubit>().updateGpa(sgpa);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                ],
+              ),
+                    ),
+
+          ),
+        );
+
   }
 }

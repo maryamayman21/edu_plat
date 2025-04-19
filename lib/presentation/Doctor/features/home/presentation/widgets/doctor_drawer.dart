@@ -12,12 +12,9 @@ import '../../../../../../core/cashe/services/profile_cashe_service.dart';
 import '../../../../../../core/file_picker/file_picker_service.dart';
 import '../../../../../Auth/service/token_service.dart';
 import '../../../../../Routes/custom_AppRoutes.dart';
-import '../../../../../Student/screen/home/navigation_helper.dart';
 import '../../../../../profile/cubit/profile_cubit.dart';
 import '../../../../../profile/data/profile_web_services.dart';
 import '../../../../../profile/repository/profile_repository.dart';
-import '../../../courseRegisteration/presentation/screens/semesterScreen.dart';
-import '../../../courses/presentation/screens/courses_screen.dart';
 
 class DoctorDrawer extends StatefulWidget {
   const DoctorDrawer({super.key});

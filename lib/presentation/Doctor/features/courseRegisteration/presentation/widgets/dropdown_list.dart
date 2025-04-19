@@ -1,8 +1,6 @@
 import 'package:edu_platt/presentation/Doctor/features/courseRegisteration/data/models/course.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../../core/DataModel/courseModel.dart';
 import '../../application/cubit/dropdown_cubit.dart';
 import '../../application/cubit/dropdown_state.dart';
 

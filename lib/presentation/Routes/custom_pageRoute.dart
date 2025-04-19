@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'custom_swipeBack.dart';
 
 class CustomPageRoute<T> extends PageRouteBuilder<T> {
@@ -11,7 +10,7 @@ class CustomPageRoute<T> extends PageRouteBuilder<T> {
       return CustomSwipeBackPage(
         child: page,
         onBack: () {
-          Navigator.of(context).pop();  // Trigger back action
+          Navigator.of(context).pop();
         },
       );
     },

@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'dart:typed_data';
 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class FileCompressionService {
   // Compress image file and return the compressed file as a byte array
 

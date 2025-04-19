@@ -1,8 +1,6 @@
 
 import 'package:bloc/bloc.dart';
 
-import '../../../../../Auth/service/token_service.dart';
-import '../../data/repositories/repository.dart';
 import 'dropdown_state.dart';
 
 class DropdownCubit extends Cubit<DropdownState> {
