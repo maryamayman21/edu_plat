@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/utils/Assets/appAssets.dart';
 import '../../Routes/custom_AppRoutes.dart';
-import '../../sharedWidget/custom_button.dart';
+import '../../sharedWidget/buttons/custom_button.dart';
 class PasswordResetSuccess extends StatelessWidget {
   const PasswordResetSuccess({super.key});
 

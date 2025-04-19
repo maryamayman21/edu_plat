@@ -11,11 +11,11 @@ import '../Routes/custom_AppRoutes.dart';
 import '../forgetAndResetPassword/cubit/forget_pass_cubit.dart';
 import '../forgetAndResetPassword/data/repository/repository.dart';
 import '../forgetAndResetPassword/data/web_services/web_services.dart';
-import '../sharedWidget/confrim_password_visablity_cubit.dart';
-import '../sharedWidget/custom_button.dart';
-import '../sharedWidget/password_matched_visability_cubit.dart';
+import '../sharedWidget/password_visibility_cubit/confrim_password_visablity_cubit.dart';
+import '../sharedWidget/buttons/custom_button.dart';
+import '../sharedWidget/password_visibility_cubit/password_matched_visability_cubit.dart';
 import '../sharedWidget/password_textfield.dart';
-import '../sharedWidget/password_visiability_cubit.dart';
+import '../sharedWidget/password_visibility_cubit/password_visiability_cubit.dart';
 
 
 class Changepassword extends StatefulWidget {
