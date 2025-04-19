@@ -1,3 +1,4 @@
+import 'package:edu_platt/presentation/sharedWidget/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/utils/Assets/appAssets.dart';
 import '../../../../core/utils/Color/color.dart';
 import '../../../Routes/custom_AppRoutes.dart';
-import '../../../sharedWidget/custom_button.dart';
 import '../../cubit/auth_cubit.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../data/web_services/auth_web_service.dart';

@@ -1,10 +1,6 @@
 
 import 'dart:io';
-import 'package:edu_platt/presentation/Doctor/features/course_details/domain/entities/course_details_entity.dart';
 import 'package:hive/hive.dart';
-
-import 'package:hive/hive.dart';
-
   class HiveService {
   // Add a file to the appropriate box
     static Future<List<CourseDetailsEntity>> addFile({

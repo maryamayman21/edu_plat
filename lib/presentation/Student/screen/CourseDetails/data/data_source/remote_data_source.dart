@@ -2,7 +2,6 @@
 
 
 import 'package:edu_platt/core/constant/constant.dart';
-import 'package:edu_platt/core/network/api_service.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/data/network/request/course_card_request.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/data/network/request/doctor_courses_request.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/data/network/request/fetch_file_request.dart';

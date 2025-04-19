@@ -7,6 +7,7 @@ import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 import 'package:edu_platt/presentation/profile/cubit/profile_cubit.dart';
 import 'package:edu_platt/presentation/profile/data/profile_web_services.dart';
 import 'package:edu_platt/presentation/profile/repository/profile_repository.dart';
+import 'package:edu_platt/presentation/sharedWidget/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +16,6 @@ import '../../core/utils/Assets/appAssets.dart';
 
 import '../Routes/custom_AppRoutes.dart';
 import '../sharedWidget/Student_Doctor.dart';
-import '../sharedWidget/custom_button.dart';
 
 
 class ChangePasswordSuccess extends StatelessWidget {

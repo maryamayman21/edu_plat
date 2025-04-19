@@ -1,7 +1,7 @@
 
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
-import 'package:edu_platt/presentation/Student/screen/chat/chat.dart';
+import 'package:edu_platt/presentation/Student/screen/chat/Chat_List.dart';
 import 'package:edu_platt/presentation/Student/screen/home/drawer.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/levels.dart';
 import 'package:edu_platt/presentation/profile/profile.dart';
@@ -22,7 +22,7 @@ class _HomeStudentState extends State<HomeStudentScreen>
   List<Widget> tabs = [
     Levels(),
     const Notes(),
-    const Chat(),
+     ChatList(),
     Profile()
   ];
   int selectedIndex = 0;
