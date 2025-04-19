@@ -32,7 +32,7 @@ class CardShimmerEffect extends StatelessWidget {
              SizedBox(height: 30.h),
 
             // Table for Marks
-            CourseDetailsShimmerEffect(width: 370.w, height: 120.h)
+            CourseDetailsShimmerEffect(width: double.infinity, height: 120.h)
 
           ],
         ),
