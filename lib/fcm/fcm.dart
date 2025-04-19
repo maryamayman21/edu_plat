@@ -70,7 +70,7 @@ class Fcm{
                  channel.id,
                  channel.name,
                  channelDescription: channel.description,
-                 icon: android?.smallIcon,
+                 icon: "@mipmap/ic_launcher",
                  // other properties...
                ),
              ));
