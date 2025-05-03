@@ -1,4 +1,5 @@
 import 'package:edu_platt/presentation/Doctor/features/courses/presentation/screens/courses_screen.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exam_dashboard_screen.dart';
 import 'package:edu_platt/presentation/Doctor/screen/chat/ChatListDoctor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,8 +18,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin  {
  final List<Widget> tabs = [
    const CoursesScreen(),
-    const Chatlistdoctor(),
-   // DashboardScreen(),
+    DashboardScreen(),
+   const Chatlistdoctor(),
     const Profile(),
   ];
 

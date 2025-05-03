@@ -61,66 +61,67 @@ class _HomeStudentState extends State<HomeStudentScreen>
       },
       child: Scaffold(
         drawer: const Drawerr(),
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: selectedIndex == 3
-              ? color.primaryColor
-              : (selectedIndex == 1 ? color.primaryColor : Colors.transparent),
-          scrolledUnderElevation: 0,
-          toolbarHeight:
-              selectedIndex == 3 ? 60.h : (selectedIndex == 1 ? 80.h : 130.h),
-          // التحكم بالارتفاع
-          shape: selectedIndex == 1
-              ? null // إزالة الـ Border Radius لصفحة Notes
-              : RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30.r),
-                    bottomRight: Radius.circular(30.r),
-                  ),
-                ),
-          title: selectedIndex == 3
-              ? Text(
-                  "Profile", //
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontSize: 22.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                )
-              : (selectedIndex == 1
-                  ? Text(
-                      "Notes",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Colors.white,
-                            fontSize: 22.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 30.h),
-              ScaleTransition(
-                          scale: _animation,
-                          child: Image.asset(
-                            AppAssets.logo,
-                          ),
-                        ),
-                      ],
-                    )),
-          centerTitle: true,
-          actions: [
-            Padding(
-              padding: REdgeInsets.only(right: 10),
-              child: Icon(
-                Icons.notifications_active,
-                color: Colors.grey,
-                size: 30.r,
+        appBar:  AppBar(
+        elevation: 0,
+        backgroundColor: (selectedIndex == 4 || selectedIndex == 3)
+            ? color.primaryColor
+            : (selectedIndex == 1 ? color.primaryColor : Colors.transparent),
+        scrolledUnderElevation: 0,
+        toolbarHeight: (selectedIndex == 4 || selectedIndex == 3)
+            ? 60.h
+            : (selectedIndex == 1 ? 80.h : 130.h),
+        shape: selectedIndex == 1
+            ? null
+            : RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30.r),
+            bottomRight: Radius.circular(30.r),
+          ),
+        ),
+        title: (selectedIndex == 4 || selectedIndex == 3)
+            ? Text(
+          selectedIndex == 4 ? "Profile" : "Exams",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: Colors.white,
+            fontSize: 22.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        )
+            : (selectedIndex == 1
+            ? Text(
+          "Notes",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: Colors.white,
+            fontSize: 22.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        )
+            : Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 30.h),
+            ScaleTransition(
+              scale: _animation,
+              child: Image.asset(
+                AppAssets.logo,
               ),
             ),
           ],
-        ),
-        body: tabs[selectedIndex],
+        )),
+        centerTitle: true,
+        actions: [
+          Padding(
+            padding: REdgeInsets.only(right: 10),
+            child: Icon(
+              Icons.notifications_active,
+              color: Colors.grey,
+              size: 30.r,
+            ),
+          ),
+        ],
+      ),
+
+      body: tabs[selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           items: [
             _buildBottomNavigationBarItem(Icons.golf_course, "Levels", 0),

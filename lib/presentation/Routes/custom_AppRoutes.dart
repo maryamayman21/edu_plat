@@ -1,6 +1,5 @@
 
 import 'package:edu_platt/presentation/Doctor/features/course_details/course_details_view.dart';
-import 'package:edu_platt/presentation/Doctor/features/login/presentation/login_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/exam_model.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/entity/student_degree_entity.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/pdf_exam_bloc.dart';
@@ -265,9 +264,6 @@ static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
             builder: (context) => const ChangePasswordSuccess());
       case GPA:
         return MaterialPageRoute(builder: (context) => const Gpa_Calculator(),);
-      case doctorLogin:
-        return MaterialPageRoute(
-            builder: (context) => const LoginScreen());
       case pdfViewerScreen :
         final args = settings.arguments as Map<String, dynamic>; // Cast arguments to Map
         final pdfUrl =args['pdfUrl'] as String;

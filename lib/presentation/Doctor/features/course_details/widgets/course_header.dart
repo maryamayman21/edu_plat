@@ -1,4 +1,7 @@
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
+import 'package:edu_platt/core/utils/Color/color.dart';
+import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation/widgets/detail_icon_text.dart';
+import 'package:edu_platt/presentation/Student/screen/group_chat/groupList/GroupMember.dart';
 import 'package:flutter/material.dart';
 
 class CourseHeader extends StatelessWidget {
@@ -47,6 +50,22 @@ class CourseHeader extends StatelessWidget {
           }, icon: const Icon(Icons.arrow_back , color: Colors.black,)),
         ),
       ),
+      actions: [
+        CircleAvatar(
+          backgroundColor: Colors.white,
+          child: IconButton(onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => GroupMember(
+                  courseCode: courseCode,
+                ),
+              ),
+            );
+          }, icon: const Icon(Icons.chat , color: color.primaryColor,)),
+        ),
+
+      ],
     );
   }
 }

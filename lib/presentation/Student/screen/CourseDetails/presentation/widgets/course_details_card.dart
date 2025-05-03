@@ -22,6 +22,8 @@ class CourseDetailsCard extends StatelessWidget {
   final int lectures;
   final String doctorName;
   final Map<String, dynamic>marks;
+  final String courseCode;
+
 
   const CourseDetailsCard({
     Key? key,
@@ -30,6 +32,7 @@ class CourseDetailsCard extends StatelessWidget {
     required this.lectures,
     required this.doctorName,
     required this.marks,
+    required this.courseCode
   }) : super(key: key);
 
   @override
@@ -84,7 +87,7 @@ class CourseDetailsCard extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (_) => GroupMember(
-                            courseTitle: courseTitle,
+                            courseCode: courseTitle,
                           ),
                         ),
                       );

@@ -70,7 +70,7 @@ class _CoursedetailsState extends State<Coursedetails> {
              //    );
              // },
              //  ),
-                const SliverToBoxAdapter(child: CourseCardBlocBuilder()),
+                SliverToBoxAdapter(child: CourseCardBlocBuilder(courseCode: widget.courseDetails['courseCode'] ,)),
 
                 SliverToBoxAdapter(child: SizedBox(height: 20.h)),
 

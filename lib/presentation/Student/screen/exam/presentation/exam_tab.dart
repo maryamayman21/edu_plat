@@ -34,16 +34,6 @@ class StudentExamTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:  Text('Exams',
-          style: TextStyle(
-            fontSize: 22.sp, // Slightly smaller for better balance
-            fontWeight: FontWeight.bold,
-            color: color.primaryColor,
-          ),
-        ),
-        centerTitle: true,
-      ),
       body: Padding(
         padding: EdgeInsets.all(16.w), // Responsive padding
         child: GridView.builder(

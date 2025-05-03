@@ -11,19 +11,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class GroupMember extends StatelessWidget {
-  final String courseTitle;
+  final String courseCode;
 
 
   const GroupMember({
     super.key,
-    required this.courseTitle,
+    required this.courseCode,
 
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => GroupChatCubit(TokenService())..fetchGroupChat(courseTitle),
+      create: (_) => GroupChatCubit(TokenService())..fetchGroupChat(courseCode),
       child: Scaffold(
         backgroundColor: color.primaryColor,
         appBar: AppBar(
@@ -125,7 +125,7 @@ class GroupMember extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                           Navigator.pushReplacementNamed(context, AppRouters.chatGroup, arguments: courseTitle,);
+                           Navigator.pushReplacementNamed(context, AppRouters.chatGroup, arguments: courseCode,);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: color.primaryColor,
