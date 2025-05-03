@@ -2,20 +2,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
-import 'package:edu_platt/presentation/Student/screen/chat/chat.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/presentation/exam_tab.dart';
 import 'package:edu_platt/presentation/Student/screen/home/presentation/drawer.dart';
 import 'package:edu_platt/presentation/Student/screen/chat/Chat_List.dart';
-import 'package:edu_platt/presentation/Student/screen/home/drawer.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/levels.dart';
 import 'package:edu_platt/presentation/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../notes/presentation/nots.dart';
-import '../../../../fcm/fcm.dart';
-import '../notes/presentation/nots.dart';
-
 class HomeStudentScreen extends StatefulWidget {
   const HomeStudentScreen({super.key});
 

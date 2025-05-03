@@ -1,15 +1,17 @@
 
+import 'package:edu_platt/presentation/Doctor/features/course_details/course_details_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/login/presentation/login_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/exam_model.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/entity/student_degree_entity.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/pdf_exam_bloc.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exam_dashboard_screen.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exam_tab.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exams_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/make_online_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/offline_exam_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_creation_written_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_mcq_form_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_mcq_questions_exam.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_view_student_degrees_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_written_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/update_offline_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/update_online_exam.dart';
@@ -27,7 +29,6 @@ import 'package:edu_platt/presentation/Student/screen/chat/Chat_List.dart';
 import 'package:edu_platt/presentation/Student/screen/chat/chatScreen.dart';
 import 'package:edu_platt/presentation/Student/screen/group_chat/chatGroup.dart';
 
-import 'package:edu_platt/presentation/Student/screen/home/homeStudent.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/data/model/student_exam_model.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/data/model/submit_exam_model.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/presentation/exam_tab.dart';

@@ -1,10 +1,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:edu_platt/config/theme/theme.dart';
-import 'package:edu_platt/core/cashe/services/gpa_cashe_service.dart';
+import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
 import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
-import 'package:edu_platt/core/cashe/services/questions_cashe_service.dart';
-import 'package:edu_platt/core/network/api_service.dart';
-import 'package:edu_platt/core/network/internet_connection_service.dart';
 import 'package:edu_platt/core/cashe/services/profile_cashe_service.dart';
 import 'package:edu_platt/core/file_picker/file_picker_service.dart';
 import 'package:edu_platt/fcm/fcm.dart';
@@ -13,8 +10,6 @@ import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 import 'package:edu_platt/presentation/Doctor/screen/chat/ConversationDoctor/cubit/Dchat_cubit.dart';
 import 'package:edu_platt/presentation/Doctor/screen/chat/ConversationDoctor/repo/chat_Repo.dart';
 import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
-import 'package:edu_platt/presentation/Student/screen/GPA/cubit/gpa_cubit.dart';
-import 'package:edu_platt/presentation/Student/screen/GPA/repo/repo.dart';
 import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/cubit/Chat_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/repo/chat_Repo.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/cubit/notes_cubit.dart';
@@ -30,7 +25,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 
-import 'core/cashe/services/course_cashe_service.dart';
+
 import 'firebase_options.dart';
 import 'presentation/Doctor/features/course_details/domain/entities/course_details_entity.dart';
 
@@ -114,6 +109,7 @@ class MyApp extends StatelessWidget {
                 onGenerateRoute: AppRouters.generateRoute
             ),
           //),
+    )
     );
   }
 }

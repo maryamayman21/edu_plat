@@ -1,19 +1,22 @@
+import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
+import 'package:edu_platt/core/cashe/services/gpa_cashe_service.dart';
+import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
+import 'package:edu_platt/core/cashe/services/profile_cashe_service.dart';
+import 'package:edu_platt/core/file_picker/file_picker_service.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
+import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/CoursesGpaCalculator.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/SemesterGpaCalculator.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/cubit/gpa_cubit.dart';
+import 'package:edu_platt/presentation/Student/screen/GPA/repo/repo.dart';
+import 'package:edu_platt/presentation/profile/cubit/profile_cubit.dart';
+import 'package:edu_platt/presentation/profile/data/profile_web_services.dart';
+import 'package:edu_platt/presentation/profile/model/user.dart';
+import 'package:edu_platt/presentation/profile/repository/profile_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/cashe/services/course_cashe_service.dart';
-import '../../../../core/cashe/services/notes_cache_service.dart';
-import '../../../../core/cashe/services/profile_cashe_service.dart';
-import '../../../../core/file_picker/file_picker_service.dart';
-import '../../../Auth/service/token_service.dart';
-import '../../../profile/cubit/profile_cubit.dart';
-import '../../../profile/data/profile_web_services.dart';
-import '../../../profile/model/user.dart';
-import '../../../profile/repository/profile_repository.dart';
+
 
 class Gpa_Calculator extends StatefulWidget {
 
