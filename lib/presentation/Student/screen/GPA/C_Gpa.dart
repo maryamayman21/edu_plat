@@ -1,19 +1,22 @@
+import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
+import 'package:edu_platt/core/cashe/services/gpa_cashe_service.dart';
+import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
+import 'package:edu_platt/core/cashe/services/profile_cashe_service.dart';
+import 'package:edu_platt/core/file_picker/file_picker_service.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
+import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/CoursesGpaCalculator.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/SemesterGpaCalculator.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/cubit/gpa_cubit.dart';
+import 'package:edu_platt/presentation/Student/screen/GPA/repo/repo.dart';
+import 'package:edu_platt/presentation/profile/cubit/profile_cubit.dart';
+import 'package:edu_platt/presentation/profile/data/profile_web_services.dart';
+import 'package:edu_platt/presentation/profile/model/user.dart';
+import 'package:edu_platt/presentation/profile/repository/profile_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/cashe/services/course_cashe_service.dart';
-import '../../../../core/cashe/services/notes_cache_service.dart';
-import '../../../../core/cashe/services/profile_cashe_service.dart';
-import '../../../../core/file_picker/file_picker_service.dart';
-import '../../../Auth/service/token_service.dart';
-import '../../../profile/cubit/profile_cubit.dart';
-import '../../../profile/data/profile_web_services.dart';
-import '../../../profile/model/user.dart';
-import '../../../profile/repository/profile_repository.dart';
+
 
 class Gpa_Calculator extends StatefulWidget {
 
@@ -32,9 +35,9 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
 
     _tabController = TabController(length: 2, vsync: this);
 
-    Future.microtask(() {
-      context.read<GpaCubit>().fetchGpa();
-    });
+    // Future.microtask(() {
+    //   context.read<GpaCubit>().fetchGpa();
+    // });
   }
 
   @override
@@ -45,7 +48,9 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return MultiBlocProvider(
+  providers: [
+    BlocProvider(
       create: (context) => ProfileCubit(
           profileRepository:
           ProfileRepository(ProfileWebServices()),
@@ -56,7 +61,12 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
           notesCacheService: NotesCacheService()
       )
         ..getProfileData(),
-      child: BlocListener<GpaCubit, GpaState>(
+),
+    BlocProvider(
+      create: (context) => GpaCubit(gpaRepository: GPARepository() , tokenService:TokenService() ,  gpaCacheService:GpaCasheServer() )..fetchGpa(),
+    ),
+  ],
+  child: BlocListener<GpaCubit, GpaState>(
         listener: (context, state) {
           if (state is GpaLoaded) {
           }
@@ -71,7 +81,7 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
         
           ),
           body: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
            gradient: LinearGradient(
              begin: Alignment.topLeft,
              end: Alignment.bottomRight,
@@ -103,7 +113,7 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
                                 user = state.userModel;
                                 return Text(user!.userName,style: TextStyle(color: color.primaryColor,fontSize: 22.sp,fontWeight: FontWeight.bold),textAlign: TextAlign.left,);
                                 }
-                                return Center(child: SizedBox());
+                                return const Center(child: SizedBox());
         
                           },),
                       Row(
@@ -112,10 +122,10 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
                           buildWhen: (previous, current) => current is GpaLoaded,
                         builder: (context, state) {
                           if (state is GpaLoading) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           } else if (state is GpaLoaded) {
                             return AnimatedSwitcher(
-                              duration: Duration(milliseconds: 500),
+                              duration: const Duration(milliseconds: 500),
                               child: Column(
                                   key: ValueKey(state.gpa.gpa),
                                   children: [
@@ -134,7 +144,7 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
                               ),
                             );
                           }
-                          return Center(child: SizedBox());
+                          return const Center(child: SizedBox());
                         }
                       ),
                         ],
@@ -180,6 +190,6 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
         
         ),
       ),
-    );
+);
   }
 }

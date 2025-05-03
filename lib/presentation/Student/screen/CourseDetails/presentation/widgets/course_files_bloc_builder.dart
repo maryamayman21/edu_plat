@@ -26,7 +26,7 @@ class CourseFilesBlocBuilder extends StatelessWidget {
             );
         }
         if (state is CourseFilesNotFound) {
-          return const SliverToBoxAdapter(child: Text('No courses found'));
+          return const SliverToBoxAdapter(child: Center(child: Text('No courses found')));
         }
         if (state is CourseFilesLoading) {
           return const SliverToBoxAdapter(child: Center(child: CircularProgressIndicator()));

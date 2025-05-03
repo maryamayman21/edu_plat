@@ -6,8 +6,6 @@ class UploadFileResponse extends BaseResponse{
 
   final CourseDetailsEntity course;
 
-
-
   UploadFileResponse({required status, required message, required this.course}):super(status: status, message: message);
 
 

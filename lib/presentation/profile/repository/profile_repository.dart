@@ -48,6 +48,15 @@ class ProfileRepository {
       throw Exception('Failed to update phone number : ${response.data}');
     }
   }
+  Future<void> logout(String token) async {
+    final response = await webServices.logout(token);
+    if (response.statusCode == 200) {
+
+    } else {
+      // Handle failure
+      throw Exception('Failed to update phone number : ${response.data}');
+    }
+  }
   Future<dynamic> fetchPhoneNumber(String token) async {
     final response = await webServices.fetchPhoneNumber(token);
     if (response.statusCode == 200) {

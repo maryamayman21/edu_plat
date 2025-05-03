@@ -29,4 +29,16 @@ class UploadFileRequest {
     });
     return formData;
   }
+  Future<FormData> toFormDataVideo()async{
+    if (file == null || !File(file!.path).existsSync()){
+      throw Exception('File does not exist');
+    }
+    print('Print got here inside formData');
+    FormData formData = FormData.fromMap({
+      'Video':  await MultipartFile.fromFile(file!.path, filename: file!.path.split('/').last),
+      'Type': type,
+      'CourseCode': courseCode,
+    });
+    return formData;
+  }
 }

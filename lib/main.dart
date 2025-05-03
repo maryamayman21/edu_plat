@@ -1,6 +1,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:edu_platt/config/theme/theme.dart';
 import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
+import 'package:edu_platt/core/cashe/services/questions_cashe_service.dart';
 import 'package:edu_platt/core/network/api_service.dart';
 import 'package:edu_platt/core/network/internet_connection_service.dart';
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
@@ -26,6 +27,7 @@ void main() async {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   await deviceInfo.androidInfo; // Initialize the plugin
   await Hive.initFlutter();
+
   Hive.registerAdapter(CourseDetailsEntityAdapter());
   await Hive.deleteBoxFromDisk('Lectures');
   await Hive.deleteBoxFromDisk('Labs');
@@ -33,8 +35,11 @@ void main() async {
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Lectures');
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Labs');
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Exams');
+
   runApp(const MyApp());
 }
+
+///TODO:: NEED TO SET UP VIDEOS CACHE
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -47,39 +52,39 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) =>
-    //       MultiBlocProvider(
-    //         providers: [
-    //           // BlocProvider(
-    //           //   create: (context) => PDFExamBloc(),
-    //           // ),
-    //           // BlocProvider(
-    //           //   create: (context) => NotesCubit(tokenService: TokenService(),
-    //           //       notesCacheService: NotesCacheService(),
-    //           //       notesRepository: NotesRepository(NotesWebService()))
-    //           //     ..getAllNotes(),
-    //           // ),
-    //           // BlocProvider<DialogCubit>(
-    //           //   create: (context) => DialogCubit(),
-    //           // ),
-    // //           BlocProvider(
-    // //           create: (context) => ExamBloc(
-    // //             dialogCubit: context.read<DialogCubit>(),
-    // //             doctorExamRepoImp:
-    // // DoctorExamRepoImp(
-    // // DoctorExamsRemoteDataSourceImpl(ApiService()),
-    // // NetworkInfoImpl(InternetConnectionChecker()),
-    // // ),
-    // // )..add(FetchExamsEvent(isExamtaken: false)),
-    // //           )
-    // ],
-        //    child:
+          MultiBlocProvider(
+            providers: [
+              // BlocProvider(
+              //   create: (context) => PDFExamBloc(),
+              // ),
+              BlocProvider(
+                create: (context) => NotesCubit(tokenService: TokenService(),
+                    notesCacheService: NotesCacheService(),
+                    notesRepository: NotesRepository(NotesWebService()))
+                  ..getAllNotes(),
+              ),
+              // BlocProvider<DialogCubit>(
+              //   create: (context) => DialogCubit(),
+              // ),
+    //           BlocProvider(
+    //           create: (context) => ExamBloc(
+    //             dialogCubit: context.read<DialogCubit>(),
+    //             doctorExamRepoImp:
+    // DoctorExamRepoImp(
+    // DoctorExamsRemoteDataSourceImpl(ApiService()),
+    // NetworkInfoImpl(InternetConnectionChecker()),
+    // ),
+    // )..add(FetchExamsEvent(isExamtaken: false)),
+    //           )
+    ],
+           child:
         MaterialApp(
                 debugShowCheckedModeBanner: false,
                 theme: AppTheme.theme,
                 initialRoute: AppRouters.splashRoute,
                 onGenerateRoute: AppRouters.generateRoute
             ),
-          //),
+          ),
     );
   }
 }

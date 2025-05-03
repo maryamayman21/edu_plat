@@ -109,6 +109,18 @@ class ApiService {
     );
     return response;
   }
+  /// PUT request to update data
+  Future<Response> update({
+    required String endPoint,
+    required Map<String, dynamic>? data,
+  }) async {
+    var response = await _dio.put(
+      endPoint,
+      data: data,
+    );
+    return response;
+  }
+
 
   /// PATCH request
   Future<Map<String, dynamic>> patch({

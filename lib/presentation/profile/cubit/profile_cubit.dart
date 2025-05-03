@@ -91,10 +91,32 @@ class ProfileCubit extends Cubit<ProfileState> {
 
 
   Future<void> logout() async {
-    await clearUserData();
-    await  profileCacheService.clearProfileCache();
-    await  profileCacheService.clearPhoneNumberCache();
-    await  profileCacheService.clearProfilePhotoCache();
+
+    try {
+      // if (!isClosed) {
+      //   emit(ProfileLoading());
+      // }
+      final token = await tokenService.getToken();
+      await profileRepository.logout(token!);
+      await clearUserData();
+      await  profileCacheService.clearProfileCache();
+      await  profileCacheService.clearPhoneNumberCache();
+      await  profileCacheService.clearProfilePhotoCache();
+      emit(LogOutSuccess());
+    } catch (error) {
+      print(error.toString());
+      if (!isClosed) {
+        if (error is DioError && error.response != null) {
+          print(error.type);
+          // Handle specific API errors
+          final errorMessage =
+              error.response?.data['message'] ?? 'An unexpected error occurred';
+          print(errorMessage);
+        } else {
+          emit(ProfileError(NetworkHandler.mapErrorToMessage(error)));
+        }
+      }
+    }
   }
 
   Future<void> clearNotesCache()async{

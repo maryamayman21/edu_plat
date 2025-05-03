@@ -28,6 +28,7 @@ class ServerFailure extends Failure {
       case DioErrorType.cancel:
         return ServerFailure('Request to ApiServer was canceld');
       case DioErrorType.connectionError:
+        print('HELLOO');
         return ServerFailure('No Internet Connection');
       case DioErrorType.unknown:
         return ServerFailure('Opps There was an Error, Please try again');
@@ -44,5 +45,8 @@ class ServerFailure extends Failure {
     } else {
       return ServerFailure('There was an error , please try again');
     }
+  }
+  factory ServerFailure.message(String message) {
+      return ServerFailure(message);
   }
 }

@@ -19,8 +19,8 @@ import '../sharedWidget/password_visibility_cubit/password_visiability_cubit.dar
 
 
 class Changepassword extends StatefulWidget {
-  const Changepassword({super.key});
-
+  const Changepassword({super.key, required this.email});
+  final String email;
   @override
   State<Changepassword> createState() => _SetpasswordState();
 }
@@ -55,7 +55,6 @@ class _SetpasswordState extends State<Changepassword> {
             child: BlocListener<ForgetPassCubit, ForgetPassState>(
               listener: (context, state) {
                 if (state is ForgetPassSuccess) {
-                  print('Message: ${state.message}');
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Password changed successfully')),
                   );
@@ -64,7 +63,6 @@ class _SetpasswordState extends State<Changepassword> {
                     AppRouters.changePasswordSuccRoute,
                   );
                 } else if (state is ForgetPassFailure) {
-                  print('Error: ${state.error}');
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(state.error)),
                   );
@@ -296,7 +294,7 @@ class _SetpasswordState extends State<Changepassword> {
                                       print('confirm pass value : $confirmPassValue');
                                       final token =  await SecureStorageService.read('token');
                                       BlocProvider.of<ForgetPassCubit>(context)
-                                          .resetPassword(currentPassValue ,passValue , confirmPassValue , token!);
+                                          .resetPassword(currentPassValue ,passValue , confirmPassValue , token! , widget.email);
                                     }
                                   },
                                    child: state is ForgetPassLoading?

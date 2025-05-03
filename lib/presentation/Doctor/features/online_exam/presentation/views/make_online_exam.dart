@@ -1,181 +1,201 @@
+import 'package:edu_platt/core/network/api_service.dart';
+import 'package:edu_platt/core/network/internet_connection_service.dart';
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
+import 'package:edu_platt/core/utils/Color/color.dart';
+import 'package:edu_platt/presentation/Doctor/features/course_details/cubit/dialog_cubit.dart';
 import 'package:edu_platt/presentation/Doctor/features/course_details_utils/dialog_helper_function.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/data/data_source/remote_data_source/remote_data_source.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/question_model.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/data/repo/exam_repository_impl.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/online_exam_bloc.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exam_creation_message.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/counter_listview.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/counter_widget.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/course_code_field.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/my_time_picker.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/question_bottom_sheet/add_question_widget.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/question_bottom_sheet/date_picker_widget.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/question_widget.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/question_wigdet_listView.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/time_picker.dart';
-import 'package:edu_platt/presentation/Student/screen/exam/question/QuestionWidget.dart';
-import 'package:edu_platt/presentation/sharedWidget/custom_elevated_button.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/counter_listview.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/course_code_field.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/course_title_field.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/question_bottom_sheet/add_question_widget.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/question_bottom_sheet/date_picker_widget.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/question_wigdet_listView.dart';
+import 'package:edu_platt/presentation/sharedWidget/buttons/custom_elevated_button.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MakeOnlineExam extends StatefulWidget {
-  MakeOnlineExam();
+  const MakeOnlineExam({super.key});
 
   @override
   State<MakeOnlineExam> createState() => _MakeOnlineExamState();
 }
 
 class _MakeOnlineExamState extends State<MakeOnlineExam> {
-  // Map to store text values instead of controllers
-  // final Map<int, List<String>> _optionTexts = {};
-  //   bool isEnabled = false;
   DateTime selectedDate = DateTime.now();
   String _courseCode = '';
+  String _courseTitle = '';
+  DateTime? _examDate = null;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => OnlineExamBloc(),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Create Exam')),
+    return MultiBlocProvider(
+  providers: [
+    BlocProvider<DialogCubit>(
+      create: (context) => DialogCubit(),
+    ),
+    BlocProvider(
+      create: (context) =>  OnlineExamBloc(
+        doctorExamRepoImp: DoctorExamRepoImp(
+          DoctorExamsRemoteDataSourceImpl(ApiService()),
+          NetworkInfoImpl(InternetConnectionChecker()),
+        ),
+        dialogCubit: context.read<DialogCubit>(),
+      ),
+),
+  ],
+  child: Scaffold(
         body: BlocListener<OnlineExamBloc, OnlineExamState>(
-       listener: (context, state) {
-         if(state.exam.isValid){
-       print('Exam created successfully');
-        Navigator.push(context, MaterialPageRoute(builder: (c)=>  ExamCreationMessage()));
-       }
-  },
-  child: BlocBuilder<OnlineExamBloc, OnlineExamState>(
-          builder: (context, state) {
-
-            if (state.exam.question.isEmpty) {
-              // Show a loading indicator or placeholder for the initial state
-              return Column(
-                children: [
-                  CourseCodeField(
-                    onChanged:      (value){
-                      _courseCode = value;
-                      //context.read<OnlineExamBloc>().add(SetExamCourseCodeEvent( value));
-                    },
-                    courseCode: state.exam.courseCode,
-                  ),
-                  MyDatePicker(
-                    onChanged: (value) {
-                      context
-                          .read<OnlineExamBloc>()
-                          .add(SetExamDateEvent(selectedDate));
-                    },
-                  ),
-                  Expanded(child: Image.asset(AppAssets.nnoNotesFound)),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CustomElevatedButton(
-                      onPressed:() => _showQuestionBottomSheet(context),
-                      text: '+ New Question',
-                    ),
-                  ),
-                ],
-
+          listener: (context, state) {
+            if (state.isSuccess) {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (c) => const ExamCreationMessage()),
               );
             }
+            if (state.isLoading) {
+              showLoadingDialog(context);
+            }
+            if (state.errorMessage.isNotEmpty) {
+             Navigator.pop(context);
+              showErrorDialog(context);
+              context.read<OnlineExamBloc>().add(const ClearErrorMessageEvent());
+            }
+          },
+          child: BlocBuilder<OnlineExamBloc, OnlineExamState>(
+         builder: (context, state) {
+         return BlocSelector<OnlineExamBloc, OnlineExamState, List<QuestionModel>>(
+            selector: (state) => state.exam.question,
+            builder: (context, questions) {
+                return _buildNonEmptyStateUI(context);
+            },
+          );
+  },
+),
+        ),
+      ),
+);
+  }
 
-            return Stack(
-              children: [
-                Form(
-                key: _formKey,
-                child: CustomScrollView(
-                  slivers: [
-                    // SliverAppBar for CourseCodeField and MyDatePicker
-                    SliverAppBar(
-                      expandedHeight: 200, // Adjust height as needed
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: Column(
-                          children: [
-                            const SizedBox(height: 7),
-                            CourseCodeField(
-                              onChanged: (value) {
-                                _courseCode = value;
-                              },
-                              courseCode: state.exam.courseCode,
-                            ),
-                            MyDatePicker(
-                              onChanged: (value) {
-                                context
-                                    .read<OnlineExamBloc>()
-                                    .add(SetExamDateEvent(selectedDate));
-                              },
-                            ),
-                          ],
-                        ),
+  Widget _buildNonEmptyStateUI(BuildContext context) {
+    return Stack(
+      children: [
+        Form(
+          key: _formKey,
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                    centerTitle: true,
+                    title: Text('Create Online Exam',
+                      style: TextStyle(
+                        fontSize: 22.sp, // Slightly smaller for better balance
+                        fontWeight: FontWeight.bold,
+                        color: color.primaryColor,
                       ),
                     ),
-
-
-                    SliverPersistentHeader(
-                      pinned: true,
-                      delegate: _CounterListHeaderDelegate(
-                        child: SizedBox(
-                          height: 70,
-                          child: CounterListview(
-                            noOfQuestion: state.exam.noOfQuestions,
-                            totalDegree: state.exam.totalDegrees,
-                            duration: state.exam.examDuration,
-                          ),
-                        ),
+               // toolbarHeight: 100,
+                expandedHeight: 290,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Column(
+                    children: [
+                      SizedBox(height: 70.h),
+                      CourseTitleField(
+                        onChanged: (value) {
+                          _courseTitle = value;
+                        },
+                        courseTitle:  _courseTitle,
                       ),
-                    ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 30), // Adjust height as needed
-                    ),
-                    QuestionWidgetListView2(
-                    questions: state.exam.question,
-                ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 50), // Adjust height as needed
-                    ),
 
-
-                  ],
+                      CourseCodeField(
+                        onChanged: (value) {
+                          _courseCode = value;
+                        },
+                        courseCode: _courseCode,
+                      ),
+                      MyDatePicker(
+                        date: _examDate,
+                        onChanged: (value) {
+                          _examDate = value;
+                          context.read<OnlineExamBloc>().add(SetExamDateEvent(_examDate));
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    color: Colors.white, // Background color for the buttons
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CustomElevatedButton(
-                          onPressed: () => _showQuestionBottomSheet(context),
-                          text: '+ New Question',
-                        ),
-                        CustomElevatedButton(
-                          onPressed: () {
-                            if (!_formKey.currentState!.validate()) return;
+              context.read<OnlineExamBloc>().state.exam.question.isNotEmpty ?
 
-                            context
-                                .read<OnlineExamBloc>()
-                                .add(SetExamCourseCodeEvent(_courseCode));
-                            context
-                                .read<OnlineExamBloc>()
-                                .add(CreateExamEvent());
-                            if(!state.exam.isValid){
-                               showErrorDialog(context);
-                            }
-                          },
-                          text: 'Create Exam',
-                        ),
-                      ],
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: _CounterListHeaderDelegate(
+                  child: SizedBox(
+                    height: 70,
+                    child: CounterListview(
+                      noOfQuestion: context.read<OnlineExamBloc>().state.exam.noOfQuestions,
+                      totalDegree: context.read<OnlineExamBloc>().state.exam.totalMark,
+                      duration: context.read<OnlineExamBloc>().state.exam.examDuration,
                     ),
                   ),
                 ),
-            ]
-            );
-          },
+              ) :  const SliverToBoxAdapter(child: SizedBox.shrink()),
+               SliverToBoxAdapter(
+                child: SizedBox(height: 30.h),
+              ),
+              context.read<OnlineExamBloc>().state.exam.question.isNotEmpty ?
+
+              QuestionWidgetListView2(
+                questions: context.read<OnlineExamBloc>().state.exam.question,
+              ) :  SliverToBoxAdapter(child: Image.asset(AppAssets.nnoNotesFound)),
+
+               SliverToBoxAdapter(
+                child: SizedBox(height: 50.h),
+              ),
+            ],
+          ),
         ),
-),
-      ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Container(
+            color: Colors.white,
+            padding:  const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CustomElevatedButton(
+                  onPressed: () => _showQuestionBottomSheet(context),
+                  text: '+ New Question',
+                ),
+                context.read<OnlineExamBloc>().state.exam.question.isNotEmpty ?
+
+                CustomElevatedButton(
+                  onPressed: () {
+                    if (!_formKey.currentState!.validate()) return;
+                    print(selectedDate);
+                    context.read<OnlineExamBloc>().add(SetExamCourseTitleEvent(_courseTitle));
+                    context.read<OnlineExamBloc>().add(SetExamCourseCodeEvent(_courseCode));
+                    context.read<OnlineExamBloc>().add(const CreateExamEvent());
+                  },
+                  text: 'Create Online Exam',
+                ):  const SizedBox.shrink()
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -189,8 +209,7 @@ class _MakeOnlineExamState extends State<MakeOnlineExam> {
       ),
       builder: (modalContext) {
         return Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: SingleChildScrollView(
             child: AddQuestionWidget(onlineExamBloc: onlineExamBloc),
           ),
@@ -199,30 +218,28 @@ class _MakeOnlineExamState extends State<MakeOnlineExam> {
     );
   }
 }
+
 class _CounterListHeaderDelegate extends SliverPersistentHeaderDelegate {
   final Widget child;
 
   _CounterListHeaderDelegate({required this.child});
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(// Background color for the pinned header
-      //height: 70,
-      //m: EdgeInsets.only(bottom: 30),
-      decoration:  const BoxDecoration(
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      decoration: const BoxDecoration(
         color: Colors.transparent,
-        borderRadius: BorderRadius.all(Radius.circular(15))
-      ),// Background color for the pinned header
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
       child: child,
     );
   }
 
   @override
-  double get maxExtent => 70; // Height of the CounterListview
+  double get maxExtent => 70;
 
   @override
-  double get minExtent => 70; // Height of the CounterListview
+  double get minExtent => 70;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

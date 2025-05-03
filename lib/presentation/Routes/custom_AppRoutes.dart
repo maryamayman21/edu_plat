@@ -1,6 +1,8 @@
 
+import 'package:edu_platt/presentation/Doctor/features/course_details/course_details_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/login/presentation/login_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/exam_model.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/entity/student_degree_entity.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/pdf_exam_bloc.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exam_dashboard_screen.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exam_tab.dart';
@@ -10,6 +12,7 @@ import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_creation_written_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_mcq_form_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_mcq_questions_exam.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_view_student_degrees_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_written_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/update_offline_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/update_online_exam.dart';
@@ -19,12 +22,15 @@ import 'package:edu_platt/presentation/Student/screen/GPA/C_Gpa.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/RegisterCourse/StudentCourseRegisteration.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/RegisterCourse/StudentcourseRegisteredScuccess.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/StudentSemesterScreen/StudentSemesterScreen.dart';
+import 'package:edu_platt/presentation/Student/screen/exam/data/model/student_exam_model.dart';
+import 'package:edu_platt/presentation/Student/screen/exam/data/model/submit_exam_model.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/presentation/exam_tab.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/presentation/exams_screen.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/presentation/quiz_screen.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/presentation/widgets/quiz_result_screen.dart';
-import 'package:edu_platt/presentation/Student/screen/home/homeStudent.dart';
+import 'package:edu_platt/presentation/Student/screen/home/presentation/homeStudent.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/presentation/StudentviewAllCourses.dart';
+import 'package:edu_platt/presentation/sharedWidget/file_pdf_view/file_pdf_view.dart';
 import 'package:edu_platt/presentation/sharedWidget/image_viewer/image_viewer_screen.dart';
 import 'package:edu_platt/presentation/sharedWidget/pdf_viwer/pdf_viwer_screen.dart';
 import 'package:edu_platt/presentation/sharedWidget/video_viewer/video_viewer_screen.dart';
@@ -117,6 +123,8 @@ class AppRouters {
   static const String pdfWrittenQuestionScreen= '/PdfWrittenQuestionScreenRoute';
   static const String pdfSetQuestionScreen= '/PdfSetQuestionScreenRoute';
   static const String pdfSetFormDateExamScreen= '/PdfSetFormDataExamScreenRoute';
+ static const String pdfFileScreen= '/PdfFileScreenRoute';
+static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
 
   static Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -139,7 +147,15 @@ class AppRouters {
          final userEmail  = settings.arguments  as String? ?? "" ;
         return CustomPageRoute(page:  Verifypassword(userEmail:  userEmail,));
       case setPassword:
-        return CustomPageRoute(page: const Setpassword());
+        final userEmail  = settings.arguments  as String? ?? "";
+        return CustomPageRoute(page:  Setpassword(
+          userEmail: userEmail,
+        ));
+        case doctorCourseDetailsRoute:
+          final courseCode  = settings.arguments  as String;
+        return CustomPageRoute(page: CourseDetails(
+          courseCode: courseCode,
+        ));
       case passwordResetSuccess:
         return MaterialPageRoute(builder: (context) =>  const PasswordResetSuccess(),);
       case doctorCoursesRegisterSuccessRoute:
@@ -192,7 +208,8 @@ class AppRouters {
 
         return CustomPageRoute(page: Coursedetails(courseDetails:courseDetail , doctorId: doctorId,));//tmam
       case startExamScreen:
-        return CustomPageRoute(page: const StartExamScreen());
+        final exam= settings.arguments as StudentExamModel;
+        return CustomPageRoute(page:  StartExamScreen(exam: exam));
       case ExamDetails:
         return MaterialPageRoute(
             builder: (context) => const Examdetails());
@@ -200,7 +217,10 @@ class AppRouters {
         return MaterialPageRoute(
             builder: (context) => const HomeStudentScreen());
       case changePasswordRoute:
-        return CustomPageRoute(page: const Changepassword());
+        final userEmail = settings.arguments as String;
+        return CustomPageRoute(page: Changepassword(
+          email:  userEmail,
+        ));
         case doctorCoursesScreen:
           final courseDetail = settings.arguments as Map<String,dynamic>;
         return CustomPageRoute(page: DoctorCoursesScreen(courseDetail:courseDetail,)); //tmam
@@ -217,6 +237,9 @@ class AppRouters {
         final pdfUrl =args['pdfUrl'] as String;
         final pdfName = args['pdfName'] as String;
         return CustomPageRoute(page:PdfViewerScreen(pdfUrl: pdfUrl, pdfName: pdfName));
+       case pdfFileScreen :
+        final fileType = settings.arguments as String; // Cast arguments to Map
+        return CustomPageRoute(page:PdfFileScreen(fileType: fileType ,));
       case imageViewerScreen:
         final args = settings.arguments as Map<String, dynamic>; // Cast arguments to Map
         final imageUrl =args['imageUrl'] as String;
@@ -243,7 +266,7 @@ class AppRouters {
        final examId = settings.arguments as int;
         return CustomPageRoute(page:UpdateOfflineExamView(examId: examId,));
           case doctorStudentDegreesScreen:
-       final examId = settings.arguments as int;
+       final examId =  settings.arguments as int;
         return CustomPageRoute(page:ViewStudentDegreesView(
           examId:examId ,
         ));
@@ -265,9 +288,20 @@ class AppRouters {
         return CustomPageRoute(page: PdfMcqFormExam(
           isWrittenExam: isWrittenExam,
         ));
+        case pdfStudentDegreesScreen:
+         final studentDegrees = settings.arguments as List<StudentDegreeEntity>;
+        return CustomPageRoute(page:  StudentPdfViewerScreen(
+        students:studentDegrees,
+        ));
       case studentExamTabScreen:
         return MaterialPageRoute(
             builder: (context) => StudentExamTab());
+        case studentQuizScreen:
+          final exam= settings.arguments as StudentExamModel;
+        return MaterialPageRoute(
+            builder: (context) => QuizScreen(
+              exam: exam,
+            ));
   case pdfWrittenQuestionScreen:
         return MaterialPageRoute(
             builder: (context) => const PdfWrittenQuestionScreen());
@@ -285,19 +319,10 @@ class AppRouters {
               examModel:writtenExamModel ,
             ));
 case studentQuizResultScreen:
-  final args = settings.arguments as Map<String, dynamic>;
-  final String courseCode = args['courseCode'] as String;
-  final String quizTitle = args['quizTitle'] as String;
-  final int totalMark = args['totalMark'] as int;
-  final int earnedScore = args['earnedScore'] as int;
-  final int correctAnswers = args['correctAnswers'] as int;
+  final exam = settings.arguments as SubmitExamModel;
         return MaterialPageRoute(
             builder: (context) => QuizResultScreen(
-              courseCode: courseCode,
-              correctAnswers: correctAnswers,
-              earnedScore: earnedScore,
-              quizTitle:quizTitle ,
-              totalScore: totalMark,
+              exam:exam ,
             ));
 
       default:

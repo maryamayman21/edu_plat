@@ -93,9 +93,9 @@ class CourseRegisterationActionButtons extends StatelessWidget {
                                    imageUrl: AppAssets.books);
 
                                if (isRegistered != null && isRegistered) {
-                                 context
-                                     .read<CourseRegisterationCubit>()
-                                     .registerCourses(registerCourses);
+                                 // context
+                                 //     .read<CourseRegisterationCubit>()
+                                 //     .registerCourses(registerCourses);
                                }
                              }
                            }

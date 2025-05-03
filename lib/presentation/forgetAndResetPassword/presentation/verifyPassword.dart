@@ -47,6 +47,7 @@ class _VerifypasswordState extends State<Verifypassword> {
               Navigator.pushReplacementNamed(
                 context,
                 AppRouters.setPassword,
+                arguments: widget.userEmail
               );
             } else if (state is ForgetPassFailure) {
               print('Error: ${state.error}');

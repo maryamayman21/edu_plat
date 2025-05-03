@@ -97,6 +97,21 @@ class ProfileWebServices {
       throw Exception('Failed to fetch user data: $e');
     }
   }
+  Future<Response> logout(String token,) async {
+    try {
+      final response =  await _dio.post(
+        ApiConstants.userLogout, // Replace with your endpoint
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      return response;
+    } catch (e) {
+      throw Exception('Failed to fetch user data: $e');
+    }
+  }
 }
 
 

@@ -37,7 +37,7 @@ final List<Map<String, dynamic>> finalCourses;
                   selectedCourse(
                     page: page,
                       context: context,
-                      argument: finalCourses[index]
+                      argument: finalCourses[index]['courseCode']
                   );
                 },
                 onDelete: () async {

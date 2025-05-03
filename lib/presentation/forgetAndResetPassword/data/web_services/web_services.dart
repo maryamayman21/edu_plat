@@ -39,13 +39,14 @@ class ForgetPassWebService {
       rethrow;
     }
   }
-  Future<Response> changePassword(String password , String confirmPassword) async {
+  Future<Response> changePassword(String password , String confirmPassword, String userEmail) async {
     try {
       final response = await _dio.post(
         ApiConstants.resetPasswordEndpoint,
         data: {
           'newPassword': password,
           'confirmPassword' : confirmPassword,
+          'email' : userEmail
         },
       );
       print('Change Password response: ${response.data}'); // Debug print
@@ -54,7 +55,7 @@ class ForgetPassWebService {
       rethrow;
     }
   }
-  Future<Response> resetPassword( String currentPassword , String password , String confirmPassword , String token) async {
+  Future<Response> resetPassword( String currentPassword , String password , String confirmPassword , String token, String userEmail) async {
     try {
       final response = await _dio.post(
         ApiConstants.profileResetPasswordEndpoint,
@@ -62,6 +63,7 @@ class ForgetPassWebService {
           'currentPassword' : currentPassword,
           'newPassword': password,
           'confirmPassword' : confirmPassword,
+          //'email' : userEmail
         },
         options: Options(
           headers: {

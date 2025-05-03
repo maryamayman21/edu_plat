@@ -18,8 +18,8 @@ import '../data/repository/repository.dart';
 import '../data/web_services/web_services.dart';
 
 class Setpassword extends StatefulWidget {
-  const Setpassword({super.key});
-
+  const Setpassword({super.key, required this.userEmail});
+  final String userEmail;
   @override
   State<Setpassword> createState() => _SetpasswordState();
 }
@@ -241,7 +241,7 @@ class _SetpasswordState extends State<Setpassword> {
                                         print('pass value : $passValue');
                                         print('confirm pass value : $confirmPassValue');
                                         BlocProvider.of<ForgetPassCubit>(context)
-                                            .changePassword(passValue , confirmPassValue);
+                                            .changePassword(passValue , confirmPassValue, widget.userEmail);
                                       }
                                     },
                                     child: state is ForgetPassLoading

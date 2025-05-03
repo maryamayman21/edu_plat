@@ -29,15 +29,14 @@ class CourseDetailsRemoteDataSourceImpl extends CourseDetailsRemoteDataSource {
 
   @override
   Future<FetchFileResponse> fetchCourseFiles(FetchFileRequest request) async{
-    /// TODO: implement video endpoint like this
-    ///final endpoint = request.type == 'Videos' ? '' : '';
+    print('printing from remote data source : ${request.type}');
     var response = await  apiService.getFromUrl(endPoint: 'https://great-hot-impala.ngrok-free.app/api/Materials/Get-Material-ByType/courseCode/typeFile?courseCode=${request.courseCode}&typeFile=${request.type}');
     return FetchFileResponse.fromJson(response.data , request.type);
   }
   @override
   Future<UploadFileResponse> saveCourseFiles(UploadFileRequest request)async{
-   ///TODO::TEST
-    var response = await  apiService.postFormData(endPoint: ApiConstants.uploadFileEndpoint, formData:  await request.toFormData());
+    final endpoint = request.type == 'Videos' ? ApiConstants.uploadVideoEndpoint : ApiConstants.uploadFileEndpoint;
+    var response = await  apiService.postFormData(endPoint: endpoint, formData:  request.type == 'Videos' ?    await request.toFormDataVideo() :  await request.toFormData());
     return UploadFileResponse.fromJson(response.data);
   }
 
@@ -58,31 +57,4 @@ class CourseDetailsRemoteDataSourceImpl extends CourseDetailsRemoteDataSource {
     var response = await  apiService.get(endPoint: '', data: request.toJson());
     return response.data;
   }
-
-  // @override
-  // Future<List<BookEntity>> fetchFeaturedBooks({int pageNumber = 0}) async {
-  //   var data = await apiService.get(
-  //       endPoint:
-  //       'volumes?Filtering=free-ebooks&q=programming&startIndex=${pageNumber * 10}');
-  //   List<BookEntity> books = getBooksList(data);
-  //   saveBooksData(books, kFeaturedBox);
-  //   return books;
-  // }
-
-  // @override
-  // Future<List<BookEntity>> fetchNewestBooks() async {
-  //   var data = await apiService.get(
-  //       endPoint: 'volumes?Filtering=free-ebooks&Sorting=newest&q=programming');
-  //   List<BookEntity> books = getBooksList(data);
-  //   saveBooksData(books, kNewestBox);
-  //   return books;
-  // }
-
-  // List<BookEntity> getBooksList(Map<String, dynamic> data) {
-  //   List<BookEntity> books = [];
-  //   for (var bookMap in data['items']) {
-  //     books.add(BookModel.fromJson(bookMap));
-  //   }
-  //   return books;
-  // }
 }

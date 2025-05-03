@@ -32,9 +32,9 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
     }) : super(CourseFilesLoading()){
 
     materialTypeSubscription = materialTypeCubit.stream.listen((materialType) {
-      fetchCourseFiles(materialMap['materialType'], courseCode,);
       materialMap= materialType ;
-      print(materialMap['materialType']);
+      fetchCourseFiles(materialMap['materialType'], courseCode,);
+      print(  ' print 2 : ${ materialMap['materialType']}');
     });
     fetchCourseFiles(materialMap['materialType'], courseCode,);
 
@@ -46,7 +46,6 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
   CourseDetailsRepo courseDetailsRepo;
   final FilePickerService filePickerService;
   final DialogCubit dialogCubit;
-  late StreamSubscription<int> indexSubscription;
   final StatusCubit statusCubit;
 
 
@@ -100,7 +99,7 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
         date: '',
         name:  file!.files.single.name,
         path: file!.files.single.path!,
-        size:'',
+        size:file!.files.single.size.toString(),
         extention: file!.files.single.extension!,
        type: materialMap['materialType'],
         // type: tabs[indexCubit.state],
@@ -109,13 +108,10 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
     return courseFile;
   }
 
-   ///Delete :: success , failed , loading (deleting .. )
-  ///dialogs :: confirm , success message , failure message
-
 
 
   Future<FilePickerResult?> pickMedia()async{
-    switch(tabIndex){
+    switch(materialMap['currentIndex']){
       case 0 :
       case 1 :
       case 2 :
@@ -186,7 +182,6 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
 
   @override
   Future<void> close() {
-    indexSubscription.cancel();
     return super.close();
   }
 }

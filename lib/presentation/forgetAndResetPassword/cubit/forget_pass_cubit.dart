@@ -63,10 +63,10 @@ class ForgetPassCubit extends Cubit<ForgetPassState> {
 
 
 
-  Future<void> changePassword( String password, String confirmPassword) async {
+  Future<void> changePassword( String password, String confirmPassword, String userEmail) async {
     emit(ForgetPassLoading());
     try {
-      final response = await forgetRepository.changePassword(password, confirmPassword);
+      final response = await forgetRepository.changePassword(password, confirmPassword, userEmail);
 
       // Parse the response data
       final responseData = response.data;
@@ -83,10 +83,10 @@ class ForgetPassCubit extends Cubit<ForgetPassState> {
     }
   }
 
-  Future<void> resetPassword( String currentPassword  , String password, String confirmPassword , String token) async {
+  Future<void> resetPassword( String currentPassword  , String password, String confirmPassword , String token, String userEmail) async {
     emit(ForgetPassLoading());
     try {
-      final response = await forgetRepository.resetPassword( currentPassword, password, confirmPassword, token);
+      final response = await forgetRepository.resetPassword( currentPassword, password, confirmPassword, token, userEmail);
 
       // Parse the response data
       final responseData = response.data;

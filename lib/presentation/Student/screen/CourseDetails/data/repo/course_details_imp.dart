@@ -34,7 +34,7 @@ class CourseDetailsRepoImp implements CourseDetailsRepo {
         if (response.status == true) {
           return right(response.courses ?? []);
         }
-        return left(ServerFailure('Something went wrong'));
+        return left(ServerFailure(   response.message ??   'Something went wrong'));
         //return right([CourseFileEntity(name: 'Lecture 1', path: 'ss', size: '10KB', extension:'png', date:'10-2-2024')]);
       } catch (e) {
         if (e is DioError) {

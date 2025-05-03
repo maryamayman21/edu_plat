@@ -1,3 +1,4 @@
+import 'package:edu_platt/core/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_file/internet_file.dart';
 import 'package:internet_file/storage_io.dart';
@@ -29,16 +30,18 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     try {
       // Attempt to load the PDF document
 
-      final pdfData = await InternetFile.get('https://great-hot-impala.ngrok-free.app/Uploads/COMP203/Lecture_2_RegExp_TextProcessing.pdf');
+      final pdfData = await InternetFile.get(widget.pdfUrl);
 
       // Open the PDF document
       final pdfDocument = PdfDocument.openData(pdfData);
+      if (!mounted) return;
       setState(() {
         _pdfController = PdfControllerPinch(document: pdfDocument);
         _isLoading = false;
       });
     } catch (e) {
       // Handle errors and update the state
+      if (!mounted) return;
       setState(() {
         _errorMessage = 'Failed to load PDF: $e';
         _isLoading = false;
@@ -51,7 +54,9 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
 
   @override
   void dispose() {
-    _pdfController.dispose();
+    if (!_isLoading && _errorMessage == null) {
+      _pdfController.dispose();
+    }
     super.dispose();
   }
 

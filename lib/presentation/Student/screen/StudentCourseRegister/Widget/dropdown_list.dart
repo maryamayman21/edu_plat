@@ -1,10 +1,9 @@
 import 'package:edu_platt/presentation/Doctor/features/courseRegisteration/data/models/course.dart';
+import 'package:edu_platt/presentation/Doctor/features/courseRegisteration/presentation/widgets/course_item.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Cubit/dropdown_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Cubit/dropdown_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../Doctor/features/courseRegisteration/presentation/widgets/course_item.dart';
 
 
 class DropdownList extends StatelessWidget {

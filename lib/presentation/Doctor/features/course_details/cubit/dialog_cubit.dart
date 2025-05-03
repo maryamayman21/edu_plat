@@ -1,34 +1,34 @@
 
-
-
-import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 enum StatusDialog{SUCCESS
   , LOADING , FAILURE, CONFIRM}
-class DialogCubit extends Cubit<StatusDialog?> {
-  DialogCubit() : super(null);
-  bool? action;
-  void setStatus(String status) {
-     switch(status){
-       case 'Success' :
-         emit(StatusDialog.SUCCESS);
-         break;
-       case 'Failure' :
-         emit(StatusDialog.FAILURE);
-         break;
-       case 'Loading' :
-         emit(StatusDialog.LOADING);
-         break;
-       case 'Confirm' :
-         emit(StatusDialog.CONFIRM);
-         break;
-     }
-  }
+class DialogState {
+  final StatusDialog status;
+  final String? message;
 
-  // void  confirmAction(bool userAction) {
-  //   print('User action in conFirm Action $userAction');
-  //    action =  userAction;
-  //    emit(null); // Emit a new state
-  // }
-
+  DialogState({required this.status, this.message});
 }
+
+class DialogCubit extends Cubit<DialogState?> {
+  DialogCubit() : super(null);
+
+  bool? action;
+
+  void setStatus(String status, {String? message}) {
+    switch (status) {
+      case 'Success':
+        emit(DialogState(status: StatusDialog.SUCCESS, message: message));
+        break;
+      case 'Failure':
+        emit(DialogState(status: StatusDialog.FAILURE, message: message));
+        break;
+      case 'Loading':
+        emit(DialogState(status: StatusDialog.LOADING, message: message));
+        break;
+      case 'Confirm':
+        emit(DialogState(status: StatusDialog.CONFIRM, message: message));
+        break;
+    }
+  }
+}
+

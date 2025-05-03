@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:edu_platt/core/constant/constant.dart';
 
-import '../../../../../../core/constant/constant.dart';
+
 
 class StudentCourseRegistrationWebService {
   late Dio _dio;
@@ -32,7 +33,7 @@ class StudentCourseRegistrationWebService {
   Future<Response> registerCourses(List<String> courses ,  String token) async {
     try {
       final response = await _dio.post(
-        ApiConstants.studentregisterCoursesEndPoint,
+        '${ApiConstants.baseUrl}${ApiConstants.studentregisterCoursesEndPoint}',
         data: {
           "coursesCodes": courses
         },

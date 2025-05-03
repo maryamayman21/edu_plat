@@ -69,6 +69,7 @@ class ProfileView extends StatelessWidget {
             content: Text('No internet connection')),
       );
     }
+
   },
   child: BlocBuilder<ProfilePhotoCubit, ProfilePhotoState>(
                       builder: (context, state) {
@@ -135,11 +136,17 @@ class ProfileView extends StatelessWidget {
 
                     child: BlocListener<ProfileCubit, ProfileState>(
                       listener: (context, state) {
+                        if(state is LogOutSuccess){
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            AppRouters.studentOrDoctor,
+                            (route) => true,
+                          );
+                        }
                         if (state is ProfileError) {
-                          print(state.errorMessage);
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('No internet connection')),
+                             SnackBar(
+                                content: Text(state.errorMessage)),
                           );
                         }
                       },
@@ -277,7 +284,9 @@ class ProfileView extends StatelessWidget {
                                   ),
                                   onTap: () {
                                     Navigator.pushNamed(context,
-                                        AppRouters.changePasswordRoute);
+                                        AppRouters.changePasswordRoute,
+                                     arguments: user!.email
+                                    );
                                   },
                                 ),
                                 SizedBox(height: 20.h),
@@ -294,16 +303,19 @@ class ProfileView extends StatelessWidget {
                                       imageUrl: AppAssets.logout,
                                     );
                                     if (result == true) {
-                                      //  context.read<ProfilePhotoCubit>().close();
                                       context.read<ProfileCubit>().close();
                                       context.read<ProfileCubit>().clearUponUserType();
                                       // context.read<PhoneCubit>().close();
                                       context.read<ProfileCubit>().logout();
-
-                                      Navigator.pushReplacementNamed(
-                                          context, AppRouters.studentOrDoctor,
-                                          );
+                                      Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        AppRouters.studentOrDoctor,
+                                            (route) => true,
+                                      );
                                     }
+                                    //  context.read<ProfilePhotoCubit>().close();
+
+
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: color.primaryColor,

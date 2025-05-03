@@ -50,7 +50,6 @@ class StudentCourseRegisterationActionButtons extends StatelessWidget {
                     if( state is CourseRegisterationFailure ||
                         state is CourseRegisterationLoading )  {return const SizedBox.shrink(); }
                     else if(state is CourseRegisterationSuccess) {
-                      print('Successssssss');
                       return  Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [

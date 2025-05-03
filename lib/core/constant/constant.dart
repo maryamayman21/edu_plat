@@ -12,6 +12,7 @@ class ApiConstants {
   static const String userFetchPhoneNumberEndpoint  = '/api/Profile/phone-number';
   static const String profileResetPasswordEndpoint  = '/api/Profile/changePassword';
   static const String courseRegistrationEndPoint  = '/api/Course/Courses-semster/';
+   static const String studentCourseRegistrationEndPoint  = '/api/StudentCourse/Register';
   static const String  registerCoursesEndPoint  = '/api/Course/Add-Doctor-Course';
   static const String  deleteCourseEndPoint  = '/api/Course/Delete-Course';
   static const String  getCoursesEndPoint  = '/api/Course/Get-doctor-courses';
@@ -29,5 +30,14 @@ class ApiConstants {
   static const String  doctorCreateExamEndpoint= '/api/Exams/CreateExamOnline&Offline';
  static const String  doctorGetExamsEndpoint= '/api/Exams/GetUserExams?isFinishedExam';
 static const String  doctorDeleteExamEndpoint= '/api/Exams/DeleteExam';
+static const String  doctorGetExamEndpoint= '/api/Exams/get/examToUpdate/';
+static const String  doctorUpdateExamEndpoint= '/api/Exams/UpdateExam/';
+static const String  studentStartExamEndpoint= '/api/Exams/GetExamForStudent/';
+static const String  studentSubmitExamEndpoint= '/api/Exams/SubmitExam';
+static const String  studentHelpFiles= '/api/StudentHelp/GetFiles/';
+static const String  userLogout= '/api/Accounts/logout';
+static const String  uploadVideoEndpoint= '/api/Videos/UploadVideo';
+static const String  getMaterialEndpoint   = 'https://great-hot-impala.ngrok-free.app/api/Materials/Get-Material-ByType/courseCode/typeFile?courseCode=';
+static const String  getStudentDegreesEndpoint   = '/api/Exams/GetExamResults/';
 
 }

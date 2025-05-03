@@ -38,5 +38,6 @@ class FilePickerService {
     if (result != null && result.files.single.path != null) {
       return result;
     }
+    return null;
   }
 }

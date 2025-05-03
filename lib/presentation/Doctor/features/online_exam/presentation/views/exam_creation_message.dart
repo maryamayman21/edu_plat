@@ -1,5 +1,7 @@
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
-import 'package:edu_platt/presentation/sharedWidget/custom_button.dart';
+import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
+import 'package:edu_platt/presentation/sharedWidget/buttons/custom_button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ExamCreationMessage extends StatelessWidget {
@@ -38,7 +40,7 @@ class ExamCreationMessage extends StatelessWidget {
                 ),
               ),
               onPressed: (){
-              //  Navigator.pushReplacementNamed(context, AppRouters.doctorHomeRoute);
+               Navigator.pushNamedAndRemoveUntil(context, AppRouters.doctorHomeRoute, (route) => true,);
               },
             ),
           ],
