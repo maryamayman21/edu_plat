@@ -1,5 +1,6 @@
 
 
+import 'package:edu_platt/core/network/base_response.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/domain/entity/doctor_courses_entity.dart';
 
 class DoctorCoursesResponse extends BaseResponse {

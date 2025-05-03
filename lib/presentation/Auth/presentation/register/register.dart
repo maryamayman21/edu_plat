@@ -1,8 +1,8 @@
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/validations/name_validation.dart';
-import 'package:edu_platt/presentation/sharedWidget/confrim_password_visablity_cubit.dart';
 import 'package:edu_platt/presentation/sharedWidget/password_textfield.dart';
-import 'package:edu_platt/presentation/sharedWidget/password_visiability_cubit.dart';
+import 'package:edu_platt/presentation/sharedWidget/password_visibility_cubit/confrim_password_visablity_cubit.dart';
+import 'package:edu_platt/presentation/sharedWidget/password_visibility_cubit/password_visiability_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -32,6 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
       final ScrollController _controller = ScrollController();
       CollectionReference messages = FirebaseFirestore.instance.collection('messages');
+
       return StreamBuilder<QuerySnapshot>(
         stream: messages.orderBy("createdAt", descending: true).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {

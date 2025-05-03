@@ -14,6 +14,7 @@ import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Regi
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/StudentSemesterScreen/StudentSemesterScreen.dart';
 import 'package:edu_platt/presentation/Student/screen/chat/Chat_List.dart';
 import 'package:edu_platt/presentation/Student/screen/chat/chatScreen.dart';
+import 'package:edu_platt/presentation/Student/screen/group_chat/chatGroup.dart';
 
 import 'package:edu_platt/presentation/Student/screen/home/homeStudent.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/presentation/StudentviewAllCourses.dart';
@@ -113,6 +114,8 @@ class AppRouters {
   static const String pdfWrittenQuestionScreen= '/PdfWrittenQuestionScreenRoute';
   static const String pdfSetQuestionScreen= '/PdfSetQuestionScreenRoute';
   static const String pdfSetFormDateExamScreen= '/PdfSetFormDataExamScreenRoute';
+  static const String chatGroup= '/chatGroup';
+
 
   static Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -211,6 +214,10 @@ class AppRouters {
       case HomeStudent:
         return MaterialPageRoute(
             builder: (context) => const HomeStudentScreen());
+      case chatGroup:
+        final courseTitlle = settings.arguments as String;
+        return MaterialPageRoute(
+            builder: (context) => ChatgroupScreen(courseTitle: courseTitlle,));
       case changePasswordRoute:
         return CustomPageRoute(page: const Changepassword());
         case doctorCoursesScreen:

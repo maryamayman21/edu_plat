@@ -1,14 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import '../presentation/Auth/service/token_service.dart';
 class Fcm{
    static FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-
     static Future<void>init()async
     {
+
      await requestIosPermutition();
-      getMyToken();
+
+     getMyToken();
      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
        print('Got a message whilst in the foreground!');
        print('Message data: ${message.data}');
@@ -23,11 +27,18 @@ class Fcm{
 
     }
 
+
    static Future<String?>getMyToken()async{
     String?token=await messaging.getToken();
     print("token:$token");
-    return token;
-  }
+    final userUid = await TokenService().getToken(); // هنا لازم ترجع UID مش email
+    if (userUid != null && token != null) {
+      await FirebaseFirestore.instance.collection('usersTokens').doc(userUid).set({
+        'token': token,
+      }, SetOptions(merge: true));
+    }
+
+    return token;  }
   static Future<void>requestIosPermutition()async{
 
     NotificationSettings settings = await messaging.requestPermission(

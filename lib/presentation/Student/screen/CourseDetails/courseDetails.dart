@@ -1,4 +1,6 @@
 
+import 'package:edu_platt/core/network/api_service.dart';
+import 'package:edu_platt/core/network/internet_connection_service.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/data/data_source/remote_data_source.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/data/repo/course_details_imp.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation/cubit/course_card_cubit.dart';

@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Student/screen/chat/Chat_List.dart';
@@ -8,6 +9,7 @@ import 'package:edu_platt/presentation/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../fcm/fcm.dart';
 import '../notes/presentation/nots.dart';
 
 class HomeStudentScreen extends StatefulWidget {
@@ -22,7 +24,7 @@ class _HomeStudentState extends State<HomeStudentScreen>
   List<Widget> tabs = [
     Levels(),
     const Notes(),
-     ChatList(),
+    ChatList(),
     Profile()
   ];
   int selectedIndex = 0;
@@ -42,7 +44,10 @@ class _HomeStudentState extends State<HomeStudentScreen>
       curve: Curves.easeInOut,
     ));
     _controller.forward();
+
+
   }
+
 
   @override
   void dispose() {

@@ -2,6 +2,8 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:edu_platt/config/theme/theme.dart';
 import 'package:edu_platt/core/cashe/services/gpa_cashe_service.dart';
 import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
+import 'package:edu_platt/core/cashe/services/profile_cashe_service.dart';
+import 'package:edu_platt/core/file_picker/file_picker_service.dart';
 import 'package:edu_platt/fcm/fcm.dart';
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 
@@ -10,9 +12,12 @@ import 'package:edu_platt/presentation/Doctor/screen/chat/ConversationDoctor/rep
 import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/cubit/gpa_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/repo/repo.dart';
+import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/cubit/Chat_cubit.dart';
+import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/repo/chat_Repo.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/cubit/notes_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/data/notes_repository/notes_repository.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/data/notes_web_service/notes_web_service.dart';
+import 'package:edu_platt/presentation/profile/cubit/profile_cubit.dart';
 import 'package:edu_platt/presentation/profile/data/profile_web_services.dart';
 import 'package:edu_platt/presentation/profile/repository/profile_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,15 +26,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'core/cashe/services/course_cashe_service.dart';
-import 'core/cashe/services/profile_cashe_service.dart';
-import 'core/file_picker/file_picker_service.dart';
 import 'firebase_options.dart';
-import 'presentation/Student/screen/Private_chat/Conversation/cubit/Chat_cubit.dart';
-import 'presentation/Student/screen/Private_chat/Conversation/repo/chat_Repo.dart';
-import 'presentation/profile/cubit/profile_cubit.dart';
+import 'presentation/Doctor/features/course_details/domain/entities/course_details_entity.dart';
+
 
 
 void main() async {
@@ -63,32 +64,46 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) =>
-    //       MultiBlocProvider(
-    //         providers: [
-    //           // BlocProvider(
-    //           //   create: (context) => PDFExamBloc(),
-    //           // ),
-    //           // BlocProvider(
-    //           //   create: (context) => NotesCubit(tokenService: TokenService(),
-    //           //       notesCacheService: NotesCacheService(),
-    //           //       notesRepository: NotesRepository(NotesWebService()))
-    //           //     ..getAllNotes(),
-    //           // ),
-    //           // BlocProvider<DialogCubit>(
-    //           //   create: (context) => DialogCubit(),
-    //           // ),
-    // //           BlocProvider(
-    // //           create: (context) => ExamBloc(
-    // //             dialogCubit: context.read<DialogCubit>(),
-    // //             doctorExamRepoImp:
-    // // DoctorExamRepoImp(
-    // // DoctorExamsRemoteDataSourceImpl(ApiService()),
-    // // NetworkInfoImpl(InternetConnectionChecker()),
-    // // ),
-    // // )..add(FetchExamsEvent(isExamtaken: false)),
-    // //           )
-    // ],
-        //    child:
+          MultiBlocProvider(
+            providers: [
+              // BlocProvider(
+              //   create: (context) => PDFExamBloc(),
+              // ),
+              BlocProvider(
+                create: (context) => ProfileCubit(
+                    profileRepository:
+                    ProfileRepository(ProfileWebServices()),
+                    tokenService: TokenService(),
+                    filePickerService: FilePickerService(),
+                    profileCacheService: ProfileCacheService(),
+                    courseCacheService: CourseCacheService(),
+                    notesCacheService: NotesCacheService()
+                )
+                  ..getProfileData(),
+              ),
+              BlocProvider(create: (context) => DoctorChatCubit(DoctorChatRepository())),
+              BlocProvider(create: (context) => ChatCubit(ChatRepository())),
+              BlocProvider(
+                create: (context) => NotesCubit(tokenService: TokenService(),
+                    notesCacheService: NotesCacheService(),
+                    notesRepository: NotesRepository(NotesWebService()))
+                  ..getAllNotes(),
+              ),
+    //           BlocProvider<DialogCubit>(
+    //             create: (context) => DialogCubit(),
+    //           ),
+    //           BlocProvider(
+    //           create: (context) => ExamBloc(
+    //             dialogCubit: context.read<DialogCubit>(),
+    //             doctorExamRepoImp:
+    // DoctorExamRepoImp(
+    // DoctorExamsRemoteDataSourceImpl(ApiService()),
+    // NetworkInfoImpl(InternetConnectionChecker()),
+    // ),
+    // )..add(FetchExamsEvent(isExamtaken: false)),
+    //           )
+    ],
+           child:
         MaterialApp(
                 debugShowCheckedModeBanner: false,
                 theme: AppTheme.theme,
@@ -179,6 +194,6 @@ class MyApp extends StatelessWidget {
 
             ),
 
-    );
+    ));
   }
 }
