@@ -10,7 +10,6 @@ class CustomSwipeBackPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragUpdate: (details) {
-        // Detect left swipe and trigger custom back action
         if (details.primaryDelta! > 5) {
           onBack();
         }

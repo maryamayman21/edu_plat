@@ -40,7 +40,7 @@ class ExamCreationMessage extends StatelessWidget {
                 ),
               ),
               onPressed: (){
-               Navigator.pushNamedAndRemoveUntil(context, AppRouters.doctorHomeRoute, (route) => true,);
+              //  Navigator.pushReplacementNamed(context, AppRouters.doctorHomeRoute);
               },
             ),
           ],

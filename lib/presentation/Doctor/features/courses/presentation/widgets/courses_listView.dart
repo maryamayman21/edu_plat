@@ -80,7 +80,7 @@ class CoursesListview extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                     child: CustomButtonWidget(
                       onPressed: () {
                         Navigator.pushNamed(context, AppRouters.doctorSemesterRoute);

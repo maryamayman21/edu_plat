@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:edu_platt/core/network_handler/network_handler.dart';
 import 'package:meta/meta.dart';
-
 import '../../../../../../core/cashe/services/course_cashe_service.dart';
 import '../../../../../Auth/service/token_service.dart';
 import '../../data/repositories/course_repository.dart';

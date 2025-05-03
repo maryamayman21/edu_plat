@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../../../core/utils/Color/color.dart';
 class MyAppBar extends StatelessWidget  implements PreferredSizeWidget {
   @override

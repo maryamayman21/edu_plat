@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:edu_platt/presentation/Doctor/features/courseRegisteration/data/models/course.dart';
 import 'package:meta/meta.dart';
-
 import '../../../../../../core/cashe/services/course_cashe_service.dart';
 import '../../../../../../core/network_handler/network_handler.dart';
 import '../../../../../Auth/service/token_service.dart';

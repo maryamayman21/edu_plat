@@ -26,7 +26,7 @@ class CourseCardBlocBuilder extends StatelessWidget {
                 creditHours:courseCardEntity.creditHours,
                 lectures: courseCardEntity.noOfLectures,
                 doctorName: courseCardEntity.doctorName,
-                marks:courseCardEntity.grading
+                marks:courseCardEntity.grading,
 
             ),
           );

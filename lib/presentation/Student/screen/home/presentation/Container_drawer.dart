@@ -71,14 +71,6 @@ class _ContainerDrawerState extends State<ContainerDrawer>
             ),
           ),
         )
-        //     () {
-        //   // _controller.forward().then((_) {
-        //   //   _controller.reverse();
-        //   //   Future.delayed(const Duration(milliseconds: 100), () {
-        //   //     NavigationHelper.navigateWithAnimation(context, const HomeStudentScreen());
-        //   //   });
-        //   // });
-        // },
       ),
     );
   }

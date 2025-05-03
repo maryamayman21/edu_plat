@@ -1,8 +1,6 @@
 
-import 'package:edu_platt/presentation/Doctor/features/course_details/course_details_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/login/presentation/login_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/exam_model.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/entity/student_degree_entity.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/pdf_exam_bloc.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exam_dashboard_screen.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exam_tab.dart';
@@ -12,16 +10,24 @@ import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_creation_written_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_mcq_form_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_mcq_questions_exam.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_view_student_degrees_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/pdf_written_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/update_offline_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/update_online_exam.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/view_student_degrees_view.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/doctor_courses.dart';
+import 'package:edu_platt/presentation/Doctor/screen/chat/ConversationDoctor/convirationDocor_wedgit.dart';
+import 'package:edu_platt/presentation/Doctor/screen/chat/privateChat/Doctor_privateChat.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/C_Gpa.dart';
+import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/conviration_wedgit.dart';
+import 'package:edu_platt/presentation/Student/screen/Private_chat/privateChat.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/RegisterCourse/StudentCourseRegisteration.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/RegisterCourse/StudentcourseRegisteredScuccess.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/StudentSemesterScreen/StudentSemesterScreen.dart';
+import 'package:edu_platt/presentation/Student/screen/chat/Chat_List.dart';
+import 'package:edu_platt/presentation/Student/screen/chat/chatScreen.dart';
+import 'package:edu_platt/presentation/Student/screen/group_chat/chatGroup.dart';
+
+import 'package:edu_platt/presentation/Student/screen/home/homeStudent.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/data/model/student_exam_model.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/data/model/submit_exam_model.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/presentation/exam_tab.dart';
@@ -79,7 +85,9 @@ class AppRouters {
   static const String passwordResetSuccess = '/passwordResetSuccess';
   static const String verifyEmail = '/verifyEmail';
   static const String HomeStudent = '/HomeStudent';
-  static const String StudentChatScreen = '/SchatScreen';
+  static const String StudentChatList = '/SchatScreen';
+  static const String ConversationStudentChat = '/ConversationStudentChat';
+  static const String ConversationDoctorChat = '/ConversationDoctorChat';
   static const String GeneralChatScreen = '/GeneralChat';
   static const String startExamScreen = '/ExamScreen';
   static const String ExamDetails = '/ExamDetails';
@@ -114,6 +122,9 @@ class AppRouters {
   static const String doctorOfflineExamEditScreen= '/doctorOfflineExamEditRoute';
   static const String doctorOfflineExamScreen= '/doctorOfflineExamRoute';
   static const String doctorStudentDegreesScreen= '/doctorStudentDegreesRoute';
+  static const String studentCourseDetailsRoute="/studentCourseDetailsRoute";
+  static const String privateChat = '/privateChat';
+  static const String DoctorprivateChat = '/DoctorprivateChat';
 
   static const String studentExamTabScreen= '/StudentExamRoute';
   static const String studentExamsScreen= '/StudentExamsRoute';
@@ -125,6 +136,8 @@ class AppRouters {
   static const String pdfSetFormDateExamScreen= '/PdfSetFormDataExamScreenRoute';
  static const String pdfFileScreen= '/PdfFileScreenRoute';
 static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
+  static const String chatGroup= '/chatGroup';
+
 
   static Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -137,6 +150,24 @@ static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
       //   return CustomPageRoute(page: const LoginScreenDoctor());
       case splashRoute:
         return MaterialPageRoute(builder: (context) => const Splash(),);
+      case StudentChatList:
+        return MaterialPageRoute(builder: (context) =>  ChatList(),);
+      case DoctorprivateChat :
+        final args = settings.arguments as Map<String, dynamic>; // Cast arguments to Map
+        final studentEmail =args['studentEmail'] as String;
+        final studentName =args['studentName'] as String;
+        return MaterialPageRoute(builder: (context) =>  DoctorPrivatechat(studentEmail:studentEmail,studentName:studentName));
+      case privateChat :
+        final args = settings.arguments as Map<String, dynamic>; // Cast arguments to Map
+        final doctorEmail =args['doctorEmail'] as String;
+        final doctorName =args['doctorName'] as String;
+        return MaterialPageRoute(builder: (context) =>  Privatechat(doctorEmail: doctorEmail, doctorName: doctorName,));
+      case GeneralChatScreen:
+        return MaterialPageRoute(builder: (context) =>  ChatScreen());
+      case ConversationStudentChat:
+        return MaterialPageRoute(builder: (context) =>  ConvirationWedgit());
+      case ConversationDoctorChat:
+        return MaterialPageRoute(builder: (context) =>  ConvirationDoctorWedgit());
       case onBoardRoute:
         return MaterialPageRoute(builder: (context) => const onboarding(),);
       case studentOrDoctor:
@@ -216,6 +247,10 @@ static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
       case HomeStudent:
         return MaterialPageRoute(
             builder: (context) => const HomeStudentScreen());
+      case chatGroup:
+        final courseTitlle = settings.arguments as String;
+        return MaterialPageRoute(
+            builder: (context) => ChatgroupScreen(courseTitle: courseTitlle,));
       case changePasswordRoute:
         final userEmail = settings.arguments as String;
         return CustomPageRoute(page: Changepassword(

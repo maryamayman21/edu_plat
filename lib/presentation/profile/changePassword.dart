@@ -2,6 +2,10 @@
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/core/utils/validations/password_validation.dart';
+import 'package:edu_platt/presentation/sharedWidget/buttons/custom_button.dart';
+import 'package:edu_platt/presentation/sharedWidget/password_visibility_cubit/confrim_password_visablity_cubit.dart';
+import 'package:edu_platt/presentation/sharedWidget/password_visibility_cubit/password_matched_visability_cubit.dart';
+import 'package:edu_platt/presentation/sharedWidget/password_visibility_cubit/password_visiability_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,11 +15,7 @@ import '../Routes/custom_AppRoutes.dart';
 import '../forgetAndResetPassword/cubit/forget_pass_cubit.dart';
 import '../forgetAndResetPassword/data/repository/repository.dart';
 import '../forgetAndResetPassword/data/web_services/web_services.dart';
-import '../sharedWidget/password_visibility_cubit/confrim_password_visablity_cubit.dart';
-import '../sharedWidget/buttons/custom_button.dart';
-import '../sharedWidget/password_visibility_cubit/password_matched_visability_cubit.dart';
 import '../sharedWidget/password_textfield.dart';
-import '../sharedWidget/password_visibility_cubit/password_visiability_cubit.dart';
 
 
 class Changepassword extends StatefulWidget {

@@ -10,7 +10,7 @@ class SliverCustomAppBar extends StatelessWidget implements PreferredSizeWidget 
   final Size preferredSize;
 
   SliverCustomAppBar({Key? key})
-      : preferredSize = Size.fromHeight(130.0), // Set the desired height
+      : preferredSize = Size.fromHeight(130.0),
         super(key: key);
 
   @override

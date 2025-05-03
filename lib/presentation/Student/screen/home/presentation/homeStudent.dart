@@ -1,15 +1,20 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Student/screen/chat/chat.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/presentation/exam_tab.dart';
 import 'package:edu_platt/presentation/Student/screen/home/presentation/drawer.dart';
+import 'package:edu_platt/presentation/Student/screen/chat/Chat_List.dart';
+import 'package:edu_platt/presentation/Student/screen/home/drawer.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/levels.dart';
 import 'package:edu_platt/presentation/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../notes/presentation/nots.dart';
+import '../../../../fcm/fcm.dart';
+import '../notes/presentation/nots.dart';
 
 class HomeStudentScreen extends StatefulWidget {
   const HomeStudentScreen({super.key});
@@ -23,7 +28,7 @@ class _HomeStudentState extends State<HomeStudentScreen>
   List<Widget> tabs = [
     Levels(),
     const Notes(),
-    const Chat(),
+    ChatList(),
     StudentExamTab(),
     const Profile()
   ];
@@ -80,7 +85,7 @@ class _HomeStudentState extends State<HomeStudentScreen>
                 ),
           title: selectedIndex == 3
               ? Text(
-                  "Exam", //
+                  "Profile", //
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Colors.white,
                         fontSize: 22.sp,

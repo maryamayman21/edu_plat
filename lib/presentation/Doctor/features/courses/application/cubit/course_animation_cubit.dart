@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 
-import '../../../../../../core/DataModel/courseModel.dart';
 
 class AnimationCubit extends Cubit<List<int>> {
   AnimationCubit() : super([]);
@@ -12,25 +11,4 @@ class AnimationCubit extends Cubit<List<int>> {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-// class AnimationCubit extends Cubit<List<int>> {
-//   AnimationCubit() : super([]);
-//
-//   void initialize(List<CourseModel> courses) {
-//     for (int i = 0; i < courses.length; i++) {
-//       Future.delayed(Duration(milliseconds: i * 200), () {
-//         emit([...state, i]);
-//       });
-//     }
-//   }
-// }
 

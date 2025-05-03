@@ -1,33 +1,51 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:edu_platt/config/theme/theme.dart';
+import 'package:edu_platt/core/cashe/services/gpa_cashe_service.dart';
 import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
 import 'package:edu_platt/core/cashe/services/questions_cashe_service.dart';
 import 'package:edu_platt/core/network/api_service.dart';
 import 'package:edu_platt/core/network/internet_connection_service.dart';
+import 'package:edu_platt/core/cashe/services/profile_cashe_service.dart';
+import 'package:edu_platt/core/file_picker/file_picker_service.dart';
+import 'package:edu_platt/fcm/fcm.dart';
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
-import 'package:edu_platt/presentation/Doctor/features/course_details/cubit/dialog_cubit.dart';
-import 'package:edu_platt/presentation/Doctor/features/course_details/domain/entities/course_details_entity.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/data/data_source/remote_data_source/remote_data_source.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/data/repo/exam_repository_impl.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/exam_bloc.dart';
+
+import 'package:edu_platt/presentation/Doctor/screen/chat/ConversationDoctor/cubit/Dchat_cubit.dart';
+import 'package:edu_platt/presentation/Doctor/screen/chat/ConversationDoctor/repo/chat_Repo.dart';
 import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
+import 'package:edu_platt/presentation/Student/screen/GPA/cubit/gpa_cubit.dart';
+import 'package:edu_platt/presentation/Student/screen/GPA/repo/repo.dart';
+import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/cubit/Chat_cubit.dart';
+import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/repo/chat_Repo.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/cubit/notes_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/data/notes_repository/notes_repository.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/data/notes_web_service/notes_web_service.dart';
+import 'package:edu_platt/presentation/profile/cubit/profile_cubit.dart';
+import 'package:edu_platt/presentation/profile/data/profile_web_services.dart';
+import 'package:edu_platt/presentation/profile/repository/profile_repository.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+
+import 'core/cashe/services/course_cashe_service.dart';
+import 'firebase_options.dart';
+import 'presentation/Doctor/features/course_details/domain/entities/course_details_entity.dart';
+
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await Fcm.init();
+  WidgetsFlutterBinding.ensureInitialized();
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   await deviceInfo.androidInfo; // Initialize the plugin
   await Hive.initFlutter();
-
   Hive.registerAdapter(CourseDetailsEntityAdapter());
   await Hive.deleteBoxFromDisk('Lectures');
   await Hive.deleteBoxFromDisk('Labs');
@@ -35,11 +53,8 @@ void main() async {
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Lectures');
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Labs');
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Exams');
-
   runApp(const MyApp());
 }
-
-///TODO:: NEED TO SET UP VIDEOS CACHE
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -58,14 +73,28 @@ class MyApp extends StatelessWidget {
               //   create: (context) => PDFExamBloc(),
               // ),
               BlocProvider(
+                create: (context) => ProfileCubit(
+                    profileRepository:
+                    ProfileRepository(ProfileWebServices()),
+                    tokenService: TokenService(),
+                    filePickerService: FilePickerService(),
+                    profileCacheService: ProfileCacheService(),
+                    courseCacheService: CourseCacheService(),
+                    notesCacheService: NotesCacheService()
+                )
+                  ..getProfileData(),
+              ),
+              BlocProvider(create: (context) => DoctorChatCubit(DoctorChatRepository())),
+              BlocProvider(create: (context) => ChatCubit(ChatRepository())),
+              BlocProvider(
                 create: (context) => NotesCubit(tokenService: TokenService(),
                     notesCacheService: NotesCacheService(),
                     notesRepository: NotesRepository(NotesWebService()))
                   ..getAllNotes(),
               ),
-              // BlocProvider<DialogCubit>(
-              //   create: (context) => DialogCubit(),
-              // ),
+    //           BlocProvider<DialogCubit>(
+    //             create: (context) => DialogCubit(),
+    //           ),
     //           BlocProvider(
     //           create: (context) => ExamBloc(
     //             dialogCubit: context.read<DialogCubit>(),
@@ -84,7 +113,7 @@ class MyApp extends StatelessWidget {
                 initialRoute: AppRouters.splashRoute,
                 onGenerateRoute: AppRouters.generateRoute
             ),
-          ),
+          //),
     );
   }
 }
