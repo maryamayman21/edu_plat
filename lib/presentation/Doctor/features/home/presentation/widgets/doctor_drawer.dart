@@ -166,7 +166,23 @@ class _DoctorDrawerState extends State<DoctorDrawer>
             courseCacheService: CourseCacheService(),
               notesCacheService:NotesCacheService()
             ),
-            child: BlocBuilder<ProfileCubit, ProfileState>(
+            child: BlocListener<ProfileCubit, ProfileState>(
+  listener: (context, state) {
+    if(state is LogOutSuccess){
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRouters.studentOrDoctor,
+            (route) => true,
+      );
+    }
+    if(state is ProfileError){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(state.errorMessage)),
+      );
+    }
+  },
+  child: BlocBuilder<ProfileCubit, ProfileState>(
   builder: (context, state) {
     return FadeTransition(
                 opacity: _fadeAnimations[5],
@@ -174,14 +190,11 @@ class _DoctorDrawerState extends State<DoctorDrawer>
                     icons: Icons.logout,
                     text: "Logout",
                     onTap: () {
-                      context.read<ProfileCubit>().logout();
                       context.read<ProfileCubit>().clearUponUserType();
-                      Navigator.pushReplacementNamed(
-                        context,
-                        AppRouters.studentOrDoctor,
-                      );
+                      context.read<ProfileCubit>().logout();
                     }));
   },
+),
 ),
           ),
         ]));

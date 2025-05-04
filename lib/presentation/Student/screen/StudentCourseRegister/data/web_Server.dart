@@ -33,7 +33,7 @@ class StudentCourseRegistrationWebService {
   Future<Response> registerCourses(List<String> courses ,  String token) async {
     try {
       final response = await _dio.post(
-        '${ApiConstants.baseUrl}${ApiConstants.studentregisterCoursesEndPoint}',
+        '${ApiConstants.studentregisterCoursesEndPoint}',
         data: {
           "coursesCodes": courses
         },

@@ -147,7 +147,7 @@ class _DrawerrState extends State<Drawerr> with SingleTickerProviderStateMixin {
                     text: "Register Courses",
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushNamed(context, AppRouters.doctorSemesterRoute);
+                      Navigator.pushNamed(context, AppRouters.studentSemesterRoute);
                     }),
               ),          FadeTransition(
             opacity: _fadeAnimations[1],

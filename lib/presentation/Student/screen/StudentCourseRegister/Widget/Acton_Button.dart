@@ -34,14 +34,19 @@ class StudentCourseRegisterationActionButtons extends StatelessWidget {
                 listener: (context, state) {
                   // TODO: implement listener
                   if (state is CoursesRegistered) {
-                    print(state.message);
+
+                    print('Course registered successfully');
                     Navigator.pushReplacementNamed(context,
                         AppRouters.studentCoursesRegisterSuccessRoute);
                   }
                   else if (state is CourseRegisterationFailure) {
+                    print('Course registered fails');
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                             content: Text('${state.errorMessage}')));
+                  }
+                  else{
+                    print('Something weird happens');
                   }
                 },
                 child:

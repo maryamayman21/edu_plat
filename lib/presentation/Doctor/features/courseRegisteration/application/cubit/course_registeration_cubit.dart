@@ -61,36 +61,36 @@ class CourseRegisterationCubit extends Cubit<CourseRegisterationState> {
     }
   }
 
-  // Future<void> registerCourses(List<String> courses) async {
-  //   try {
-  //     //cache courses
-  //    await courseCacheService.saveCourses(courses);
-  //     print("Courses cached successfully");
-  //     //print(courses);
-  //     final token = await tokenService.getToken();
-  //     //print("Done");
-  //     final response =
-  //         await courseRegistrationRepository.registerCourses(courses, token!);
-  //
-  //     final responseData = response.data;
-  //     if (responseData['success'] == true) {
-  //       final message = responseData['message'] ?? 'Registration successful.';
-  //       emit(CoursesRegistered(message));
-  //     } else {
-  //       emit(CourseRegisterationFailure('Registration failed'));
-  //     }
-  //   } catch (error) {
-  //     if (!isClosed) {
-  //       if (error is DioError && error.response != null) {
-  //         // Handle specific API errors
-  //         final errorMessage =
-  //             error.response?.data['message'] ?? 'An unexpected error occurred';
-  //         emit(CourseRegisterationFailure(errorMessage));
-  //       } else {
-  //         emit(CourseRegisterationFailure(
-  //             NetworkHandler.mapErrorToMessage(error)));
-  //       }
-  //     }
-  //   }
-  //}
+  Future<void> registerCourses(List<String> courses) async {
+    try {
+      //cache courses
+     await courseCacheService.saveCourses(courses);
+      print("Courses cached successfully");
+      //print(courses);
+      final token = await tokenService.getToken();
+      //print("Done");
+      final response =
+          await courseRegistrationRepository.registerCourses(courses, token!);
+
+      final responseData = response.data;
+      if (responseData['success'] == true) {
+        final message = responseData['message'] ?? 'Registration successful.';
+        emit(CoursesRegistered(message));
+      } else {
+        emit(CourseRegisterationFailure('Registration failed'));
+      }
+    } catch (error) {
+      if (!isClosed) {
+        if (error is DioError && error.response != null) {
+          // Handle specific API errors
+          final errorMessage =
+              error.response?.data['message'] ?? 'An unexpected error occurred';
+          emit(CourseRegisterationFailure(errorMessage));
+        } else {
+          emit(CourseRegisterationFailure(
+              NetworkHandler.mapErrorToMessage(error)));
+        }
+      }
+    }
+  }
 }

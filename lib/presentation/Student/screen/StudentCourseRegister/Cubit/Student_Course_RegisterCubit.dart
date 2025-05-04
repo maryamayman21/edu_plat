@@ -2,9 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
 import 'package:edu_platt/core/network_handler/network_handler.dart';
+import 'package:edu_platt/presentation/Doctor/features/courseRegisteration/data/models/course.dart';
 import 'package:meta/meta.dart';
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
-import 'package:edu_platt/presentation/Doctor/features/courseRegisteration/data/models/course.dart';
+
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/data/reposatories/repo.dart';
 part 'studentcourse_registeration_state.dart';
 
@@ -63,16 +64,16 @@ class StudentCourseRegisterationCubit extends Cubit<StudentCourseRegisterationSt
   Future<void> registerCourses(List<String> courses) async {
     try {
       //cache courses
-      await courseCacheService.saveCourses(courses);
-      print("Courses cached successfully");
-      //print(courses);
       final token = await tokenService.getToken();
-      //print("Done");
+      print("REGISTER COURSES IN CUBIT T ");
       final response =
       await studentcourseRegistrationRepository.registerCourses(courses, token!);
 
       final responseData = response.data;
       if (responseData['success'] == true) {
+        await courseCacheService.saveCourses(courses);
+        print("Courses cached successfully");
+        //print(courses);
         final message = responseData['message'] ?? 'Registration successful.';
         emit(CoursesRegistered(message));
       } else {
