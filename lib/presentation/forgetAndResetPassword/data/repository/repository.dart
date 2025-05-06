@@ -9,8 +9,8 @@ class ForgetPassRepository {
   Future<Response> forgetPassword(String email,) async {
     return await forgetPassWebService.forgetPassword(email);
   }
-  Future<Response> verifyEmail(String otp) async {
-    return await forgetPassWebService.verifyEmail(otp);
+  Future<Response> verifyEmail(String otp, String email) async {
+    return await forgetPassWebService.verifyEmail(otp, email);
   }
   Future<Response> changePassword(String password, String confirmPassword, String userEmail) async {
     return await forgetPassWebService.changePassword(password , confirmPassword, userEmail);

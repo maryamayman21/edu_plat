@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:edu_platt/services/push_notification_service.dart';
 
 import '../data/profile_web_services.dart';
 import '../model/user.dart';
@@ -51,10 +52,10 @@ class ProfileRepository {
   Future<void> logout(String token) async {
     final response = await webServices.logout(token);
     if (response.statusCode == 200) {
-
+      PushNotificationsService.unsubscribeUserToTopics();
     } else {
       // Handle failure
-      throw Exception('Failed to update phone number : ${response.data}');
+      throw Exception('Failed to log out : ${response.data}');
     }
   }
   Future<dynamic> fetchPhoneNumber(String token) async {

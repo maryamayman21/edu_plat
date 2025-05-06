@@ -11,35 +11,18 @@ class ExamListview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        return ListView.builder(
-          itemCount: examCards.length,
-          itemBuilder: (context, index) {
-            final exams = examCards[index];
-            return ExamCard(
-               studentExam: exams,
-              onPressed: (){
-                context.read<ExamBloc>().add(StartExamEvent(examCards[index].examId));
-              }///TODO:: CALL StartExamEvent here -> Done
-            );
+    return ListView.builder(
+      itemCount: examCards.length,
+      itemBuilder: (context, index) {
+        final exams = examCards[index];
+        return ExamCard(
+            studentExam: exams,
+            onPressed: () {
+              context.read<ExamBloc>().add(
+                  StartExamEvent(examCards[index].examId));
+            }
+        );
       },
     );
-  }
-  bool isCurrentTimeInRange(DateTime startTime, int durationInMinutes) {
-    // Parse the start time string into a DateTime object
-
-    // Calculate the end time by adding the duration in minutes to the start time
-    DateTime endTime = startTime.add(Duration(minutes: durationInMinutes));
-    endTime =   DateTime(endTime.year, endTime.month, endTime.day, endTime.hour, endTime.minute, endTime.second);
-     startTime = DateTime( startTime.year,  startTime.month,  startTime.day,  startTime.hour,  startTime.minute,  startTime.second);
-
-     print('start time  : $startTime');
-      print('end time  : $endTime');
-    // Get the current date and time
-    DateTime currentTime = DateTime.now();
-    currentTime = DateTime(currentTime.year, currentTime.month, currentTime.day, currentTime.hour, currentTime.minute, currentTime.second);
-    // Check if the current time is within the range [startTime, endTime]
-    print('current time : $currentTime');
-    print(currentTime.isAfter(startTime) && currentTime.isBefore(endTime));
-    return currentTime.isAfter(startTime) && currentTime.isBefore(endTime);
   }
 }

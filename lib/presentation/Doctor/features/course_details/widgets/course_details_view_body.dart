@@ -3,6 +3,7 @@
 
 import 'package:edu_platt/core/network/api_service.dart';
 import 'package:edu_platt/core/network/internet_connection_service.dart';
+import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/presentation/Doctor/features/course_details/cubit/course_details_cubit.dart';
 import 'package:edu_platt/presentation/Doctor/features/course_details/cubit/dialog_cubit.dart';
 import 'package:edu_platt/presentation/Doctor/features/course_details/cubit/tab_index_cubit.dart';
@@ -21,6 +22,8 @@ import 'package:edu_platt/presentation/Doctor/features/course_details_utils/dial
 import 'package:edu_platt/presentation/Doctor/features/course_details_utils/file_picker_service.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation/cubit/material_type_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation/widgets/tabs_bloc_builder.dart';
+import 'package:edu_platt/presentation/sharedWidget/no_wifi_widget.dart';
+import 'package:edu_platt/presentation/sharedWidget/text_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -58,26 +61,17 @@ class CourseDetailsViewBody extends StatelessWidget {
       BlocListener<DialogCubit, dynamic>(
       listener: (context, state)async{
         // final dialogCubit = context.read<DialogCubit>();
-       if(state == StatusDialog.SUCCESS){
+       if(state?.status  == StatusDialog.SUCCESS){
            Navigator.pop(context);
-            showSuccessDialog(context);
+            showSuccessDialog(context, message:  state?.message ?? 'Operation Successful');
          }
-       if(state == StatusDialog.LOADING){
-
+       if(state?.status  == StatusDialog.LOADING){
          showLoadingDialog(context);
         }
-         if(state == StatusDialog.FAILURE){
+         if(state?.status  == StatusDialog.FAILURE){
           Navigator.pop(context);
-          showErrorDialog(context);
+          showErrorDialog(context, message:  state?.message ?? 'Something went wrong');
       }
-
-
-       // if (state == StatusDialog.CONFIRM) {
-         // Show confirmation dialog and wait for user action
-        //bool? confirmed = await showConfirmDialog(context);
-       //   // Update DialogCubit with the user action result
-       //   dialogCubit.confirmAction(confirmed!);
-       // }
       },
   child: CustomScrollView(
           slivers: [
@@ -90,7 +84,6 @@ class CourseDetailsViewBody extends StatelessWidget {
 
       const SliverToBoxAdapter(child: SizedBox(height: 15)),
 
-      ///TODO::REFACTOR
       SliverToBoxAdapter(
           child: BlocConsumer<CourseDetailsCubit, CourseDetailsState>(
             listener: (context, state) {
@@ -105,7 +98,8 @@ class CourseDetailsViewBody extends StatelessWidget {
             builder: (context, state) {
 
               return UploadFileHeader(
-                onTap: BlocProvider
+                onTap:
+                BlocProvider
                     .of<CourseDetailsCubit>(context)
                     .saveCourseFile,
               );
@@ -141,7 +135,7 @@ class CourseDetailsViewBody extends StatelessWidget {
             courseCode: courseCode,
             courseDetailsEntity: courseFiles,
             onDeleteFile:(index)async{
-          bool? confirmed = await showConfirmDialog(context);
+          bool? confirmed = await showConfirmDialog(context, message: 'Are you sure to delete ${courseFiles[index].name}');
           if(confirmed !=null && confirmed){
             BlocProvider.of<CourseDetailsCubit>(context).deleteFile(index);
           }
@@ -154,14 +148,29 @@ class CourseDetailsViewBody extends StatelessWidget {
         );
       }
       if (state is CourseFilesNotFound) {
-        return const SliverToBoxAdapter(child: Center(child: Text('No courses found')));
+        return SliverToBoxAdapter(child: Center(child:
+        Image.asset(AppAssets.noFilesYet)
+        )
+        );
       }
       if (state is CourseFilesLoading) {
         return const SliverToBoxAdapter(
             child: Center(child: CircularProgressIndicator()));
       }
+      if (state is CourseFilesFailure) {
+        if(state.errorMessage == 'No internet connection'){
+           return SliverToBoxAdapter(
+             child: NoWifiWidget(onPressed:(){
+               BlocProvider.of<CourseDetailsCubit>(context).fetchCourseFilesRequest();
+             }),
+           );
+        }
+       else {
+         return SliverToBoxAdapter(child: TextError(errorMessage:  state.errorMessage));
+        }
+      }
 
-      return const SliverToBoxAdapter(child: Center(child: Text('Something went wrong')));
+      return const SliverToBoxAdapter(child: TextError( errorMessage: 'Something went wrong'));
     },
     ),
       ],

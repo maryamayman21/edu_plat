@@ -5,6 +5,12 @@ class TokenService {
   Future<String?> getToken() async {
     return await SecureStorageService.read('token');
   }
+  Future<String?> getDeviceToken() async {
+    return await SecureStorageService.read('device-token');
+  }
+  Future<void> saveDeviceToken(String deviceToken) async {
+     await SecureStorageService.write('device-token', deviceToken);
+  }
   Future<String?> getRule() async {
     return await SecureStorageService.read('role');
   }

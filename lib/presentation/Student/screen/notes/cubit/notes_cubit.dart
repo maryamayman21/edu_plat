@@ -33,8 +33,6 @@ class NotesCubit extends Cubit<NotesState> {
       //response contains note id
 
       List<Note> notes = await notesCacheService.saveNote(note, noteID);
-      print("Note cached successfully");
-      print('SAVED  NOTES :  $notes');
       emit(NotesSuccess(notes));
       // if (responseData['success'] == true) {
       //   final message = responseData['message'] ?? 'Registration successful.';
@@ -68,9 +66,9 @@ class NotesCubit extends Cubit<NotesState> {
       final responseData = response.data;
       if (responseData['success'] == true) {
         final message = responseData['message'] ?? 'Note updated successfully.';
-        print(message);
+
       } else {
-        print('Note update failed');
+        emit(NotesFailure('Failed to update notes'));
       }
 
       List<Note> updatedList = await notesCacheService.updateNote(id, isDone);
@@ -104,9 +102,8 @@ class NotesCubit extends Cubit<NotesState> {
       final responseData = response.data;
       if (responseData['success'] == true) {
         final message = responseData['message'] ?? 'Note deleted successfully.';
-        print(message);
       } else {
-        print('Note deletion failed');
+        emit(NotesFailure('Failed to update notes'));
       }
 
       List<Note> updatedList = await notesCacheService.deleteNoteById(noteID);
@@ -134,19 +131,48 @@ class NotesCubit extends Cubit<NotesState> {
 
   Future<void> getAllNotes() async {
     try {
-      // if (!isClosed) {
-      print('get all is called');
       emit(NotesLoading());
-      //}
-      //try cache
-      print('get all is called again');
       final cachedNotes = await notesCacheService.getNotes();
       if (cachedNotes != null && cachedNotes.isNotEmpty) {
-        print('Got from cache notes : $cachedNotes');
         emit(NotesSuccess(cachedNotes));
         return;
       }
-      print('Trying fetching notes from server');
+      final token = await tokenService.getToken();
+      List<Note> notes = await notesRepository.getAllNotes(token!);
+      if (notes != null && notes.isNotEmpty) {
+        await notesCacheService.saveNotesList(notes);
+
+        if (!isClosed) {
+          emit(NotesSuccess(notes));
+        }
+      } else {
+        if (!isClosed) {
+          emit(NotesNotFound());
+        }
+      }
+    } catch (error) {
+      if (!isClosed) {
+        if (error is DioError && error.response != null) {
+          // Handle specific API errors
+          final errorMessage =
+              error.response?.data['message'] ?? 'An unexpected error occurred';
+          emit(NotesFailure(errorMessage));
+        } else {
+          emit(NotesFailure(NetworkHandler.mapErrorToMessage(error)));
+        }
+      }
+    }
+  }
+
+  Future<void> getNotesByDate(DateTime date) async {
+    try {
+
+      emit(NotesLoading());
+      // final cachedNotes = await notesCacheService.getNotes();
+      // if (cachedNotes != null && cachedNotes.isNotEmpty) {
+      //   emit(NotesSuccess(cachedNotes));
+      //   return;
+      // }
       final token = await tokenService.getToken();
       List<Note> notes = await notesRepository.getAllNotes(token!);
       if (notes != null && notes.isNotEmpty) {
@@ -176,6 +202,5 @@ class NotesCubit extends Cubit<NotesState> {
 
   Future<void> deleteAllCachedNotes() async {
     await notesCacheService.clearNotesCache();
-    print("Notes deleted in cache  successfully");
   }
 }

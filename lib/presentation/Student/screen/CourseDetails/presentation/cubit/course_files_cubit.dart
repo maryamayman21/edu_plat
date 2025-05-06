@@ -19,8 +19,6 @@ class CourseFilesCubit extends Cubit<CourseFilesState> {
     materialTypeSubscription = materialTypeCubit.stream.listen((materialType) {
       materialMap= materialType ;
       fetchCourseFiles(materialMap['materialType'], courseCode, doctorId);
-
-      print(materialMap['materialType']);
     });
     fetchCourseFiles(materialMap['materialType'], courseCode, doctorId);
   }
@@ -47,6 +45,10 @@ class CourseFilesCubit extends Cubit<CourseFilesState> {
       }
 
     });
+  } Future<void> fetchCourseFilesRequest() async {
+    fetchCourseFiles(materialMap['materialType'], courseCode, doctorId);
   }
+
+
 
 }

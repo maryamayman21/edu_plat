@@ -34,3 +34,5 @@ class UserModel {
     };
   }
 }
+
+//REGISTER -> OTP   OTP + EMAIL

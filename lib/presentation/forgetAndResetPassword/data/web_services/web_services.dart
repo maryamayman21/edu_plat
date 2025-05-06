@@ -25,12 +25,13 @@ class ForgetPassWebService {
       rethrow;
     }
   }
-  Future<Response> verifyEmail(String otp) async {
+  Future<Response> verifyEmail(String otp, String email) async {
     try {
       final response = await _dio.post(
         ApiConstants.validateOtpEndpoint,
         data: {
           'otp': otp,
+          'email': email
         },
       );
       print('Verify OTP response: ${response.data}'); // Debug print
@@ -46,7 +47,6 @@ class ForgetPassWebService {
         data: {
           'newPassword': password,
           'confirmPassword' : confirmPassword,
-          'email' : userEmail
         },
       );
       print('Change Password response: ${response.data}'); // Debug print

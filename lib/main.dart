@@ -18,6 +18,8 @@ import 'package:edu_platt/presentation/Student/screen/notes/data/notes_web_servi
 import 'package:edu_platt/presentation/profile/cubit/profile_cubit.dart';
 import 'package:edu_platt/presentation/profile/data/profile_web_services.dart';
 import 'package:edu_platt/presentation/profile/repository/profile_repository.dart';
+import 'package:edu_platt/services/local_notification_service.dart';
+import 'package:edu_platt/services/push_notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +38,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await Fcm.init();
+ // await Fcm.init();
   WidgetsFlutterBinding.ensureInitialized();
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   await deviceInfo.androidInfo; // Initialize the plugin
@@ -45,9 +47,15 @@ void main() async {
   await Hive.deleteBoxFromDisk('Lectures');
   await Hive.deleteBoxFromDisk('Labs');
   await Hive.deleteBoxFromDisk('Exams');
+  await Hive.deleteBoxFromDisk('Videos');
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Lectures');
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Labs');
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Exams');
+  await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Videos');
+  await Future.wait([
+    PushNotificationsService.init(),//2
+    LocalNotificationService.init(),//3
+  ]);
   runApp(const MyApp());
 }
 
@@ -86,20 +94,7 @@ class MyApp extends StatelessWidget {
                     notesCacheService: NotesCacheService(),
                     notesRepository: NotesRepository(NotesWebService()))
                   ..getAllNotes(),
-              ),
-    //           BlocProvider<DialogCubit>(
-    //             create: (context) => DialogCubit(),
-    //           ),
-    //           BlocProvider(
-    //           create: (context) => ExamBloc(
-    //             dialogCubit: context.read<DialogCubit>(),
-    //             doctorExamRepoImp:
-    // DoctorExamRepoImp(
-    // DoctorExamsRemoteDataSourceImpl(ApiService()),
-    // NetworkInfoImpl(InternetConnectionChecker()),
-    // ),
-    // )..add(FetchExamsEvent(isExamtaken: false)),
-    //           )
+              )
     ],
            child:
         MaterialApp(
@@ -107,9 +102,9 @@ class MyApp extends StatelessWidget {
                 theme: AppTheme.theme,
                 initialRoute: AppRouters.splashRoute,
                 onGenerateRoute: AppRouters.generateRoute
-            ),
+             ),
           //),
-    )
+       )
     );
   }
 }

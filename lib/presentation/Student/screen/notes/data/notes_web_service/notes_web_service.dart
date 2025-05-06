@@ -91,5 +91,22 @@ class NotesWebService {
     }
 
   }
+  Future<Response> getNotesByDate(String token, DateTime date) async {
+    try {
+      final response = await _dio.get(
+        ApiConstants.getAllNotesEndPoint,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      print('Get all notes response: ${response.data}'); // Debug print
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+
+  }
 
 }

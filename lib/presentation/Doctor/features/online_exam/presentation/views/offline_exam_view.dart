@@ -22,166 +22,177 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class OfflineExamView extends StatelessWidget {
-  OfflineExamView({super.key,});
+  OfflineExamView({super.key});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    String totalMarks = '';
+  String totalMarks = '';
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<DialogCubit>(
-          create: (context) => DialogCubit(),
-        ),
-        BlocProvider(
-            create: (context) =>
-                OfflineExamBloc(
-                  doctorExamRepoImp: DoctorExamRepoImp(
-                    DoctorExamsRemoteDataSourceImpl(ApiService()),
-                    NetworkInfoImpl(InternetConnectionChecker()),
-                  ),
-                  dialogCubit: context.read<DialogCubit>(),
-                ))
-      ],
-      child: Scaffold(
+        providers: [
+          BlocProvider<DialogCubit>(
+            create: (context) => DialogCubit(),
+          ),
+          BlocProvider(
+            create: (context) => OfflineExamBloc(
+              doctorExamRepoImp: DoctorExamRepoImp(
+                DoctorExamsRemoteDataSourceImpl(ApiService()),
+                NetworkInfoImpl(InternetConnectionChecker()),
+              ),
+              dialogCubit: context.read<DialogCubit>(),
+            ),
+          )
+        ],
+        child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title:  Text('Make Offline Exam Announcement',
+            title: Text(
+              'Make Offline Exam Announcement',
               style: TextStyle(
-                fontSize: 18.sp, // Slightly smaller for better balance
+                fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
                 color: color.primaryColor,
               ),
-
             ),
           ),
           body: BlocListener<DialogCubit, dynamic>(
             listener: (context, state) {
-              if (state == StatusDialog.SUCCESS) {
+              if (state?.status == StatusDialog.SUCCESS) {
                 Navigator.pop(context);
-                showSuccessDialog(context);
+                showSuccessDialog(context, message:   state?.message ?? 'Operation successful' );
               }
-              if (state == StatusDialog.LOADING) {
+              if (state?.status == StatusDialog.LOADING) {
                 showLoadingDialog(context);
               }
-              if (state == StatusDialog.FAILURE) {
+              if (state?.status == StatusDialog.FAILURE) {
                 Navigator.pop(context);
-                showErrorDialog(context);
+                showErrorDialog(context,  message:   state?.message ?? 'Something went wrong' );
               }
             },
             child: BlocListener<OfflineExamBloc, OfflineExamState>(
               listener: (context, state) {
-                if(state.isSuccess){
+                if (state.isSuccess) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (c) => const ExamCreationMessage()),
+                    MaterialPageRoute(
+                        builder: (c) => const ExamCreationMessage()),
                   );
                 }
               },
               child: BlocBuilder<OfflineExamBloc, OfflineExamState>(
                 builder: (context, state) {
-                    return Form(
-                      key: _formKey,
-                      child: SingleChildScrollView(
-                        child: Column(
-                       //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            CourseTitleField(
-                              courseTitle:
-                              state
-                                  .offlineExamModel
-                                  .examTitle,
-                              onChanged: (value) {
-                                context
-                                    .read<OfflineExamBloc>().add(
-                                    SetExamTitleEvent(value));
-                              },
-
-                            ),
-                            CourseCodeField(
-
-                              courseCode:
-                              state
-                                  .offlineExamModel
-                                  .courseCode,
-                              onChanged: (value) {
-                                context
-                                    .read<OfflineExamBloc>()
-                                    .add(SetCourseCodeEvent(value));
-                              },
-
-                            ),
-                            ExamLocationField(
-                              examLocation: state.offlineExamModel.location,
-                              onChanged: (value) {
-                                context.read<OfflineExamBloc>().add(
-                                    SetLocationEvent(value));
-                              },
-
-                            ),
-
-
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
-                              child: QuestionDegreeField(
-                                questionDegree: state.offlineExamModel.totalMark
-                                    .toString(),
-                                onChanged: (value) {
-                                  totalMarks = value;
-                                },
+                  return LayoutBuilder(
+                    builder: (context, constraints) {
+                      return Form(
+                        key: _formKey,
+                        child: SingleChildScrollView(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                                minHeight: constraints.maxHeight),
+                            child: IntrinsicHeight(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  // All your form fields
+                                  CourseTitleField(
+                                    courseTitle:
+                                        state.offlineExamModel.examTitle,
+                                    onChanged: (value) {
+                                      context
+                                          .read<OfflineExamBloc>()
+                                          .add(SetExamTitleEvent(value));
+                                    },
+                                  ),
+                                  SizedBox(height: 12.h),
+                                  CourseCodeField(
+                                    courseCode:
+                                        state.offlineExamModel.courseCode,
+                                    onChanged: (value) {
+                                      context
+                                          .read<OfflineExamBloc>()
+                                          .add(SetCourseCodeEvent(value));
+                                    },
+                                  ),
+                                  SizedBox(height: 12.h),
+                                  ExamLocationField(
+                                    examLocation:
+                                        state.offlineExamModel.location,
+                                    onChanged: (value) {
+                                      context
+                                          .read<OfflineExamBloc>()
+                                          .add(SetLocationEvent(value));
+                                    },
+                                  ),
+                                  SizedBox(height: 12.h),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8.w),
+                                    child: QuestionDegreeField(
+                                      questionDegree: state
+                                          .offlineExamModel.totalMark
+                                          .toString(),
+                                      onChanged: (value) {
+                                        totalMarks = value;
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  MyDatePicker(
+                                    date: state.offlineExamModel.examDate,
+                                    onChanged: (value) {
+                                      context
+                                          .read<OfflineExamBloc>()
+                                          .add(SetDateEvent(value));
+                                    },
+                                  ),
+                                  SizedBox(height: 30.h),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8.w),
+                                    child: OfflineQuestionDuration(
+                                      duration:
+                                          state.offlineExamModel.examDuration,
+                                    ),
+                                  ),
+                                  const Spacer(), // Pushes the button to the bottom
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 24.h,
+                                      left: 8.w,
+                                      right: 8.w,
+                                      bottom: 16.h,
+                                    ),
+                                    child: ActionButton(
+                                      text: 'Create Exam',
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: Colors.green,
+                                      iconData: Icons.add,
+                                      onPressed: () {
+                                        if (!_formKey.currentState!.validate())
+                                          return;
+                                        context.read<OfflineExamBloc>().add(
+                                            SetTotalMarkEvent(
+                                                int.parse(totalMarks)));
+                                        context
+                                            .read<OfflineExamBloc>()
+                                            .add(CreateOfflineExam());
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(height: 20.h,),
-
-                            MyDatePicker(
-                              date: state
-                                  .offlineExamModel
-                                  .examDate,
-                              onChanged: (value) {
-                                context.read<OfflineExamBloc>().add(
-                                    SetDateEvent(value));
-                              },
-                            ),
-
-                            SizedBox(height: 20.h,),
-
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                              child: OfflineQuestionDuration(
-                                  duration: state.offlineExamModel.examDuration,
-                              ),
-                            ),
-
-                            // QuestionDurationPicker(
-                            //   duration: state.offlineExamModel.examDuration,
-                            //   onDurationChanged: (value) {
-                            //     context.read<OfflineExamBloc>().add(
-                            //         SetDurationEvent(value));
-                            //   },
-                            // ),
-                            
-                            ActionButton(
-                              text: 'Create Exam',
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.green,
-                              iconData: Icons.add,
-                              onPressed: () {
-                                if (!_formKey.currentState!.validate()) return;
-                                context.read<OfflineExamBloc>().add(
-                                    SetTotalMarkEvent(int.parse(totalMarks)));
-                                context.read<OfflineExamBloc>().add(
-                                    CreateOfflineExam());
-                              },
-                            )
-
-                          ],
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    },
+                  );
                 },
               ),
             ),
-          )),
-    );
+          ),
+        ));
   }
 }

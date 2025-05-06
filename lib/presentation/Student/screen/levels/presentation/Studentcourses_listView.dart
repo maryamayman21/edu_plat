@@ -10,6 +10,8 @@ import 'package:edu_platt/presentation/Student/screen/levels/data/data_source/co
 import 'package:edu_platt/presentation/Student/screen/levels/data/repositories/course_repository.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/presentation/StudentCourses_Grid.dart';
 import 'package:edu_platt/presentation/sharedWidget/buttons/custom_button.dart';
+import 'package:edu_platt/presentation/sharedWidget/no_wifi_widget.dart';
+import 'package:edu_platt/presentation/sharedWidget/text_error.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,7 +36,6 @@ class StudentCoursesListview extends StatelessWidget {
 
       child: BlocConsumer<StudentCoursesCubit, StudentCoursesState>(
           listener: (context, state) {
-            // // TODO: implement listener
             if (state is CoursesLoading) {
               CustomDialogs.showLoadingDialog(context: cxt);
             } else if (state is CoursesDeletionFailure) {
@@ -61,8 +62,11 @@ class StudentCoursesListview extends StatelessWidget {
           builder: (context, state) {
             if (state is CoursesSuccess) {
               final  List<Map<String, dynamic>>  courses = state.courses ?? [];
+
+                 print('courses in UI $courses');
               final finalCourses = viewAll ? courses : courses.take(2)
                   .toList();
+              print(' final courses in UI $finalCourses');
               return StudentCoursesGrid(
                   viewAll: viewAll, finalCourses: finalCourses);
             }
@@ -115,45 +119,12 @@ class StudentCoursesListview extends StatelessWidget {
                 finalCourses: state.courses ?? [],);
             }
             else if(state is CoursesFailure){
-              return Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top:60.0),
-                    child: Text('No internet connection',
-                      style: TextStyle(
-                          color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 30),
-                    child: CustomButtonWidget(
-                      onPressed: () {
-                        context.read<StudentCoursesCubit>().getCourses();
-                      },
-                      child: const Text('Retry',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ),
-                  )
-
-                ],
-              );
+              return NoWifiWidget(onPressed:(){
+                context.read<StudentCoursesCubit>().getCourses();
+              });
             }
-
             else {
-              return const Text('Something went wrong',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
-                ),
-              );
+              return const TextError(errorMessage: 'Something went wrong');
             }
           }
 

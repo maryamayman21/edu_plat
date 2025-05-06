@@ -74,10 +74,7 @@ class OfflineExamBloc extends Bloc<OfflineExamEvent, OfflineExamState> {
         .createExam(CreateExamRequest(exam: state.offlineExamModel));
 
     result.fold((failure) {
-      dialogCubit.setStatus('Failure');
-      // emit(state.copyWith(
-      //   offlineExamModel: state.offlineExamModel
-      // ));
+      dialogCubit.setStatus('Failure', message: failure.message);
     }, (successMessage) {
       emit(state.copyWith(
           isSuccess: true
@@ -86,19 +83,12 @@ class OfflineExamBloc extends Bloc<OfflineExamEvent, OfflineExamState> {
   }
   void _handleUpdateOfflineExamEvent(
       UpdateOfflineExam event, Emitter<OfflineExamState> emit) async{
-    //dialogCubit.setStatus('Loading');
-
-
     emit(state.copyWith(
       isLoading: true
 
     ));
     final result = await doctorExamRepoImp.getOfflineExam(UpdateOfflineExamRequest(examId:event.examId ));
-
-
-    print('Got offline exam');
     result.fold((failure) {
-      print('Failed to  offline exam');
       emit(state.copyWith(
           errorMessage: failure.message,
        // offlineExamModel: state.offlineExamModel
@@ -106,7 +96,6 @@ class OfflineExamBloc extends Bloc<OfflineExamEvent, OfflineExamState> {
         isLoading: false
       ));
     }, (offlineExam) {
-      print('Got offline exam');
       emit(state.copyWith(
          offlineExamModel: offlineExam,
         isLoading: false,
@@ -116,22 +105,12 @@ class OfflineExamBloc extends Bloc<OfflineExamEvent, OfflineExamState> {
     });
   }void _handleUpdateDoctorOfflineExamEvent(
       UpdateDoctorOfflineExam event, Emitter<OfflineExamState> emit) async{
-    //dialogCubit.setStatus('Loading');
-
     dialogCubit.setStatus('Loading');
-    // emit(state.copyWith(
-    //   isLoading: true
-    //
-    // ));
     final result = await doctorExamRepoImp.updateExam(UpdateExamRequest(examId:event.examId,
     exam: state.offlineExamModel
     ));
-
-
-    print('Got offline exam');
     result.fold((failure) {
-      print('Failed to  offline exam');
-      dialogCubit.setStatus('Failure');
+      dialogCubit.setStatus('Failure', message: failure.message);
       emit(state.copyWith(
         errorMessage: failure.message,
        // offlineExamModel: state.offlineExamModel
@@ -139,8 +118,7 @@ class OfflineExamBloc extends Bloc<OfflineExamEvent, OfflineExamState> {
         isLoading: false
       ));
     }, (successMessage) {
-      dialogCubit.setStatus('Success');
-     // print('Got offline exam');
+      dialogCubit.setStatus('Success', message: successMessage);
       emit(state.copyWith(
         isLoading: false,
         isSuccess: true

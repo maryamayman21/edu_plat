@@ -65,7 +65,6 @@ class OnlineExamBloc extends Bloc<OnlineExamEvent, OnlineExamState> {
     );
   }
 
-  ///TODO:: TEST
   OnlineExamModel _validateExam(OnlineExamModel exam) {
     bool isExamValid = true;
 
@@ -304,7 +303,7 @@ class OnlineExamBloc extends Bloc<OnlineExamEvent, OnlineExamState> {
           .createExam(CreateExamRequest(exam: updatedExam));
 
       result.fold((failure) {
-        dialogCubit.setStatus('Failure');
+        dialogCubit.setStatus('Failure', message: failure.message);
         emit(state.copyWith(
           exam: updatedExam,
           isLoading: false,
@@ -312,7 +311,7 @@ class OnlineExamBloc extends Bloc<OnlineExamEvent, OnlineExamState> {
           errorMessage: failure.message,
         ));
       }, (successMessage) {
-        dialogCubit.setStatus('Success');
+        dialogCubit.setStatus('Success', message: successMessage);
         emit(state.copyWith(
           exam: updatedExam,
           isLoading: false,
@@ -330,22 +329,19 @@ class OnlineExamBloc extends Bloc<OnlineExamEvent, OnlineExamState> {
     final updatedExam = _validateExam(state.exam);
     if (updatedExam.isValid) {
       dialogCubit.setStatus('Loading');
-     // emit (state.copyWith(isLoading: true));
 
       final result = await doctorExamRepoImp
           .updateExam(UpdateExamRequest(exam: updatedExam, examId:event.examId));
 
       result.fold((failure) {
-        print('Failed');
-        dialogCubit.setStatus('Failure');
+        dialogCubit.setStatus('Failure',  message: failure.message);
         emit(state.copyWith(
           exam: updatedExam,
           isLoading: false,
           isSuccess: false,
         ));
       }, (successMessage) {
-        print('success');
-        dialogCubit.setStatus('Success');
+        dialogCubit.setStatus('Success', message: successMessage);
         emit(state.copyWith(
           exam: updatedExam,
           isLoading: false,

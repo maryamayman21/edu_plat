@@ -34,31 +34,30 @@ class StudentExamTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(16.w), // Responsive padding
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: _getCrossAxisCount(context), // Responsive grid
-            crossAxisSpacing: 16.w, // Responsive spacing
-            mainAxisSpacing: 16.w, // Responsive spacing
-            childAspectRatio: 1.0, // Square components
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.w),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Wrap(
+                spacing: 16.w,
+                runSpacing: 16.h,
+                alignment: WrapAlignment.center,
+                runAlignment: WrapAlignment.center,
+                children: items.map((item) {
+                  return SizedBox(
+                    width: (constraints.maxWidth < 600)
+                        ? constraints.maxWidth * 0.8
+                        : constraints.maxWidth * 0.4, // Responsive width
+                    child: DashboardCard(item: item),
+                  );
+                }).toList(),
+              );
+            },
           ),
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            return DashboardCard(item: items[index]);
-          },
         ),
       ),
     );
   }
 
-  // Responsive grid: 2 columns for mobile, 3 for tablet/desktop
-  int _getCrossAxisCount(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    if (screenWidth > 600) {
-      return 3; // Tablet/desktop
-    } else {
-      return 2; // Mobile
-    }
-  }
 }

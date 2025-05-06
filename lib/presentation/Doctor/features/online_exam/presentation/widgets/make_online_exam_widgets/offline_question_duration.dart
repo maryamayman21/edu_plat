@@ -1,64 +1,81 @@
-
 import 'package:duration_picker/duration_picker.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/offline_exam_bloc.dart';
-import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/online_exam_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OfflineQuestionDuration extends StatelessWidget {
-  const OfflineQuestionDuration({super.key, required this.duration,  });
+  const OfflineQuestionDuration({super.key, required this.duration});
   final Duration duration;
- // final Function(Duration) onDurationChanged;
 
+  @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        // Duration Label
-        Text(
-          'Duration',
-          style: TextStyle(
-            fontSize: 18.sp, // Responsive font size
-            fontWeight: FontWeight.w600,
-            color: Colors.blue, // White text
-          ),
-        ),
-        SizedBox(width: 5.w), // Responsive spacing
-        // Duration Picker Button
-        IconButton(
-          onPressed: () async {
-            final resultingDuration = await showDurationPicker(
-              context: context,
-              initialTime: const Duration(minutes: 30),
-              baseUnit: BaseUnit.second,
-              upperBound: const Duration(hours: 2),
-              lowerBound: const Duration(minutes: 30),
-            );
-            if (!context.mounted) return;
-            context.read<OfflineExamBloc>().add(
-                SetDurationEvent(resultingDuration ?? duration));
-          },
-          icon: Container(
-            width: 80.w, // Responsive width
-            height: 40.h, // Responsive height
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15.r), // Responsive border radius
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Label
+          Text(
+            'Exam Duration',
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
             ),
-            child: Center(
-              child: Text(
-                '${duration!.inMinutes} min',
-                style: TextStyle(
-                  fontSize: 18.sp, // Responsive font size
-                  fontWeight: FontWeight.w600,
-                  color: Colors.blue, // Blue text
-                ),
+          ),
+
+          // Duration Button
+          InkWell(
+            onTap: () async {
+              final resultingDuration = await showDurationPicker(
+                context: context,
+                initialTime: duration,
+                baseUnit: BaseUnit.minute,
+                upperBound: const Duration(hours: 3),
+                lowerBound: const Duration(minutes: 10),
+              );
+              if (!context.mounted) return;
+              context.read<OfflineExamBloc>().add(
+                SetDurationEvent(resultingDuration ?? duration),
+              );
+            },
+            borderRadius: BorderRadius.circular(12.r),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                borderRadius: BorderRadius.circular(12.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withOpacity(0.2),
+                    blurRadius: 6.r,
+                    offset: Offset(2.w, 4.h),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.timer,
+                    color: Colors.blueAccent,
+                    size: 22.sp,
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    '${duration.inMinutes} min',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.blueAccent,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

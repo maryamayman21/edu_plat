@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:edu_platt/services/push_notification_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
@@ -41,13 +42,12 @@ class AuthCubit extends Cubit<AuthState> {
 
 
   Future<void> login(String email, String password) async {
-    // email , password -> login -> server -> success -> response -> token  ? identify user -> flutter_secure_storage ->
-    //-> encryption
-
     emit(AuthLoading());
     try {
       // Make the login POST request
-      final response = await authRepository.login(email, password);
+       String? deviceToken = await  PushNotificationsService.getDeviceToken();
+        print('device token : $deviceToken');
+       final response = await authRepository.login(email, password, deviceToken!);
 
       // Extract the token and other relevant data from the response
       final data = response.data;
@@ -66,7 +66,10 @@ class AuthCubit extends Cubit<AuthState> {
       //await prefs.setString('expiration', expiration);
       await SecureStorageService.write('expiration', expiration);
       await prefs.setBool('isLogged', true);
-     // await prefs.setString('role', roles.isNotEmpty ? roles.first.toString() : '');
+       if(roles.contains('student')){
+       //  PushNotificationsService.subscribeUserToTopics();
+       }
+      // await prefs.setString('role', roles.isNotEmpty ? roles.first.toString() : '');
       await SecureStorageService.write('role', roles.isNotEmpty ? roles.first.toString() : '');
       emit(AuthSuccess('Login successful!'));
     } catch (error) {
@@ -74,10 +77,10 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> verifyEmail(String otp) async {
+  Future<void> verifyEmail(String otp, String email) async {
     emit(AuthLoading());
     try {
-      final response = await authRepository.verifyEmail(otp);
+      final response = await authRepository.verifyEmail(otp, email);
 
       // Assuming the response has a `success` field
       final success = response.data['success'];

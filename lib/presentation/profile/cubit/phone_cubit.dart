@@ -51,14 +51,10 @@ class PhoneCubit extends Cubit<PhoneState> {
       //try cache
       final cachedPhoneNumber = await profileCacheService.getPhoneNumber();
       if (cachedPhoneNumber != null) {
-        print("cashed number : $cachedPhoneNumber");
         phoneController.text = cachedPhoneNumber;
         emit(PhoneNumberSuccess(cachedPhoneNumber));
         return;
       } else {
-        if (!isClosed) {
-          print("Failed to retrieve cached phone number.");
-        }
       }
       final token = await tokenService.getToken();
        String? phoneNumber =    await profileRepository.fetchPhoneNumber(token!);
@@ -70,11 +66,8 @@ class PhoneCubit extends Cubit<PhoneState> {
         emit(PhoneNumberSuccess(phoneNumber));
       }
     } catch (error) {
-      print(error.toString());
       if (!isClosed) {
         if (error is DioError && error.response != null) {
-          // Handle specific API errors
-          print(error.type);
           final errorMessage =
               error.response?.data['message'] ?? 'An unexpected error occurred';
           emit(PhoneNumberFailure(errorMessage));

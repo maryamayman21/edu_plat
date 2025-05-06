@@ -22,8 +22,6 @@ class ForgetPassCubit extends Cubit<ForgetPassState> {
       final responseData = response.data;
       if (responseData['success'] == true) {
         final message = responseData['message'] ?? 'successful.';
-
-
         emit(ForgetPassSuccess(message));
       } else {
         // Handle unexpected cases where 'success' is false or missing
@@ -35,17 +33,17 @@ class ForgetPassCubit extends Cubit<ForgetPassState> {
     }
   }
 
-  Future<void> verifyEmail(String otp) async {
+  Future<void> verifyEmail(String otp, String email) async {
     emit(ForgetPassLoading());
     try {
-      final response = await forgetRepository.verifyEmail(otp);
+      final response = await forgetRepository.verifyEmail(otp, email);
 
       // Assuming the response has a `success` field
       final success = response.data['success'];
       final message = response.data['message'] ?? 'Verification successful';
 
       if (success == true) {
-        emit(ForgetPassSuccess(message));
+        emit(OTPVerifiedSuccess(message));
       } else {
         emit(ForgetPassFailure(message));
       }

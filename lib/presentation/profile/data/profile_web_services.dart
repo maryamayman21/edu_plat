@@ -36,7 +36,6 @@ class ProfileWebServices {
   }
   Future<Response> fetchPhoto(String token) async {
     try {
-      print('GOT HERE');
       return await _dio.get(
         ApiConstants.profilePhotoEndpoint, // Replace with your endpoint
         options: Options(

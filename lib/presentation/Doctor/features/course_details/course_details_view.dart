@@ -3,7 +3,6 @@ import 'package:edu_platt/presentation/Doctor/features/course_details/widgets/co
 import 'package:flutter/material.dart';
 class CourseDetails extends StatelessWidget {
   const CourseDetails({super.key, required this.courseCode});
-  ///TODO:: CHECK IF WE NEED MAKE IT STATEFUL
   final String courseCode;
 
   @override

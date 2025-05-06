@@ -23,14 +23,9 @@ class CourseRegisterationCubit extends Cubit<CourseRegisterationState> {
     emit(CourseRegisterationLoading());
     try {
       final token = await tokenService.getToken();
-      print("Done");
-      print('Token $token');
-      print('Semester id $semesterID');
       final response = await courseRegistrationRepository
           .fetchRegistrationCourses(semesterID, token!);
-      print("Done before getting semseter ");
       final semester = Semester.fromJson(response.data);
-      print("Done after getting semseter ");
       final level1Courses =
           semester.levels.firstWhere((level) => level.levelId == 1).courses;
       final level2Courses =
@@ -39,10 +34,6 @@ class CourseRegisterationCubit extends Cubit<CourseRegisterationState> {
           semester.levels.firstWhere((level) => level.levelId == 3).courses;
       final level4Courses =
           semester.levels.firstWhere((level) => level.levelId == 4).courses;
-      print(level1Courses);
-      print(level2Courses);
-      print(level3Courses);
-      print(level4Courses);
       emit(CourseRegisterationSuccess(
           level1Courses, level2Courses, level3Courses, level4Courses));
     } catch (error) {
@@ -63,10 +54,6 @@ class CourseRegisterationCubit extends Cubit<CourseRegisterationState> {
 
   Future<void> registerCourses(List<String> courses) async {
     try {
-      //cache courses
-     await courseCacheService.saveCourses(courses);
-      print("Courses cached successfully");
-      //print(courses);
       final token = await tokenService.getToken();
       //print("Done");
       final response =
@@ -74,6 +61,7 @@ class CourseRegisterationCubit extends Cubit<CourseRegisterationState> {
 
       final responseData = response.data;
       if (responseData['success'] == true) {
+        await courseCacheService.saveCourses(courses);
         final message = responseData['message'] ?? 'Registration successful.';
         emit(CoursesRegistered(message));
       } else {

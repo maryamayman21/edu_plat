@@ -135,13 +135,6 @@ class PDFExamBloc extends Bloc<PDFExamEvent, PDFExamState> {
             examTitle: event.courseTitle,
             totalMark: event.totalMark,
             timeInHour: event.timeInHour)));
-    print('Date in bloc program : ${state.exam.program}');
-    print('Date in bloc semseter : ${state.exam.semester}');
-    print('Date in bloc level : ${state.exam.level}');
-    print('Date in bloc title : ${state.exam.examTitle}');
-    print('Date in bloc  code : ${state.exam.courseCode}');
-
-    // emit(state.copyWith(exam: state.exam.copyWith(examDate: event.examDate)));
   }
 
   void _handleUpdateQuestionMarkEvent(
@@ -161,7 +154,6 @@ class PDFExamBloc extends Bloc<PDFExamEvent, PDFExamState> {
 
     for (var question in exam.questions) {
       final hasEnoughOptions = question.options.length >= 2;
-      //final hasValidDegree = question.degree! > 0;
 
       final hasEmptyOptionField =
           question.options.any((element) => element.text.isEmpty);

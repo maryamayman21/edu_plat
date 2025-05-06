@@ -7,40 +7,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OfflineExamCard extends StatelessWidget {
-  const OfflineExamCard({super.key, required this.onPressed, required this.examEntity});
+  const OfflineExamCard({
+    super.key,
+    required this.onPressed,
+    required this.examEntity,
+  });
+
   final ExamEntity examEntity;
   final VoidCallback onPressed;
+
   @override
   Widget build(BuildContext context) {
-    return  Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w , vertical: 10.h),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: Card(
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
         ),
         child: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 16.w , vertical: 10.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title and Online/Offline Badge
+              // Title and Badge
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    examEntity.examTitle,
-                    style: TextStyle(
-                      fontSize: 22.sp, // Slightly smaller for better balance
-                      fontWeight: FontWeight.bold,
-                      color: color.primaryColor,
+                  Expanded(
+                    child: Text(
+                      examEntity.examTitle,
+                      style: TextStyle(
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.bold,
+                        color: color.primaryColor,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                  SizedBox(width: 8.w),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                     decoration: BoxDecoration(
-                      color:  Colors.grey ,
-                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -50,12 +60,12 @@ class OfflineExamCard extends StatelessWidget {
                           color: Colors.white,
                           size: 14.sp,
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4.w),
                         Text(
                           'Offline',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 12.sp, // Responsive font size
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -64,7 +74,7 @@ class OfflineExamCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8), // Increased spacing
+              SizedBox(height: 8.h),
 
               // Date
               Row(
@@ -74,20 +84,23 @@ class OfflineExamCard extends StatelessWidget {
                     color: Colors.grey,
                     size: 16.sp,
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    "Date: ${examEntity.date}",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14.sp, // Responsive font size
-                      fontStyle: FontStyle.italic, // Italic for a subtle look
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Text(
+                      "Date: ${examEntity.date}",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16), // Increased spacing
+              SizedBox(height: 16.h),
 
-              // Duration and Question Numbers
+              // Duration and Questions
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -95,16 +108,16 @@ class OfflineExamCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.timer,
-                        color: color.primaryColor,
+                        color: Colors.deepOrangeAccent,
                         size: 16.sp,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Text(
                         "Duration: ${examEntity.duration} min",
                         style: TextStyle(
                           color: color.primaryColor,
-                          fontSize: 16.sp, // Responsive font size
-                          fontWeight: FontWeight.w600, // Semi-bold for emphasis
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -116,20 +129,20 @@ class OfflineExamCard extends StatelessWidget {
                         color: Colors.yellow,
                         size: 16.sp,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Text(
                         'Questions: ${examEntity.questionNumbers}',
                         style: TextStyle(
                           color: color.primaryColor,
-                          fontSize: 16.sp, // Responsive font size
-                          fontWeight: FontWeight.w600, // Semi-bold for emphasis
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
                   ),
                 ],
               ),
-              const SizedBox(height: 12), // Increased spacing
+              SizedBox(height: 12.h),
 
               // Grading
               Row(
@@ -139,63 +152,70 @@ class OfflineExamCard extends StatelessWidget {
                     color: Colors.purple,
                     size: 16.sp,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   Text(
                     "Grading: ${examEntity.totalMark} marks",
                     style: TextStyle(
-                      color:color.primaryColor,
-                      fontSize: 16.sp, // Responsive font size
-                      fontWeight: FontWeight.w600, // Semi-bold for emphasis
+                      color: color.primaryColor,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12.h),
+
+              // Location
               Row(
                 children: [
                   Icon(
                     Icons.location_on,
-                    color: Colors.deepOrange,
+                    color: Colors.green,
                     size: 16.sp,
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    "Location: ${examEntity.location}",
-                    style: TextStyle(
-                      color:color.primaryColor,
-                      fontSize: 16.sp, // Responsive font size
-                      fontWeight: FontWeight.w600, // Semi-bold for emphasis
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Text(
+                      "Location: ${examEntity.location}",
+                      style: TextStyle(
+                        color: color.primaryColor,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12), // Increased spacing
+              SizedBox(height: 20.h),
 
-
-              const SizedBox(height: 20), // Increased spacing
-              if(!examEntity.isExamFinished)
+              // Buttons
+              if (!examEntity.isExamFinished)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ActionButton(
                       text: 'Edit',
-                      onPressed: (){
-
-                        Navigator.pushNamed(context, AppRouters.doctorOfflineExamEditScreen, arguments: examEntity.examId);
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRouters.doctorOfflineExamEditScreen,
+                          arguments: examEntity.examId,
+                        );
                       },
                       backgroundColor: Colors.green,
                       foregroundColor: Colors.white,
-                      iconData:Icons.edit ,
+                      iconData: Icons.edit,
                     ),
                     ActionButton(
                       text: 'Discard',
-                      onPressed:onPressed,
+                      onPressed: onPressed,
                       backgroundColor: Colors.green,
                       foregroundColor: Colors.white,
-                      iconData:Icons.remove ,
+                      iconData: Icons.remove,
                     ),
                   ],
-                )
+                ),
             ],
           ),
         ),

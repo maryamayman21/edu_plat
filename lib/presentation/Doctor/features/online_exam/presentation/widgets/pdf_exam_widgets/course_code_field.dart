@@ -17,7 +17,7 @@ class CourseCodeField extends StatelessWidget {
         value:courseCode ,
         labelText: 'Course Code',
         validator: (input) => input?.trim().isEmpty ?? true ? 'Enter valid course code' : null,
-        keyboardType: TextInputType.number,
+        keyboardType: TextInputType.text,
       ),
     );
   }

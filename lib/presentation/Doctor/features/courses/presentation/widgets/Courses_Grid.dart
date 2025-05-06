@@ -51,8 +51,10 @@ final List<Map<String, dynamic>> finalCourses;
                     "Are you sure you want to delete ${finalCourses[index]['courseCode']} ?",
                   );
                   if (result != null && result) {
+                    print(   finalCourses[index]['courseCode']);
                     await coursesCubit.deleteCachedCourse(
-                        finalCourses[index]['CourseCode'] , finalCourses);
+
+                        finalCourses[index]['courseCode'] , finalCourses);
 
                   }
                 },

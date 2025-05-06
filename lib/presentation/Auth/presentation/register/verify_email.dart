@@ -40,7 +40,6 @@ class _VerifypasswordState extends State<VerifyEmail> {
         child: BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              print('Message: ${state.message}');
               if(state.message == "Email verified successfully and user created.") {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -121,9 +120,8 @@ class _VerifypasswordState extends State<VerifyEmail> {
                                 ? (){}
                                 : () {
                               if (code != null && code.length == 5) {
-                                print(code);
                                 BlocProvider.of<AuthCubit>(context)
-                                    .verifyEmail(code);
+                                    .verifyEmail(code,widget.arguemnt[1] );
                               }
                             },
                             child: state is AuthLoading?

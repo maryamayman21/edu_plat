@@ -40,16 +40,19 @@ class _VerifypasswordState extends State<Verifypassword> {
         child: BlocListener<ForgetPassCubit, ForgetPassState>(
           listener: (context, state) {
             if (state is ForgetPassSuccess) {
-              print('Message: ${state.message}');
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('OTP verified successfully')),
+                const SnackBar(content: Text('OTP sent successfully')),
               );
+
+            }
+              else if(state is OTPVerifiedSuccess){
               Navigator.pushReplacementNamed(
-                context,
-                AppRouters.setPassword,
-                arguments: widget.userEmail
+                  context,
+                  AppRouters.setPassword,
+                  arguments: widget.userEmail
               );
-            } else if (state is ForgetPassFailure) {
+            }
+            else if (state is ForgetPassFailure) {
               print('Error: ${state.error}');
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.error)),
@@ -113,11 +116,10 @@ class _VerifypasswordState extends State<Verifypassword> {
                         onPressed: state is ForgetPassLoading
                             ? () {}
                             : () {
-                                print('Done');
+
                                 if (code != null && code.length == 5) {
-                                  print(code);
                                   BlocProvider.of<ForgetPassCubit>(context)
-                                      .verifyEmail(code);
+                                      .verifyEmail(code, widget.userEmail);
                                 }
                               },
                         child: state is ForgetPassLoading
@@ -161,9 +163,7 @@ class _VerifypasswordState extends State<Verifypassword> {
                               ? null
                               : () {
                                   BlocProvider.of<ForgetPassCubit>(context)
-                                      .verifyEmail(widget.userEmail);
-                                  print('user email : ${widget.userEmail}');
-                                  print('Done');
+                                      .forgetPassword(widget.userEmail);
                                 },
                           child: Text('Resend code',
                               style: Theme.of(context)
