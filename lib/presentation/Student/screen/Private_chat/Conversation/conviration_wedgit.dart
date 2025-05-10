@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
 import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
 import 'package:edu_platt/core/cashe/services/profile_cashe_service.dart';
@@ -12,6 +13,7 @@ import 'package:edu_platt/presentation/profile/repository/profile_repository.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../profile/data/profile_web_services.dart';
 
@@ -21,10 +23,61 @@ class ConvirationWedgit extends StatefulWidget {
   const ConvirationWedgit({super.key});
 
   @override
+
   State<ConvirationWedgit> createState() => _ConvirationWedgitState();
 }
 
 class _ConvirationWedgitState extends State<ConvirationWedgit> {
+  Map<String, int> unreadMessagesCount = {};
+  DateTime? lastOpened;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupUnreadMessagesListener();
+  }
+
+  void _setupUnreadMessagesListener() {
+    final profileState = context.read<ProfileCubit>().state;
+    final currentUserEmail = profileState is ProfileLoaded ? profileState.userModel.email : "";
+
+    if (currentUserEmail.isEmpty) return;
+
+    FirebaseFirestore.instance
+        .collectionGroup('messages')
+        .where('receiverId', isEqualTo: currentUserEmail)
+        .where('isRead', isEqualTo: false)
+        .snapshots()
+        .listen((snapshot) {
+      // تحديث العداد عند استلام رسائل جديدة
+      _updateUnreadCounts();
+    });
+  }
+
+  void _updateUnreadCounts() async {
+    // إعادة حساب جميع الرسائل غير المقروءة
+    // ... تنفيذ منطق حساب الرسائل غير المقروءة لكل محادثة
+    setState(() {});
+  }
+  Future<void> getUnreadCount(String studentEmail, String doctorEmail) async {
+    final roomId = "${studentEmail}_$doctorEmail";
+    final prefs = await SharedPreferences.getInstance();
+    final lastOpenedMillis = prefs.getInt('lastOpenedPrivate') ?? 0;
+    final lastOpened = DateTime.fromMillisecondsSinceEpoch(lastOpenedMillis);
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('chats')
+        .doc(roomId)
+        .collection('messages')
+        .where('receiverId', isEqualTo: doctorEmail) // تغيير إلى studentEmail
+        .where('createdAt', isGreaterThan: Timestamp.fromDate(lastOpened))
+        .where('isRead', isEqualTo: false)
+        .get();
+
+    setState(() {
+      unreadMessagesCount[roomId] = snapshot.docs.length;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +114,13 @@ class _ConvirationWedgitState extends State<ConvirationWedgit> {
                     itemCount: state.doctors.length,
                     itemBuilder: (context, index) {
                       final DoctorModel  doctor = state.doctors[index] as DoctorModel;
+                      final profileState = context.read<ProfileCubit>().state;
+                      String studentEmail = "";
+                      if (profileState is ProfileLoaded) {
+                        studentEmail = profileState.userModel.email ?? "";
+                      }
+                      getUnreadCount(studentEmail, doctor.email!);
+
                       return Padding(
                         padding: REdgeInsets.all(8.0),
                         child: Card(
@@ -70,16 +130,40 @@ class _ConvirationWedgitState extends State<ConvirationWedgit> {
                                   ),
                                   child: ListTile(
                                     contentPadding: EdgeInsets.all(12),
-                                    leading: CircleAvatar(
-                                      radius: 40,
-                                      backgroundColor: Colors.grey[300],
-                                      backgroundImage: doctor.imageBytes != null
-                                          ? MemoryImage(doctor.imageBytes!)
-                                          : null,
-                                      child: doctor.imageBytes == null
-                                          ? Icon(Icons.person, color: Colors.white, size: 40)
-                                          : null,
+                                    leading: Stack(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 40,
+                                          backgroundColor: Colors.grey[300],
+                                          backgroundImage: doctor.imageBytes != null
+                                              ? MemoryImage(doctor.imageBytes!)
+                                              : null,
+                                          child: doctor.imageBytes == null
+                                              ? Icon(Icons.person, color: Colors.white, size: 40)
+                                              : null,
+                                        ),
+                                        if ((unreadMessagesCount["${studentEmail}_${doctor.email}"] ?? 0) > 0)
+                                          Positioned(
+                                            right: 0,
+                                            top: 0,
+                                            child: Container(
+                                              padding: EdgeInsets.all(6),
+                                              decoration: BoxDecoration(
+                                                color: Colors.red,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Text(
+                                                '${unreadMessagesCount["${studentEmail}_${doctor.email}"]}',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
+
                                     title: Text(
                                       doctor.name,
                                       style: TextStyle(
@@ -89,6 +173,7 @@ class _ConvirationWedgitState extends State<ConvirationWedgit> {
                                       ),
                                     ),
                                     trailing: Icon(Icons.chat, color: Colors.grey),
+
                                     onTap: () {
                                       if (doctor.id != null && doctor.name != null && doctor.email != null) {
                                         Navigator.pushNamed(
@@ -122,4 +207,13 @@ class _ConvirationWedgitState extends State<ConvirationWedgit> {
     );
   }
 }
+Future<DateTime?> getLastOpenedPrivateChatTime() async {
+  final prefs = await SharedPreferences.getInstance();
+  int? millis = prefs.getInt('lastOpenedPrivate');
+  if (millis != null) {
+    return DateTime.fromMillisecondsSinceEpoch(millis);
+  }
+  return null;
+}
+
 
