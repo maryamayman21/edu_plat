@@ -21,7 +21,6 @@ class CourseCardBlocBuilder extends StatelessWidget {
           return Padding(
             padding: REdgeInsets.symmetric(horizontal: 16.0.w),
             child:
-            ///TODO::REFACTOR CARD PARAMETERS
             CourseDetailsCard(
                 courseTitle: courseCardEntity.courseDescription,
                 creditHours:courseCardEntity.creditHours,
@@ -31,11 +30,13 @@ class CourseCardBlocBuilder extends StatelessWidget {
 
             ),
           );
+
         }
         if(state is CourseCardFailure){
-          return Text(state.errorMessage);
+
+          return const SizedBox.shrink();
         }
-        return Text('Something went wrong');
+        return const SizedBox.shrink();
       },
     );
   }

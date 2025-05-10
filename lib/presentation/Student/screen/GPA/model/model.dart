@@ -1,7 +1,5 @@
 class GpaModel {
   final double gpa;
-
-
   GpaModel({ required this.gpa});
 
   factory GpaModel.fromJson(Map<String, dynamic> json) {

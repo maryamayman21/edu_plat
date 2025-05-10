@@ -42,7 +42,7 @@ class ExamCard extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                     decoration: BoxDecoration(
                       color: studentExam.isOnline ? Colors.green : Colors.grey,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -66,7 +66,7 @@ class ExamCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8), // Increased spacing
+               SizedBox(height: 8.h), // Increased spacing
 
               // Date
               Row(
@@ -76,7 +76,7 @@ class ExamCard extends StatelessWidget {
                     color: Colors.grey,
                     size: 16.sp,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   Text(
                     "Date: ${studentExam.date}",
                     style: TextStyle(
@@ -87,7 +87,7 @@ class ExamCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 16), // Increased spacing
+               SizedBox(height: 16.h), // Increased spacing
 
               // Duration and Question Numbers
               Row(
@@ -97,12 +97,12 @@ class ExamCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.timer,
-                        color: color.primaryColor,
+                        color: Colors.orangeAccent,
                         size: 16.sp,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Text(
-                        "Duration: ${studentExam.duration} mins",
+                        "Duration: ${studentExam.duration} min",
                         style: TextStyle(
                           color: color.primaryColor,
                           fontSize: 16.sp, // Responsive font size
@@ -115,7 +115,7 @@ class ExamCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.quiz,
-                        color: color.primaryColor,
+                        color: Colors.yellow,
                         size: 16.sp,
                       ),
                       const SizedBox(width: 8),
@@ -131,17 +131,17 @@ class ExamCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12), // Increased spacing
+              SizedBox(height: 12.h), // Increased spacing
 
               // Grading
               Row(
                 children: [
                   Icon(
                     Icons.grade,
-                    color: color.primaryColor,
+                    color: Colors.purple,
                     size: 16.sp,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   Text(
                     "Grading: ${studentExam.totalMark} marks",
                     style: TextStyle(
@@ -152,35 +152,32 @@ class ExamCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12), // Increased spacing
-
-              // Location (if available)
-              ///TODO:: HANDLE THIS SHIT
-              if (studentExam.location == 'offline')
+               SizedBox(height: 12.h), // Increased spacing
+              if (!studentExam.isOnline)
                 Row(
                   children: [
                     Icon(
                       Icons.location_on,
-                      color: color.primaryColor,
+                      color: Colors.greenAccent,
                       size: 16.sp,
                     ),
-                    const SizedBox(width: 8),
+                     SizedBox(width: 8.w),
                     Text(
                       "Location: ${studentExam.location}",
                       style: TextStyle(
                         color: color.primaryColor,
-                        fontSize: 14.sp, // Responsive font size
+                        fontSize: 16.sp, // Responsive font size
                         fontWeight: FontWeight.w500, // Medium weight for subtlety
                       ),
                     ),
                   ],
                 ),
-          if(studentExam.isExamFinished)
+          if(studentExam.isExamFinished && studentExam.isOnline)
               Row(
                 children: [
                   Icon(
                     Icons.score,
-                    color: color.primaryColor,
+                    color: Colors.deepPurpleAccent,
                     size: 16.sp,
                   ),
                   const SizedBox(width: 8),
@@ -194,16 +191,16 @@ class ExamCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              if(studentExam.isExamFinished)
+              SizedBox(height: 12.h),
+              if(studentExam.isExamFinished  && studentExam.isOnline)
               Row(
                 children: [
                   Icon(
                     Icons.percent,
-                    color: color.primaryColor,
+                    color: Colors.cyan,
                     size: 16.sp,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   Text(
                     "Percentage: ${studentExam.percentage}",
                     style: TextStyle(
@@ -214,20 +211,20 @@ class ExamCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              if(studentExam.isExamFinished && studentExam.attended !=null)
+              SizedBox(height: 12.h),
+              if(studentExam.isExamFinished && studentExam.attended !=null   && studentExam.isOnline)
                 studentExam.attended !=null ?
                 Row(
                 children: [
                   Icon(
                     Icons.person,
-                    color: color.primaryColor,
+                    color: Colors.teal,
                     size: 16.sp,
                   ),
-                  const SizedBox(width: 8),
+                   SizedBox(width: 8.w),
 
                   Text(
-                     'Attendance : ${studentExam.attended ? 'Present' : 'Absent'}',
+                     'Attendance : ${studentExam.attended ?   'Absent' : 'Present'}',
                     style: TextStyle(
                       color: color.primaryColor,
                       fontSize: 16.sp, // Responsive font size
@@ -236,9 +233,9 @@ class ExamCard extends StatelessWidget {
                   )
                 ],
               ): const SizedBox.shrink(),
-              const SizedBox(height: 12),
+              SizedBox(height: 12.h),
 
-              const SizedBox(height: 20), // Increased spacing
+             // const SizedBox(height: 20), // Increased spacing
 
               if (studentExam.isOnline && !studentExam.isExamFinished)
                 ActionButton(

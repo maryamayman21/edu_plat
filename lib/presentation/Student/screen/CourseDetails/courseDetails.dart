@@ -53,23 +53,6 @@ class _CoursedetailsState extends State<Coursedetails> {
                  WidgetCourseHeader(
                     courseCode:widget.courseDetails['courseCode']),
                 SliverToBoxAdapter(child: SizedBox(height: 15.h)),
-
-             //    BlocBuilder<CourseCardCubit, CourseCardState>(
-             //  builder: (context, state) {
-             //      return SliverToBoxAdapter(
-             //        child: Padding(
-             //        padding: const EdgeInsets.all(16.0),
-             //        child: Text(
-             //          courses[selectedIndex].courseDescription,
-             //          style: TextStyle(
-             //            color: color.primaryColor,
-             //            fontSize: 22.sp,
-             //          ),
-             //        ),
-             //      ),
-             //    );
-             // },
-             //  ),
                 SliverToBoxAdapter(child: CourseCardBlocBuilder(courseCode: widget.courseDetails['courseCode'] ,)),
 
                 SliverToBoxAdapter(child: SizedBox(height: 20.h)),

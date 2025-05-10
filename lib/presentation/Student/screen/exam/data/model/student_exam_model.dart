@@ -48,7 +48,7 @@ class StudentExamModel {
     return StudentExamModel(
       id: json['id'],
       examTitle: json['examTitle'],
-      startTime:DateTime.parse(json['startTime']).toLocal().toString(),
+      startTime:DateTime.parse(json['startTime']).toString() ,
       totalMarks: json['totalMarks'],
       isOnline: json['isOnline'],
       qusetionsNumber: json['qusetionsNumber'],

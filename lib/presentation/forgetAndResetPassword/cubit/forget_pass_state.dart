@@ -14,6 +14,10 @@ class ForgetPassSuccess extends ForgetPassState {
   final String message;
   ForgetPassSuccess(this.message);
 }
+class OTPVerifiedSuccess extends ForgetPassState {
+  final String message;
+  OTPVerifiedSuccess(this.message);
+}
 
 class ForgetPassFailure extends ForgetPassState {
   final String error;

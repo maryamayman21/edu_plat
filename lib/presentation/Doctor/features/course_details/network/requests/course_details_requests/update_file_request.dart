@@ -31,6 +31,19 @@ class UpdateFileRequest{
    return formData;
  }
 
+ Future<FormData> toFormDataVideo()async{
+   if (file == null || !File(file!.path).existsSync()){
+     throw Exception('File does not exist');
+   }
+   FormData formData = FormData.fromMap({
+     'Video':  await MultipartFile.fromFile(file!.path, filename: file!.path.split('/').last),
+     'Type': type,
+     'VideoId': id
+   });
+   return formData;
+ }
+
+
  // Map<String, dynamic> toJson() {
  //   return {
  //     'id': id,

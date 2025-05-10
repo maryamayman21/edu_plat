@@ -17,7 +17,7 @@ class TimeFiled extends StatelessWidget {
         value: timeInHour ,
         labelText: 'Time (in hours)',
         validator: (input) => input?.trim().isEmpty ?? true ? 'Enter valid time' : null,
-        keyboardType: TextInputType.text,
+        keyboardType: TextInputType.number,
       ),
     );
   }

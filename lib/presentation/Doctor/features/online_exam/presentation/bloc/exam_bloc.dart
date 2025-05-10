@@ -61,7 +61,7 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
       // Handle the result of the delete operation
       if (deleteResult.isLeft()) {
         // Emit an error state if the delete operation fails
-        dialogCubit.setStatus('Failure');
+        dialogCubit.setStatus('Failure', message:'Failed to delete file, try again' );
         return;
       }
 
@@ -73,7 +73,7 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
       // Handle the result of the fetch operation
       fetchResult.fold(
             (failure) {
-          dialogCubit.setStatus('Failure');
+          dialogCubit.setStatus('Failure', message: failure.message);
         },
             (exams) {
           dialogCubit.setStatus('Success');

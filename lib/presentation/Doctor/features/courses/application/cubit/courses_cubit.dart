@@ -58,6 +58,7 @@ class CoursesCubit extends Cubit<CoursesState> {
       final List<Map<String, dynamic>> courses = List<Map<String, dynamic>>.from(response.data);
       //final List<String>? courses = List<String>.from(response.data);
       if(courses != null && courses.isNotEmpty) {
+        await courseCacheService.saveCourses(courses);
         emit(CoursesSuccess(courses));
       }else{
         emit(CoursesNotFound());
@@ -79,8 +80,10 @@ class CoursesCubit extends Cubit<CoursesState> {
       //delete in cache
      // if (!isClosed) emit(CourseDeletionSuccess('Course $courseCode has been deleted successfully.'));
        await courseCacheService.deleteCourseCache(courseCode);
-       //get updated courses
+
+
        final cachedCourses =  await courseCacheService.getCourses();
+       print('cached courses after deletion : $cachedCourses');
       if (!isClosed) emit(CourseDeletionSuccess('Course $courseCode has been deleted successfully.', cachedCourses));
       if (cachedCourses != null && cachedCourses.isNotEmpty) {
 

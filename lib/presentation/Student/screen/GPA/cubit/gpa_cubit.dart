@@ -21,8 +21,9 @@ class GpaCubit extends Cubit<GpaState> {
       if (token == null) throw Exception("Token not found");
 
       final gpa = await gpaRepository.fetchGpa(token);
+      print('fetched gpa : ${gpa.gpa}');
       await gpaCacheService.saveGpa(gpa.gpa);
-      print("mmmmmmmmmmm");
+      print('cached server successfully');
 
       emit(GpaLoaded(gpa));
     } catch (e) {
@@ -45,12 +46,14 @@ class GpaCubit extends Cubit<GpaState> {
     try {
       final token = await tokenService.getToken();
       if (token == null) throw Exception("Token not found");
-
+      print('updated gpa : $gpa');
       await gpaRepository.updateGpa(gpa, token);
+      print('updated server successfully');
       await gpaCacheService.saveGpa(gpa);
+      print('updated cashe successfully');
 
       emit(GpaLoaded(GpaModel(gpa: gpa)));
-      await gpaCacheService.saveGpa(gpa);
+      //await gpaCacheService.saveGpa(gpa);
     } catch (e) {
       emit(GpaError("Failed to update GPA: $e"));
     }

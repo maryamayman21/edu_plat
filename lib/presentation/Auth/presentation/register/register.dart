@@ -53,13 +53,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              print('Message: ${state.message}');
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Registration successful!')),
               );
               Navigator.pushNamed(context, AppRouters.verifyEmail , arguments:userDate);
             } else if (state is AuthFailure) {
-              print('Error: ${state.error}');
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.error)),
               );
@@ -230,11 +228,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 : () {
                                     if (formKey.currentState!.validate()) {
                                       formKey.currentState!.save();
-
-                                      print(nameController.text!);
-                                      print(emailController.text!);
-                                      print(passValue);
-                                      print(confirmPassValue);
                                       confirmPassValue.trim();
                                       passValue.trim();
                                       userDate.add(nameController.text);

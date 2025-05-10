@@ -70,7 +70,7 @@ class _MakeOnlineExamState extends State<MakeOnlineExam> {
             }
             if (state.errorMessage.isNotEmpty) {
              Navigator.pop(context);
-              showErrorDialog(context);
+              showErrorDialog(context, message: state.errorMessage);
               context.read<OnlineExamBloc>().add(const ClearErrorMessageEvent());
             }
           },

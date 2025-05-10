@@ -43,7 +43,6 @@ class _TaskitemState extends State<Taskitem> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    ///TODO::DATA MODELING
                     Text(
                       widget.note.title,
                       style: TextStyle(
@@ -79,7 +78,6 @@ class _TaskitemState extends State<Taskitem> {
                        builder: (context, state) {
                            return IconButton(
                             onPressed: () {
-                              ///TODO :: UPDATE SERVER AND CACHE
                               context.read<NotesCubit>().updateNote(true, widget.note.id);
                               setState(() {
                                 isCompleted = !isCompleted;
@@ -97,7 +95,6 @@ class _TaskitemState extends State<Taskitem> {
                   builder: (context, state) {
                       return IconButton(
                       onPressed: () async {
-                        ///TODO:: DELETE FROM CACHE AND SERVER
                         bool? result = await CustomDialogs.showDeletionDialog(
                           context: context,
                           title: "Delete Task?",
@@ -107,12 +104,8 @@ class _TaskitemState extends State<Taskitem> {
                         );
 
                         if (result == true) {
-                          print("Task deleted");
                           context.read<NotesCubit>().deleteNote(widget.note.id);
                         }
-
-
-                        ///TODO::: CHECK STATES HERE
                       },
                       icon: const Icon(
                         Icons.delete,

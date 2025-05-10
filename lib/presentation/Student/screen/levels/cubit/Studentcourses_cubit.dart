@@ -43,7 +43,7 @@ class StudentCoursesCubit extends Cubit<StudentCoursesState> {
 
   Future<void> getCourses()async{
     try{
-      emit(GetCoursesLoading() as StudentCoursesState);
+      emit(GetCoursesLoading());
       //try cache
       final cachedCourses = await courseCacheService.getCourses();
      // final List<Map<String, dynamic>>? cachedCourses= [{'courseCode' : 'COMP104' , 'hasLab' : true}, {'courseCode' : 'COMP203' , 'hasLab' : false}];
@@ -51,7 +51,7 @@ class StudentCoursesCubit extends Cubit<StudentCoursesState> {
        print('got cached courses from cache');
        if (cachedCourses != null && cachedCourses.isNotEmpty) {
         print('Cached courses is not null');
-        emit(CoursesSuccess(cachedCourses) as StudentCoursesState);
+        emit(CoursesSuccess(cachedCourses));
         return;
       }
       // emit(CoursesFailure("No cached courses found."));
@@ -60,12 +60,12 @@ class StudentCoursesCubit extends Cubit<StudentCoursesState> {
       print('Got token');
       final response = await courseRepository.getCourses(token!);
       print('Response after get in cubit ${response.data}');
-      ///TODO:: CONVERT TO LIST OF MAP
       final List<Map<String, dynamic>>? courses = List<Map<String, dynamic>>.from(response.data);
      // final List<Map<String, dynamic>>?  courses = [{'courseCode' : 'COMP104' , 'hasLab' : true}, {'courseCode' : 'COMP203' , 'hasLab' : false}];
       print('Courses after get in cubit $courses');
       if(courses != null && courses.isNotEmpty) {
-        emit(CoursesSuccess(courses) as StudentCoursesState);
+       await courseCacheService.saveCourses(courses);
+        emit(CoursesSuccess(courses));
       }else{
         emit(CoursesNotFound() as StudentCoursesState);
       }
@@ -99,8 +99,8 @@ class StudentCoursesCubit extends Cubit<StudentCoursesState> {
        final cachedCourses =  await courseCacheService.getCourses();
       if (!isClosed) emit(CourseDeletionSuccess('Course $courseCode has been deleted successfully.', cachedCourses) as StudentCoursesState);
       if (cachedCourses != null && cachedCourses.isNotEmpty) {
-
-       // if (!isClosed) emit(CourseDeletionSuccess('Course $courseCode has been deleted successfully.'));
+            print('UPDATED COURSES IS NOT EMPTY');
+    //   if (!isClosed) emit(CourseDeletionSuccess('Course $courseCode has been deleted successfully.', cachedCourses));
         if (!isClosed)    CoursesSuccess(cachedCourses);
 
         print('Cached courses is  not null in deletion');

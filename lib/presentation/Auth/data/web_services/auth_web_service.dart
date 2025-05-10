@@ -29,11 +29,12 @@ class AuthWebService {
     }
   }
 
-  Future<Response> login(String email, String password) async {
+  Future<Response> login(String email, String password, String deviceToken) async {
     try {
       final response = await _dio.post(ApiConstants.loginEndpoint, data: {
         'email': email,
         'password': password,
+        'deviceToken': deviceToken
       });
       print('Login response: ${response.data}'); // Debug print
       return response;
@@ -42,12 +43,13 @@ class AuthWebService {
     }
   }
 
-  Future<Response> verifyEmail(String otp) async {
+  Future<Response> verifyEmail(String otp, String email) async {
     try {
       return await _dio.post(
         ApiConstants.verifyEmailEndpoint,
         data: {
           'otp': otp,
+          'email':otp
         },
       );
     } catch (e) {

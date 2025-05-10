@@ -1,8 +1,9 @@
 
 import 'package:dio/dio.dart';
+import 'package:edu_platt/presentation/Student/screen/notes/data/model/note.dart';
+import 'package:edu_platt/presentation/Student/screen/notes/data/notes_web_service/notes_web_service.dart';
 
-import '../model/note.dart';
-import '../notes_web_service/notes_web_service.dart';
+
 
 class NotesRepository {
   final  NotesWebService notesWebService;
@@ -26,5 +27,12 @@ class NotesRepository {
     final List<dynamic> notesJson = response.data;
     return notesJson.map((noteJson) => Note.fromJson(noteJson)).toList();
   }
+  // Future<List<Note>> getNotesByDate(DateTime date) async {
+  //   final response = await notesWebService.getAllNotes(token);
+  //
+  //   // Ensure the response data is a list and parse each item to a Note
+  //   final List<dynamic> notesJson = response.data;
+  //   return notesJson.map((noteJson) => Note.fromJson(noteJson)).toList();
+  // }
 
 }

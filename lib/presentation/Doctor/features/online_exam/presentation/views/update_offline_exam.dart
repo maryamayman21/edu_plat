@@ -58,16 +58,16 @@ class UpdateOfflineExamView extends StatelessWidget {
           ),
           body: BlocListener<DialogCubit, dynamic>(
             listener: (context, state) {
-              if (state == StatusDialog.SUCCESS) {
+              if (state?.status == StatusDialog.SUCCESS) {
                 Navigator.pop(context);
-                showSuccessDialog(context);
+                showSuccessDialog(context, message:   state?.message ?? 'Operation successful' );
               }
-              if (state == StatusDialog.LOADING) {
+              if (state?.status == StatusDialog.LOADING) {
                 showLoadingDialog(context);
               }
-              if (state == StatusDialog.FAILURE) {
+              if (state?.status == StatusDialog.FAILURE) {
                 Navigator.pop(context);
-                showErrorDialog(context);
+                showErrorDialog(context,  message:   state?.message ?? 'Something went wrong' );
               }
             },
             child: BlocListener<OfflineExamBloc, OfflineExamState>(

@@ -10,14 +10,17 @@ class QuestionDegreeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomQuestionField(
+    return ListTile(
+      trailing:  Icon(Icons.numbers ,color : Theme.of(context).primaryColor.withOpacity(0.9),),
+      title: CustomQuestionField(
 
-      keyboardType: TextInputType.number,
-      hintText: 'Enter question mark',
-      validator: (input) => input?.trim().isEmpty ?? true ? 'Enter valid mark' : null,
-      labelText: 'Question degree',
-      value: questionDegree,
-      onChanged: onChanged, isCourseCode: false,
+        keyboardType: TextInputType.number,
+        hintText: 'Enter question mark',
+        validator: (input) => input?.trim().isEmpty ?? true ? 'Enter valid mark' : null,
+        labelText: 'Question degree',
+        value: questionDegree,
+        onChanged: onChanged, isCourseCode: false,
+      ),
     );
   }
 }

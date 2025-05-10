@@ -36,7 +36,7 @@ class TableMark extends StatelessWidget {
                       key, // Display the key (e.g., 'Mid', 'Oral')
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16.sp,
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

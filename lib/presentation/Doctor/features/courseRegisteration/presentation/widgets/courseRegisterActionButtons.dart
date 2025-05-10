@@ -49,7 +49,6 @@ class CourseRegisterationActionButtons extends StatelessWidget {
                    if( state is CourseRegisterationFailure ||
                         state is CourseRegisterationLoading )  {return const SizedBox.shrink(); }
                    else if(state is CourseRegisterationSuccess) {
-                     print('Successssssss');
                      return  Row(
                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                        children: [
@@ -93,9 +92,9 @@ class CourseRegisterationActionButtons extends StatelessWidget {
                                    imageUrl: AppAssets.books);
 
                                if (isRegistered != null && isRegistered) {
-                                 // context
-                                 //     .read<CourseRegisterationCubit>()
-                                 //     .registerCourses(registerCourses);
+                                 context
+                                     .read<CourseRegisterationCubit>()
+                                     .registerCourses(registerCourses);
                                }
                              }
                            }

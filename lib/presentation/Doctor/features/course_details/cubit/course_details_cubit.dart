@@ -34,7 +34,6 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
     materialTypeSubscription = materialTypeCubit.stream.listen((materialType) {
       materialMap= materialType ;
       fetchCourseFiles(materialMap['materialType'], courseCode,);
-      print(  ' print 2 : ${ materialMap['materialType']}');
     });
     fetchCourseFiles(materialMap['materialType'], courseCode,);
 
@@ -66,6 +65,9 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
 
     });
   }
+Future<void> fetchCourseFilesRequest() async {
+  fetchCourseFiles(materialMap['materialType'], courseCode,);
+  }
 
   CancelToken? cancelToken;
   void cancelUpload() async {
@@ -74,7 +76,6 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
 
   Future<void> saveCourseFile() async {
     final courseFile = await getCourseFileEntity();
-    courseFile.path ?? print('I am NULLLL');
     statusCubit.setUploadingFile(courseFile);
     var result = await courseDetailsRepo.saveCoursesFiles(UploadFileRequest(file:File(courseFile.path!) , type: courseFile.type, courseCode: courseCode),);
     result.fold((failure) {
@@ -94,6 +95,7 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
   ///helper method
   Future<CourseDetailsEntity> getCourseFileEntity()async{
     final file = await pickMedia();
+   // if(file == null){}
     CourseDetailsEntity courseFile = CourseDetailsEntity(
        courseCode: courseCode,
         date: '',
@@ -129,7 +131,7 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
       var result = await courseDetailsRepo.deleteCoursesFile(
           fileIndex, materialMap['materialType'], courseCode);
       result.fold((failure) {
-        dialogCubit.setStatus('Failure');
+        dialogCubit.setStatus('Failure', message:  failure.message);
         emit(CourseFilesFailure(errorMessage: failure.message));
       }, (coursesFiles) {
         if (coursesFiles.isEmpty) {
@@ -149,7 +151,7 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
     dialogCubit.setStatus('Loading');
     var result = await courseDetailsRepo.updateCoursesFile(fileIndex , courseFile.type! ,  File(courseFile.path!), courseFile.courseCode);
     result.fold((failure) {
-      dialogCubit.setStatus('Failure');
+      dialogCubit.setStatus('Failure', message: failure.message);
       emit(CourseFilesFailure(errorMessage: failure.message));
     }, (coursesFiles) {
       if (coursesFiles.isEmpty) {

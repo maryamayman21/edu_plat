@@ -44,7 +44,6 @@ class _PdfExamQuestionsState extends State<PdfExamQuestions> {
       listener: (context, state) {
         if (state.isSuccess) {
        Navigator.pushNamed(context, AppRouters.writtenPdfCreationScreen, arguments: {'examModel' : state.exam, 'isWrittenExam' : widget.isWrittenExam});
-    // TODO: implement listener
         }
       },
       child: BlocBuilder<PDFExamBloc, PDFExamState>(

@@ -4,6 +4,8 @@ import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Doctor/features/home/presentation/widgets/container_drawer.dart';
+import 'package:edu_platt/presentation/notification/presentation/cubit/notification_counter_cubit.dart';
+import 'package:edu_platt/services/push_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -166,7 +168,26 @@ class _DoctorDrawerState extends State<DoctorDrawer>
             courseCacheService: CourseCacheService(),
               notesCacheService:NotesCacheService()
             ),
-            child: BlocBuilder<ProfileCubit, ProfileState>(
+            child: BlocListener<ProfileCubit, ProfileState>(
+  listener: (context, state) {
+    if(state is LogOutSuccess){
+      PushNotificationsService.onNewNotification = () {
+        context.read<NotificationCounterCubit>().reset();
+      };
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRouters.studentOrDoctor,
+            (route) => true,
+      );
+    }
+    if(state is ProfileError){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(state.errorMessage)),
+      );
+    }
+  },
+  child: BlocBuilder<ProfileCubit, ProfileState>(
   builder: (context, state) {
     return FadeTransition(
                 opacity: _fadeAnimations[5],
@@ -174,14 +195,11 @@ class _DoctorDrawerState extends State<DoctorDrawer>
                     icons: Icons.logout,
                     text: "Logout",
                     onTap: () {
-                      context.read<ProfileCubit>().logout();
                       context.read<ProfileCubit>().clearUponUserType();
-                      Navigator.pushReplacementNamed(
-                        context,
-                        AppRouters.studentOrDoctor,
-                      );
+                      context.read<ProfileCubit>().logout();
                     }));
   },
+),
 ),
           ),
         ]));

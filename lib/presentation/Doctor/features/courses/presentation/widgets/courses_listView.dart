@@ -6,6 +6,7 @@ import 'package:edu_platt/presentation/Doctor/features/courses/application/cubit
 import 'package:edu_platt/presentation/Doctor/features/courses/data/data_source/course_web_service.dart';
 import 'package:edu_platt/presentation/Doctor/features/courses/data/repositories/course_repository.dart';
 import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
+import 'package:edu_platt/presentation/sharedWidget/no_wifi_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/utils/Color/color.dart';
@@ -33,7 +34,6 @@ class CoursesListview extends StatelessWidget {
 
       child: BlocConsumer<CoursesCubit, CoursesState>(
           listener: (context, state) {
-            // // TODO: implement listener
             if (state is CoursesLoading) {
               CustomDialogs.showLoadingDialog(context: cxt);
             } else if (state is CoursesDeletionFailure) {
@@ -105,7 +105,7 @@ class CoursesListview extends StatelessWidget {
 
             }
             else if(state is GetCoursesLoading ){
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             }
             else if (state is CoursesDeletionFailure) {
               return CoursesGrid(viewAll: viewAll,
@@ -117,33 +117,10 @@ class CoursesListview extends StatelessWidget {
                 finalCourses: state.courses ?? [],);
             }
             else if(state is CoursesFailure){
-              return Column(
-                children: [
-                  Center(child: Image.asset(AppAssets.noWifiConnection)),
-                  const Text('No internet connection',
-                    style: TextStyle(
-                        color: Colors.black
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 40),
-                    child: CustomButtonWidget(
-                      onPressed: () {
-                        context.read<CoursesCubit>().getCourses();
-                      },
-                      child: const Text('Retry',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ),
-                  )
+                return  NoWifiWidget(onPressed: () {
+                  context.read<CoursesCubit>().getCourses();
+                },);
 
-                ],
-              );
             }
 
             else {
