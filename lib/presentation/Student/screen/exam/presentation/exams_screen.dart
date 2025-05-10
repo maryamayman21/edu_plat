@@ -65,6 +65,7 @@ class ExamsScreen extends StatelessWidget {
   child: BlocListener<ExamBloc, ExamState>(
   listener: (context, state) {
      if(state is ExamLoaded){
+       Navigator.pop(context);
        Navigator.pushNamed(context, AppRouters.startExamScreen, arguments: state.exam);
      }
   },

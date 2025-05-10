@@ -1,8 +1,9 @@
 
 import 'package:dio/dio.dart';
+import 'package:edu_platt/presentation/Student/screen/notes/data/model/note.dart';
+import 'package:edu_platt/presentation/Student/screen/notes/data/notes_web_service/notes_web_service.dart';
 
-import '../model/note.dart';
-import '../notes_web_service/notes_web_service.dart';
+
 
 class NotesRepository {
   final  NotesWebService notesWebService;

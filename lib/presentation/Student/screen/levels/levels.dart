@@ -2,6 +2,8 @@ import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Doctor/features/home/application/app_bar_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/presentation/Studentcourses_listView.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/widgets/level_widget.dart';
+import 'package:edu_platt/presentation/notification/presentation/cubit/notification_counter_cubit.dart';
+import 'package:edu_platt/services/push_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +15,12 @@ class Levels extends StatefulWidget {
 }
 
 class _LevelsState extends State<Levels> with TickerProviderStateMixin {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {

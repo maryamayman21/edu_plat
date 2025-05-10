@@ -22,7 +22,7 @@ class MyDatePicker extends StatelessWidget {
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(const Duration(days: 365)),
         decoration: InputDecoration(
-          hintText: 'Enter exam date',
+          hintText: 'Enter date',
           hintStyle: TextStyle(
             fontSize: 14.sp, // Responsive font size
             fontWeight: FontWeight.w400,
@@ -54,7 +54,7 @@ class MyDatePicker extends StatelessWidget {
               color: Colors.blue, size: 20.r), // Responsive icon
           contentPadding: EdgeInsets.symmetric(
               vertical: 8.h, horizontal: 16.w),
-          label: const Text('Exam Date')// Responsive padding
+          label: const Text('Date')// Responsive padding
         ),
         style: TextStyle(
           fontSize: 14.sp, // Responsive font size

@@ -1,12 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
+import 'package:edu_platt/core/network_handler/network_handler.dart';
 
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
+import 'package:edu_platt/presentation/Student/screen/notes/data/model/note.dart';
+import 'package:edu_platt/services/local_notification_service.dart';
 import 'package:meta/meta.dart';
 
-import '../../../../../core/cashe/services/notes_cache_service.dart';
-import '../../../../../core/network_handler/network_handler.dart';
-import '../data/model/note.dart';
+
 import '../data/notes_repository/notes_repository.dart';
 
 part 'notes_state.dart';
@@ -25,17 +27,25 @@ class NotesCubit extends Cubit<NotesState> {
 
   Future<void> saveNote(Note note) async {
     try {
-      //cache note
-      //update server
-      final token = await tokenService.getToken();
 
-      final noteID = await notesRepository.saveNote(note, token!);
-      //response contains note id
+     final token = await tokenService.getToken();
 
-      List<Note> notes = await notesCacheService.saveNote(note, noteID);
-      emit(NotesSuccess(notes));
+     final noteID = await notesRepository.saveNote(note, token!);
+
+
+     List<Note> notes = await notesCacheService.saveNote(note, noteID);
+
+
+       LocalNotificationService.showScheduledNotification(
+        scheduledDate: note.date,
+          taskModel: note,
+         id: 5
+      );
+
+     emit(NotesSuccess(notes));
       // if (responseData['success'] == true) {
       //   final message = responseData['message'] ?? 'Registration successful.';
+      //
       //   emit(NotesSuccess(message));
       // } else {
       //   emit(NotesFailure('Registration failed'));
@@ -59,11 +69,11 @@ class NotesCubit extends Cubit<NotesState> {
     try {
       //cache note
       //update server
-      final token = await tokenService.getToken();
+     final token = await tokenService.getToken();
 
-      final response = await notesRepository.updateNote(isDone, id, token!);
+     final response = await notesRepository.updateNote(isDone, id, token!);
 
-      final responseData = response.data;
+     final responseData = response.data;
       if (responseData['success'] == true) {
         final message = responseData['message'] ?? 'Note updated successfully.';
 
@@ -101,7 +111,7 @@ class NotesCubit extends Cubit<NotesState> {
       final response = await notesRepository.deleteNotes(noteID, token!);
       final responseData = response.data;
       if (responseData['success'] == true) {
-        final message = responseData['message'] ?? 'Note deleted successfully.';
+        LocalNotificationService.cancelNotification(noteID);
       } else {
         emit(NotesFailure('Failed to update notes'));
       }

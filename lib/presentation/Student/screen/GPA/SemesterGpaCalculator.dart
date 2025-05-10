@@ -37,7 +37,7 @@ class _SemestergpacalculatorState extends State<Semestergpacalculator> {
     });
   }
 
-  void calculateSGPA() {
+  void calculateSGPA(BuildContext ctx) {
     double totalCredits = 0;
     double totalPoints = 0;
 
@@ -47,7 +47,7 @@ class _SemestergpacalculatorState extends State<Semestergpacalculator> {
 
       if (credit == null || credit <= 0 || sgpa == null || sgpa > 4.0) {
         showDialog(
-          context: context,
+          context: ctx,
           builder: (context) => AlertDialog(
             title: Text("Input Error", style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold, color: Colors.red)),
             content: Text("Please enter valid values for Credit and SGPA (Max SGPA: 4.0)", style: TextStyle(fontSize: 25.sp,fontWeight: FontWeight.bold)),
@@ -88,15 +88,16 @@ class _SemestergpacalculatorState extends State<Semestergpacalculator> {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (ctx) => AlertDialog(
         title: Text("Calculated SGPA", style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold, color: color.primaryColor)),
         content: Text("Your SGPA is ${calculatedSGPA!.toStringAsFixed(2)}", style: TextStyle(fontSize: 28.sp, color: color.secondColor,fontWeight: FontWeight.bold)),
         actions: [
           Row(
             children: [
               ElevatedButton(
-                onPressed: () {
-                  widget.onSaveSGPA(calculatedSGPA ?? 0.0);
+                onPressed:
+                    () {
+                //  widget.onSaveSGPA(calculatedSGPA ?? 0.0);
                   context.read<GpaCubit>().updateGpa(calculatedSGPA ?? 0.0).then((_) {
                     context.read<GpaCubit>().fetchGpa();
                   });
@@ -179,7 +180,7 @@ class _SemestergpacalculatorState extends State<Semestergpacalculator> {
                         ),
                         SizedBox(width: 20.w,),
                         IconButton(
-                          icon: Icon(Icons.delete, color: Colors.red),
+                          icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () => removeSemester(index),
                         ),
                         SizedBox(width: 40.w),
@@ -200,7 +201,9 @@ class _SemestergpacalculatorState extends State<Semestergpacalculator> {
         Padding(
           padding: REdgeInsets.all(20.0),
           child: InkWell(
-            onTap:calculateSGPA ,
+            onTap:(){
+              calculateSGPA(context);
+            } ,
             child: TitleWidget(
                 text: "                    Calculate                    "),
           ),

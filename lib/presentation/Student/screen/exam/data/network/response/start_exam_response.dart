@@ -25,7 +25,10 @@ class StartExamResponse extends BaseResponse {
     return StartExamResponse(
       message: json['message'] ?? 'Exam fetched successfully',
       success: json['success'],
-      exam:  json['exam'] == Null ? StudentExamModel.init():StudentExamModel.fromJson(json['exam']), ///TODO:: TEST
+      exam: json.containsKey('exam') && json['exam'] != null
+          ? StudentExamModel.fromJson(json['exam'])
+          : StudentExamModel.init(),
+      //json['exam'] == null ? StudentExamModel.init():StudentExamModel.fromJson(json['exam']),
     );
   }
 }

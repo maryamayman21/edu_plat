@@ -1,6 +1,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:edu_platt/config/theme/theme.dart';
 import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
+import 'package:edu_platt/core/cashe/services/gpa_cashe_service.dart';
 import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
 import 'package:edu_platt/core/cashe/services/profile_cashe_service.dart';
 import 'package:edu_platt/core/file_picker/file_picker_service.dart';
@@ -10,11 +11,14 @@ import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 import 'package:edu_platt/presentation/Doctor/screen/chat/ConversationDoctor/cubit/Dchat_cubit.dart';
 import 'package:edu_platt/presentation/Doctor/screen/chat/ConversationDoctor/repo/chat_Repo.dart';
 import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
+import 'package:edu_platt/presentation/Student/screen/GPA/cubit/gpa_cubit.dart';
+import 'package:edu_platt/presentation/Student/screen/GPA/repo/repo.dart';
 import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/cubit/Chat_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/repo/chat_Repo.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/cubit/notes_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/data/notes_repository/notes_repository.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/data/notes_web_service/notes_web_service.dart';
+import 'package:edu_platt/presentation/notification/presentation/cubit/notification_counter_cubit.dart';
 import 'package:edu_platt/presentation/profile/cubit/profile_cubit.dart';
 import 'package:edu_platt/presentation/profile/data/profile_web_services.dart';
 import 'package:edu_platt/presentation/profile/repository/profile_repository.dart';
@@ -23,15 +27,20 @@ import 'package:edu_platt/services/push_notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
 import 'firebase_options.dart';
 import 'presentation/Doctor/features/course_details/domain/entities/course_details_entity.dart';
 
 
+//final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+//final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+//FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,14 +64,31 @@ void main() async {
   await Future.wait([
     PushNotificationsService.init(),//2
     LocalNotificationService.init(),//3
+
   ]);
-  runApp(const MyApp());
+
+ DateTime utcDateTime = DateTime.parse("2025-05-10T19:15:00.000Z");
+    bool  isUtc = utcDateTime.isUtc;
+    if(isUtc){
+      print('Is utc');
+    }else{
+      print('not utc');
+    }
+
+    DateTime localTime =  utcDateTime.toLocal();
+    print('Local time : $localTime');
+
+
+  runApp(MyApp(
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
-  // This widget is the root of your application.
+   MyApp({super.key,
+   });
+
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -87,6 +113,13 @@ class MyApp extends StatelessWidget {
                 )
                   ..getProfileData(),
               ),
+              BlocProvider(
+                create: (_) => NotificationCounterCubit(),
+              ),
+              BlocProvider(
+                create: (context) => GpaCubit(gpaRepository: GPARepository() , tokenService:TokenService() ,  gpaCacheService:GpaCasheServer() )..fetchGpa(),
+              ),
+
               BlocProvider(create: (context) => DoctorChatCubit(DoctorChatRepository())),
               BlocProvider(create: (context) => ChatCubit(ChatRepository())),
               BlocProvider(
@@ -101,7 +134,7 @@ class MyApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 theme: AppTheme.theme,
                 initialRoute: AppRouters.splashRoute,
-                onGenerateRoute: AppRouters.generateRoute
+                onGenerateRoute: AppRouters.generateRoute,
              ),
           //),
        )

@@ -224,7 +224,7 @@ class ExamCard extends StatelessWidget {
                    SizedBox(width: 8.w),
 
                   Text(
-                     'Attendance : ${studentExam.attended ? 'Present' : 'Absent'}',
+                     'Attendance : ${studentExam.attended ?   'Absent' : 'Present'}',
                     style: TextStyle(
                       color: color.primaryColor,
                       fontSize: 16.sp, // Responsive font size

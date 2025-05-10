@@ -43,7 +43,8 @@ class CourseDetailsRemoteDataSourceImpl extends CourseDetailsRemoteDataSource {
 
   @override
   Future<UpdateFileResponse> updateCourseFile(UpdateFileRequest request) async{
-    var response = await  apiService.putFormData(endPoint: ApiConstants.updateFileEndpoint,formData: await request.toFormData());
+    final endpoint = request.type == 'Videos' ? ApiConstants.doctorUpdateVideoEndpoint : ApiConstants.updateFileEndpoint ;
+    var response = await  apiService.putFormData(endPoint: endpoint,formData:  request.type == 'Videos' ?    await request.toFormDataVideo() :  await request.toFormData());
     return UpdateFileResponse.fromJson(response.data);
   }
   @override

@@ -36,6 +36,7 @@ import 'package:edu_platt/presentation/Student/screen/exam/presentation/quiz_scr
 import 'package:edu_platt/presentation/Student/screen/exam/presentation/widgets/quiz_result_screen.dart';
 import 'package:edu_platt/presentation/Student/screen/home/presentation/homeStudent.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/presentation/StudentviewAllCourses.dart';
+import 'package:edu_platt/presentation/notification/presentation/views/notification_view.dart';
 import 'package:edu_platt/presentation/sharedWidget/file_pdf_view/file_pdf_view.dart';
 import 'package:edu_platt/presentation/sharedWidget/image_viewer/image_viewer_screen.dart';
 import 'package:edu_platt/presentation/sharedWidget/pdf_viwer/pdf_viwer_screen.dart';
@@ -137,6 +138,7 @@ class AppRouters {
  static const String pdfFileScreen= '/PdfFileScreenRoute';
 static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
   static const String chatGroup= '/chatGroup';
+  static const String notificationCenterScreen= '/notificationCenterRoute';
 
 
   static Route? generateRoute(RouteSettings settings) {
@@ -163,11 +165,11 @@ static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
         final doctorName =args['doctorName'] as String;
         return MaterialPageRoute(builder: (context) =>  Privatechat(doctorEmail: doctorEmail, doctorName: doctorName,));
       case GeneralChatScreen:
-        return MaterialPageRoute(builder: (context) =>  ChatScreen());
+        return MaterialPageRoute(builder: (context) =>  const ChatScreen());
       case ConversationStudentChat:
-        return MaterialPageRoute(builder: (context) =>  ConvirationWedgit());
+        return MaterialPageRoute(builder: (context) =>  const ConvirationWedgit());
       case ConversationDoctorChat:
-        return MaterialPageRoute(builder: (context) =>  ConvirationDoctorWedgit());
+        return MaterialPageRoute(builder: (context) =>  const ConvirationDoctorWedgit());
       case onBoardRoute:
         return MaterialPageRoute(builder: (context) => const onboarding(),);
       case studentOrDoctor:
@@ -324,6 +326,9 @@ static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
          final studentDegrees = settings.arguments as List<StudentDegreeEntity>;
         return CustomPageRoute(page:  StudentPdfViewerScreen(
         students:studentDegrees,
+        ));
+        case notificationCenterScreen:
+          return CustomPageRoute(page:  const NotificationCenterScreen(
         ));
       case studentExamTabScreen:
         return MaterialPageRoute(

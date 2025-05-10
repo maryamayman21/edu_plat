@@ -74,7 +74,6 @@ class _NotesState extends State<Notes> {
               lastDay: DateTime(2100),
               calendarFormat: CalendarFormat.week,
               selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-              //TODO:: UPDATE THE INCOMING TASKS UPON DATE
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
                   _selectedDay = selectedDay;
@@ -124,7 +123,6 @@ class _NotesState extends State<Notes> {
           ),
           BlocListener<NotesCubit, NotesState>(
             listener: (context, state) {
-              // TODO: implement listener
               if (state is NotesFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

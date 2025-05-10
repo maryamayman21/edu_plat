@@ -4,6 +4,8 @@ import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Doctor/features/home/presentation/widgets/container_drawer.dart';
+import 'package:edu_platt/presentation/notification/presentation/cubit/notification_counter_cubit.dart';
+import 'package:edu_platt/services/push_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -169,6 +171,9 @@ class _DoctorDrawerState extends State<DoctorDrawer>
             child: BlocListener<ProfileCubit, ProfileState>(
   listener: (context, state) {
     if(state is LogOutSuccess){
+      PushNotificationsService.onNewNotification = () {
+        context.read<NotificationCounterCubit>().reset();
+      };
       Navigator.pushNamedAndRemoveUntil(
         context,
         AppRouters.studentOrDoctor,

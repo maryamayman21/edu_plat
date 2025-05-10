@@ -2,6 +2,7 @@ import 'package:edu_platt/core/network/api_service.dart';
 import 'package:edu_platt/core/network/internet_connection_service.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Doctor/features/course_details/cubit/dialog_cubit.dart';
+import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/data/data_source/remote_data_source.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/data/model/submit_exam_model.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/data/repo/exam_repoImp.dart';
@@ -37,7 +38,7 @@ class QuizResultScreen extends StatelessWidget {
         backgroundColor: color.primaryColor,
         body: BlocBuilder<ExamBloc, ExamState>(
           builder: (context, state) {
-            if (state is ExamSuccess) return _buildSuccessContent(state);
+            if (state is ExamSuccess) return _buildSuccessContent(state, context);
             if (state is ExamError) return _buildErrorContent(context, state);
             if (state is ExamLoading) return const Center(child: CircularProgressIndicator());
             return const TextError(errorMessage: 'Something went wrong');
@@ -47,8 +48,7 @@ class QuizResultScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSuccessContent(ExamSuccess state) {
-     print('SUCCESS IN UI');
+  Widget _buildSuccessContent(ExamSuccess state, BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -73,9 +73,9 @@ class QuizResultScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20.h),
-          _buildScoreCard(),
+        //  _buildScoreCard(),
           SizedBox(height: 40.h),
-          _buildBackButton(),
+          _buildBackButton(context),
         ],
       ),
     );
@@ -101,10 +101,12 @@ class QuizResultScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBackButton() {
+  Widget _buildBackButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // TODO: Implement navigation or reset logic
+        Navigator.pushNamedAndRemoveUntil(
+            context,
+            AppRouters.HomeStudent, (route) => false);
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.green,

@@ -1,3 +1,6 @@
+import 'package:edu_platt/presentation/Routes/custom_pageRoute.dart';
+import 'package:edu_platt/presentation/notification/presentation/cubit/notification_counter_cubit.dart';
+import 'package:edu_platt/presentation/notification/presentation/views/notification_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,13 +36,37 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: true,
       actions: [
-        Padding(
-          padding: REdgeInsets.only(right: 10),
-          child: Icon(
-            Icons.notifications_active,
-            color: Colors.grey,
-            size: 30.r,
-          ),
+        BlocBuilder<NotificationCounterCubit, int>(
+          builder: (context, count) {
+            return Stack(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.notifications,
+                  color: Colors.grey,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CustomPageRoute(page:  const NotificationCenterScreen()),
+                    );
+                  },
+                ),
+                if (count > 0)
+                  Positioned(
+                    right: 8,
+                    top: 8,
+                    child: CircleAvatar(
+                      radius: 8,
+                      backgroundColor: Colors.red,
+                      child: Text(
+                        '$count',
+                        style: const TextStyle(fontSize: 10, color: Colors.white),
+                      ),
+                    ),
+                  )
+              ],
+            );
+          },
         ),
       ],
     );

@@ -39,5 +39,7 @@ static const String  userLogout= '/api/Accounts/logout';
 static const String  uploadVideoEndpoint= '/api/Videos/UploadVideo';
 static const String  getMaterialEndpoint   = 'https://great-hot-impala.ngrok-free.app/api/Materials/Get-Material-ByType/courseCode/typeFile?courseCode=';
 static const String  getStudentDegreesEndpoint   = '/api/Exams/GetExamResults/';
+static const String  getUserNotificationEndpoint   = '/api/Notification/notifications';
+static const String  doctorUpdateVideoEndpoint   = '/api/Videos/UpdateVideo';
 
 }

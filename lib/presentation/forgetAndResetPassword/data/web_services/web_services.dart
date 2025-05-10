@@ -47,6 +47,7 @@ class ForgetPassWebService {
         data: {
           'newPassword': password,
           'confirmPassword' : confirmPassword,
+          'email' : userEmail
         },
       );
       print('Change Password response: ${response.data}'); // Debug print

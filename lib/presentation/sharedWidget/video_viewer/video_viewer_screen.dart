@@ -39,6 +39,10 @@ class _NetworkVideoPlayerScreenState extends State<NetworkVideoPlayerScreen> {
         placeholder: Container(
           color: Colors.black,
         ),
+        allowFullScreen: true,
+        allowMuting: true,
+        allowPlaybackSpeedChanging: true,
+
       );
     } catch (e) {
       setState(() {
@@ -51,7 +55,9 @@ class _NetworkVideoPlayerScreenState extends State<NetworkVideoPlayerScreen> {
   @override
   void dispose() {
     _videoPlayerController.dispose();
-    _chewieController.dispose();
+    if(!_hasError) {
+      _chewieController.dispose();
+    }
     super.dispose();
   }
 

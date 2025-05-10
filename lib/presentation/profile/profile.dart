@@ -7,6 +7,7 @@ import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
 import 'package:edu_platt/core/cashe/services/profile_cashe_service.dart';
 import 'package:edu_platt/core/file_picker/file_picker_service.dart';
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
+import 'package:edu_platt/presentation/notification/presentation/cubit/notification_counter_cubit.dart';
 import 'package:edu_platt/presentation/profile/cubit/phone_cubit.dart';
 import 'package:edu_platt/presentation/profile/cubit/profile_cubit.dart';
 import 'package:edu_platt/presentation/profile/cubit/profile_photo_cubit.dart';
@@ -15,6 +16,7 @@ import 'package:edu_platt/presentation/profile/model/user.dart';
 import 'package:edu_platt/presentation/profile/profileField.dart';
 import 'package:edu_platt/presentation/profile/repository/profile_repository.dart';
 import 'package:edu_platt/presentation/profile/shimmer_effect.dart';
+import 'package:edu_platt/services/push_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -307,6 +309,9 @@ class ProfileView extends StatelessWidget {
                                       context.read<ProfileCubit>().clearUponUserType();
                                       // context.read<PhoneCubit>().close();
                                       context.read<ProfileCubit>().logout();
+                                      PushNotificationsService.onNewNotification = () {
+                                        context.read<NotificationCounterCubit>().reset();
+                                      };
                                       Navigator.pushNamedAndRemoveUntil(
                                         context,
                                         AppRouters.studentOrDoctor,

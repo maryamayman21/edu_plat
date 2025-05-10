@@ -45,9 +45,13 @@ class PushNotificationsService {
   }
 
 
+  static Function()? onNewNotification;
+
+
   static Future<void> handlebackgroundMessage(RemoteMessage message) async {
     await Firebase.initializeApp();
     log(message.notification?.title ?? 'null');
+    onNewNotification?.call();
   }
 
   static void handleForegroundMessage() {
@@ -57,6 +61,7 @@ class PushNotificationsService {
         LocalNotificationService.showBasicNotification(
           message,
         );
+        onNewNotification?.call(); // Notify UI
       },
     );
   }

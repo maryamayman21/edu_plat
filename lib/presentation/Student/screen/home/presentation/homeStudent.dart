@@ -2,12 +2,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
+import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
+import 'package:edu_platt/presentation/Routes/custom_pageRoute.dart';
 import 'package:edu_platt/presentation/Student/screen/exam/presentation/exam_tab.dart';
 import 'package:edu_platt/presentation/Student/screen/home/presentation/drawer.dart';
 import 'package:edu_platt/presentation/Student/screen/chat/Chat_List.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/levels.dart';
+import 'package:edu_platt/presentation/notification/presentation/cubit/notification_counter_cubit.dart';
+import 'package:edu_platt/presentation/notification/presentation/views/notification_view.dart';
 import 'package:edu_platt/presentation/profile/profile.dart';
+import 'package:edu_platt/services/local_notification_service.dart';
+import 'package:edu_platt/services/push_notification_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../notes/presentation/nots.dart';
@@ -34,6 +41,10 @@ class _HomeStudentState extends State<HomeStudentScreen>
   @override
   void initState() {
     super.initState();
+    //listenToNotificationStream();
+    PushNotificationsService.onNewNotification = () {
+      context.read<NotificationCounterCubit>().increment();
+    };
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
@@ -51,6 +62,14 @@ class _HomeStudentState extends State<HomeStudentScreen>
     _controller.dispose();
     super.dispose();
   }
+
+
+  // void listenToNotificationStream() {
+  //   LocalNotificationService.streamController.stream.listen((event) {
+  //     Navigator.pushNamed(context, AppRouters.notificationCenterScreen);
+  //   });
+  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -109,16 +128,40 @@ class _HomeStudentState extends State<HomeStudentScreen>
           ],
         )),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: REdgeInsets.only(right: 10),
-            child: Icon(
-              Icons.notifications_active,
-              color: Colors.grey,
-              size: 30.r,
+          actions: [
+            BlocBuilder<NotificationCounterCubit, int>(
+              builder: (context, count) {
+                return Stack(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.notifications,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                         CustomPageRoute(page:  const NotificationCenterScreen()),
+                        );
+                      },
+                    ),
+                    if (count > 0)
+                      Positioned(
+                        right: 8,
+                        top: 8,
+                        child: CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.red,
+                          child: Text(
+                            '$count',
+                            style: const TextStyle(fontSize: 10, color: Colors.white),
+                          ),
+                        ),
+                      )
+                  ],
+                );
+              },
             ),
-          ),
-        ],
+          ],
       ),
 
       body: tabs[selectedIndex],
