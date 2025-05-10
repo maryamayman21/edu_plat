@@ -77,10 +77,14 @@ dependencies:
   provider: ^6.1.4
   firebase_messaging: ^15.2.5
   flutter_local_notifications: ^18.0.1
+  timezone: ^0.10.1
+  flutter_timezone: ^4.1.0
+#  flutter_timezone:
+#    http: ^1.2.1
 
 
-
-
+dependency_overrides:
+    http: ^1.2.1
 
 dev_dependencies:
   flutter_test:
