@@ -45,7 +45,7 @@ class _SemestergpacalculatorState extends State<Semestergpacalculator> {
       double? credit = double.tryParse(semester["credit"]!.text.trim());
       double? sgpa = double.tryParse(semester["sgpa"]!.text.trim());
 
-      if (credit == null || credit <= 0 || sgpa == null || sgpa > 4.0) {
+      if (credit == null || credit < 1 || sgpa == null || sgpa > 4.0) {
         showDialog(
           context: ctx,
           builder: (context) => AlertDialog(
@@ -77,6 +77,36 @@ class _SemestergpacalculatorState extends State<Semestergpacalculator> {
       }
       totalCredits += credit;
       totalPoints += (credit * sgpa);
+    }
+    if (totalCredits > 134) {
+      showDialog(
+        context: ctx,
+        builder: (context) => AlertDialog(
+          title: Text("Credit Limit Exceeded", style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold, color: Colors.red)),
+          content: Text("Total credits must not exceed 134.", style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold)),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[200],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+                child: Text(
+                  "ok",
+                  style: TextStyle(fontSize: 20.sp, color: color.primaryColor,fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+      return;
     }
 
     double newSGPA = (totalCredits == 0) ? 0.0 : (totalPoints / totalCredits);

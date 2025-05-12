@@ -142,25 +142,7 @@ class _ConvirationWedgitState extends State<ConvirationWedgit> {
                                               ? Icon(Icons.person, color: Colors.white, size: 40)
                                               : null,
                                         ),
-                                        if ((unreadMessagesCount["${studentEmail}_${doctor.email}"] ?? 0) > 0)
-                                          Positioned(
-                                            right: 0,
-                                            top: 0,
-                                            child: Container(
-                                              padding: EdgeInsets.all(6),
-                                              decoration: BoxDecoration(
-                                                color: Colors.red,
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: Text(
-                                                '${unreadMessagesCount["${studentEmail}_${doctor.email}"]}',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+
                                       ],
                                     ),
 
