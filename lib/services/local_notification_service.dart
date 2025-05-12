@@ -99,7 +99,7 @@ class LocalNotificationService {
     await flutterLocalNotificationsPlugin.zonedSchedule(
         id,
         note.title,
-        note.description,
+       'Don\'t forget! You have a task waiting for you.',
         tz.TZDateTime.from(note.date!, tz.local),
         platformChannelSpecifics,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -107,7 +107,7 @@ class LocalNotificationService {
         UILocalNotificationDateInterpretation.absoluteTime,
         payload: note.title,
     );
-    print('Scheduled notification for ${note.title} at ${note.date} in ${tz.local.name}');
+   // print('Scheduled notification for ${note.title} at ${note.date} in ${tz.local.name}');
 
    }
 

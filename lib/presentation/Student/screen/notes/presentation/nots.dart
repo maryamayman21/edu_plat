@@ -1,11 +1,7 @@
-import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
-import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/cubit/notes_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/data/model/note.dart';
-import 'package:edu_platt/presentation/Student/screen/notes/data/notes_repository/notes_repository.dart';
-import 'package:edu_platt/presentation/Student/screen/notes/data/notes_web_service/notes_web_service.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/presentation/floatButtonSheet.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/presentation/taskItem.dart';
 import 'package:edu_platt/presentation/sharedWidget/no_wifi_widget.dart';
