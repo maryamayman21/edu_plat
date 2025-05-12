@@ -25,7 +25,6 @@ class StudentCard extends StatelessWidget {
                 Text(student.userName, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
               ],
             ),
-            SizedBox(height: 8.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

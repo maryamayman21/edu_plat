@@ -89,7 +89,6 @@ class ApiService {
     required String endPoint,
     required Map<String, dynamic> data,
   }) async {
-    print('Dio is called');
     return await _dio.post(endPoint, data: data,
     );
   }
@@ -104,8 +103,12 @@ class ApiService {
   }
 
   /// DELETE request
-  Future<Response> delete({required String endPoint}) async {
-    var response = await _dio.delete(endPoint,
+  Future<Response> delete({required String endPoint,
+    Map<String, dynamic>? data,
+  }) async {
+    var response = await _dio.delete(
+        endPoint,
+      data: data
     );
     return response;
   }

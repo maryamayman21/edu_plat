@@ -33,7 +33,6 @@ class CourseRegisterationActionButtons extends StatelessWidget {
                 listener: (context, state) {
                   // TODO: implement listener
                   if (state is CoursesRegistered) {
-                    print(state.message);
                     Navigator.pushReplacementNamed(context,
                         AppRouters.doctorCoursesRegisterSuccessRoute);
                   }
@@ -92,6 +91,7 @@ class CourseRegisterationActionButtons extends StatelessWidget {
                                    imageUrl: AppAssets.books);
 
                                if (isRegistered != null && isRegistered) {
+                                 print("Doctor registeration in UI");
                                  context
                                      .read<CourseRegisterationCubit>()
                                      .registerCourses(registerCourses);

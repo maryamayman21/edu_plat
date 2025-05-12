@@ -10,6 +10,7 @@ import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation/widgets/course_card_bloc_builder.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation/widgets/course_files_bloc_builder.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation/widgets/tabs_bloc_builder.dart';
+import 'package:edu_platt/presentation/courses/domain/entity/course_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +18,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class Coursedetails extends StatefulWidget {
   const Coursedetails({super.key, required this.courseDetails, required this.doctorId});
-  final Map<String, dynamic> courseDetails;
+  final CourseEntity courseDetails;
   final String doctorId;
   @override
   State<Coursedetails> createState() => _CoursedetailsState();
@@ -35,7 +36,7 @@ class _CoursedetailsState extends State<Coursedetails> {
         BlocProvider<CourseFilesCubit>(
           create: (context) => CourseFilesCubit(
           courseDetailsRepo: CourseDetailsRepoImp(CourseDetailsRemoteDataSourceImpl(ApiService()) , NetworkInfoImpl(InternetConnectionChecker()) ) ,
-            courseCode: widget.courseDetails['courseCode'],
+            courseCode: widget.courseDetails.courseCode,
             materialTypeCubit: context.read<MaterialTypeCubit>(),
             doctorId: widget.doctorId
           )
@@ -43,7 +44,7 @@ class _CoursedetailsState extends State<Coursedetails> {
         BlocProvider<CourseCardCubit>(
           create: (context) => CourseCardCubit(
             courseDetailsRepo: CourseDetailsRepoImp(CourseDetailsRemoteDataSourceImpl(ApiService()) , NetworkInfoImpl(InternetConnectionChecker()) ) ,
-          )..fetchCourseCard(widget.courseDetails['courseCode'], widget.doctorId)
+          )..fetchCourseCard(widget.courseDetails.courseCode, widget.doctorId)
         )
       ],
       child: Scaffold(
@@ -51,18 +52,14 @@ class _CoursedetailsState extends State<Coursedetails> {
               slivers: [
                 // Header
                  WidgetCourseHeader(
-                    courseCode:widget.courseDetails['courseCode']),
+                    courseCode:widget.courseDetails.courseCode),
                 SliverToBoxAdapter(child: SizedBox(height: 15.h)),
-                SliverToBoxAdapter(child: CourseCardBlocBuilder(courseCode: widget.courseDetails['courseCode'] ,)),
+                SliverToBoxAdapter(child: CourseCardBlocBuilder(courseCode: widget.courseDetails.courseCode,)),
 
                 SliverToBoxAdapter(child: SizedBox(height: 20.h)),
-
                   TabsBlocBuilder(
-                  hasLab: widget.courseDetails['has_Lab'],
-                                  ),
-
+                  hasLab: widget.courseDetails.hasLab,),
                 const CourseFilesBlocBuilder(),
-                
               ]
           )
       ),

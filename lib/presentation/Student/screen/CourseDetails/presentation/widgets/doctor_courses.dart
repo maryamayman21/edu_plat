@@ -2,6 +2,7 @@ import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/domain/entity/doctor_courses_entity.dart';
+import 'package:edu_platt/presentation/courses/domain/entity/course_entity.dart';
 import 'package:edu_platt/presentation/sharedWidget/animated_widegt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DoctorCoursesWidget extends StatefulWidget {
   const DoctorCoursesWidget ({super.key, required this.doctorCoursesEntity, required this.courseDetail});
    final DoctorCoursesEntity doctorCoursesEntity;
-   final Map<String, dynamic> courseDetail;
+   final CourseEntity courseDetail;
   @override
   State<DoctorCoursesWidget> createState() => _DoctorCoursesState();
 }
@@ -29,9 +30,10 @@ class _DoctorCoursesState extends State<DoctorCoursesWidget>
             Navigator.pushNamed(
               context,
               AppRouters.studentCourseDetails,
-              arguments:{
+              arguments:
+              {
                 'doctorId' : widget.doctorCoursesEntity.doctorId,
-                'courseCode' : widget.courseDetail
+                'courseEntity' : widget.courseDetail
               },
             );
           },

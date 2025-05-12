@@ -54,14 +54,18 @@ class CourseRegisterationCubit extends Cubit<CourseRegisterationState> {
 
   Future<void> registerCourses(List<String> courses) async {
     try {
+
+      //List<String> courseCodes = courses.map((course) => course['courseCode'] as String).toList();
+
       final token = await tokenService.getToken();
-      //print("Done");
+   //   print("Doctor registeration in cubit");
       final response =
           await courseRegistrationRepository.registerCourses(courses, token!);
 
       final responseData = response.data;
       if (responseData['success'] == true) {
-        await courseCacheService.saveCourses(courses);
+        // await courseCacheService.saveCourses(courses);
+        //print('Registered courses in cache : $courses');
         final message = responseData['message'] ?? 'Registration successful.';
         emit(CoursesRegistered(message));
       } else {

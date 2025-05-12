@@ -123,18 +123,18 @@ class ProfileCubit extends Cubit<ProfileState> {
     print('Notes cache deleted');
     await notesCacheService.clearNotesCache();
   }
-  Future<void> clearCoursesCache()async{
-    print('Courses cache deleted');
-    await courseCacheService.clearCoursesCache();
-  }
+  // Future<void> clearCoursesCache()async{
+  //   print('Courses cache deleted');
+  //   await courseCacheService.clearCoursesCache();
+  // }
 
   Future<void> clearUponUserType()async{
     String? role = await tokenService.getRule();
     if(role== 'Student'){
       await clearNotesCache();
-      await clearCoursesCache();
+    //  await clearCoursesCache();
     }else{
-      await clearCoursesCache();
+   //   await clearCoursesCache();
     }
   }
 

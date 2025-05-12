@@ -98,9 +98,8 @@ class StudentCourseRegisterationActionButtons extends StatelessWidget {
                                     imageUrl: AppAssets.books);
 
                                 if (isRegistered != null && isRegistered) {
-                                  context
-                                      .read<StudentCourseRegisterationCubit>()
-                                      .registerCourses(registerCourses);
+                                  print('FUCK MY LIFE');
+                                  context.read<StudentCourseRegisterationCubit>().registerCourses(registerCourses);
                                 }
                               }
                             }

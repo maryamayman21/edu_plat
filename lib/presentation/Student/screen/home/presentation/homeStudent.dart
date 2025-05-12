@@ -8,6 +8,7 @@ import 'package:edu_platt/presentation/Student/screen/exam/presentation/exam_tab
 import 'package:edu_platt/presentation/Student/screen/home/presentation/drawer.dart';
 import 'package:edu_platt/presentation/Student/screen/chat/Chat_List.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/levels.dart';
+import 'package:edu_platt/presentation/courses/presentaion/views/student_courses_screen.dart';
 import 'package:edu_platt/presentation/notification/presentation/cubit/notification_counter_cubit.dart';
 import 'package:edu_platt/presentation/notification/presentation/views/notification_view.dart';
 import 'package:edu_platt/presentation/profile/profile.dart';
@@ -28,7 +29,8 @@ class HomeStudentScreen extends StatefulWidget {
 class _HomeStudentState extends State<HomeStudentScreen>
     with SingleTickerProviderStateMixin {
   List<Widget> tabs = [
-    Levels(),
+  // Levels(),
+    const StudentHomeCoursesScreen(),
     const Notes(),
     ChatList(),
     StudentExamTab(),

@@ -1,16 +1,32 @@
+// class Course {
+//   final String courseCode;
+//   final String courseDescription;
+//
+//   Course({required this.courseCode, required this.courseDescription});
+//
+//   factory Course.fromJson(Map<String, dynamic> json) {
+//     return Course(
+//       courseCode: json['courseCode'],
+//       courseDescription: json['courseDescription'],
+//     );
+//   }
+// }
+
+
 class Course {
   final String courseCode;
-  final String courseDescription;
+  final bool hasLab;
 
-  Course({required this.courseCode, required this.courseDescription});
+  Course({required this.courseCode, required this.hasLab});
 
   factory Course.fromJson(Map<String, dynamic> json) {
     return Course(
       courseCode: json['courseCode'],
-      courseDescription: json['courseDescription'],
+      hasLab: json['has_lab'] ?? false, // default to false if missing
     );
   }
 }
+
 
 class Level {
   final int levelId;

@@ -49,7 +49,7 @@ class DropdownCubit extends Cubit<DropdownState> {
       state.copyWith(selectedCourses: {}),
     );
   }
-////////////////////////////////////////////////////////////////
+
   Map<String, List<String>> getAllSelectedCourses() {
     return state.selectedCourses;
 

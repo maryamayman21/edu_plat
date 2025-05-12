@@ -67,16 +67,16 @@ void main() async {
 
   ]);
 
- DateTime utcDateTime = DateTime.parse("2025-05-10T19:15:00.000Z");
-    bool  isUtc = utcDateTime.isUtc;
-    if(isUtc){
-      print('Is utc');
-    }else{
-      print('not utc');
-    }
-
-    DateTime localTime =  utcDateTime.toLocal();
-    print('Local time : $localTime');
+ // DateTime utcDateTime = DateTime.parse("2025-05-10T19:15:00.000Z");
+ //    bool  isUtc = utcDateTime.isUtc;
+ //    if(isUtc){
+ //      print('Is utc');
+ //    }else{
+ //      print('not utc');
+ //    }
+ //
+ //    DateTime localTime =  utcDateTime.toLocal();
+ //    print('Local time : $localTime');
 
 
   runApp(MyApp(

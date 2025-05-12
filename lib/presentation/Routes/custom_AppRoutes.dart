@@ -1,4 +1,5 @@
 
+import 'package:edu_platt/presentation/Doctor/features/courseRegisteration/data/models/course.dart';
 import 'package:edu_platt/presentation/Doctor/features/course_details/course_details_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/exam_model.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/entity/student_degree_entity.dart';
@@ -36,6 +37,7 @@ import 'package:edu_platt/presentation/Student/screen/exam/presentation/quiz_scr
 import 'package:edu_platt/presentation/Student/screen/exam/presentation/widgets/quiz_result_screen.dart';
 import 'package:edu_platt/presentation/Student/screen/home/presentation/homeStudent.dart';
 import 'package:edu_platt/presentation/Student/screen/levels/presentation/StudentviewAllCourses.dart';
+import 'package:edu_platt/presentation/courses/domain/entity/course_entity.dart';
 import 'package:edu_platt/presentation/notification/presentation/views/notification_view.dart';
 import 'package:edu_platt/presentation/sharedWidget/file_pdf_view/file_pdf_view.dart';
 import 'package:edu_platt/presentation/sharedWidget/image_viewer/image_viewer_screen.dart';
@@ -207,9 +209,15 @@ static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
       case doctorHomeRoute:
         return MaterialPageRoute(builder: (context) => HomeScreen(),);
       case doctorViewAllCoursesRoute:
-        return CustomPageRoute(page: const Viewallcourses());
+        final courses = settings.arguments as List<CourseEntity>;
+        return CustomPageRoute(page: Viewallcourses(
+          courses: courses,
+        ));
       case studentViewAllCoursesRoute:
-        return CustomPageRoute(page: const StudentViewallcourses());
+        final courses = settings.arguments as List<CourseEntity>;
+        return CustomPageRoute(page:  StudentViewallcourses(
+          courses:courses ,
+        ));
       case doctorSemesterRoute:
         return CustomPageRoute(page: const SemesterScreen());
       case studentSemesterRoute:
@@ -236,7 +244,7 @@ static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
         return CustomPageRoute(page:VerifyEmail( arguemnt: userDate,));
       case studentCourseDetails :
         final args = settings.arguments as Map<String, dynamic>; // Cast arguments to Map
-        final courseDetail = args['courseCode'] as Map<String, dynamic>; // Extract courseDetail
+        final courseDetail = args['courseEntity'] as CourseEntity; // Extract courseDetail
         final doctorId = args['doctorId'] as String; // Extract doctorId
 
         return CustomPageRoute(page: Coursedetails(courseDetails:courseDetail , doctorId: doctorId,));//tmam
@@ -259,7 +267,7 @@ static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
           email:  userEmail,
         ));
         case doctorCoursesScreen:
-          final courseDetail = settings.arguments as Map<String,dynamic>;
+          final courseDetail = settings.arguments as CourseEntity;
         return CustomPageRoute(page: DoctorCoursesScreen(courseDetail:courseDetail,)); //tmam
       case changePasswordSuccRoute:
         return MaterialPageRoute(

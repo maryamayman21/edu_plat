@@ -39,10 +39,10 @@ class StudentCourseRegisterationCubit extends Cubit<StudentCourseRegisterationSt
           semester.levels.firstWhere((level) => level.levelId == 3).courses;
       final level4Courses =
           semester.levels.firstWhere((level) => level.levelId == 4).courses;
-      print(level1Courses);
-      print(level2Courses);
-      print(level3Courses);
-      print(level4Courses);
+      // print(level1Courses);
+      // print(level2Courses);
+      // print(level3Courses);
+      // print(level4Courses);
       emit(CourseRegisterationSuccess(
           level1Courses, level2Courses, level3Courses, level4Courses));
     } catch (error) {
@@ -65,15 +65,13 @@ class StudentCourseRegisterationCubit extends Cubit<StudentCourseRegisterationSt
     try {
       //cache courses
       final token = await tokenService.getToken();
-      print("REGISTER COURSES IN CUBIT T ");
       final response =
       await studentcourseRegistrationRepository.registerCourses(courses, token!);
 
       final responseData = response.data;
       if (responseData['success'] == true) {
-        await courseCacheService.saveCourses(courses);
-        print("Courses cached successfully");
-        //print(courses);
+    //    await courseCacheService.saveCourses(courses);
+
         final message = responseData['message'] ?? 'Registration successful.';
         emit(CoursesRegistered(message));
       } else {

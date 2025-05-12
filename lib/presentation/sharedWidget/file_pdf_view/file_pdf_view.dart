@@ -10,10 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:internet_file/internet_file.dart';
-import 'package:internet_file/storage_io.dart';
-import 'package:pdfx/pdfx.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+
 
 class PdfFileScreen extends StatelessWidget {
 

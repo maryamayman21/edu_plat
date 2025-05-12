@@ -6,7 +6,7 @@ import '../../../../../../core/utils/helper_methds/navigation_helper.dart';
 import '../../application/cubit/courses_cubit.dart';
 import 'custom_course_item.dart';
 class CoursesGrid extends StatelessWidget {
-  const CoursesGrid({super.key, required this.viewAll, required this.finalCourses, required this.page});
+  const CoursesGrid({super.key, this.viewAll = false, required this.finalCourses, required this.page});
 final bool viewAll;
 final List<Map<String, dynamic>> finalCourses;
   final String page;

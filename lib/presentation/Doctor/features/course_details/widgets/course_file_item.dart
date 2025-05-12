@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:edu_platt/core/utils/helper_methds/parse_url_method.dart';
 import 'package:edu_platt/presentation/Doctor/features/course_details/domain/entities/course_details_entity.dart';
 import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
 import 'package:flutter/material.dart';
@@ -30,15 +31,15 @@ class FileListWidget extends StatelessWidget {
             onTap: () {
               if (isImage(file.extention!)) {
                 Navigator.pushNamed(context, AppRouters.imageViewerScreen,
-                    arguments: {'imageUrl': file.path, 'imageName': file.name});
+                    arguments: {'imageUrl': parseUrl(file.path!), 'imageName': file.name});
               }
               else if(isVideo(file.extention!)){
                 Navigator.pushNamed(context, AppRouters.videoViewerScreen,
-                    arguments: {'videoUrl': file.path, 'videoName': file.name});
+                    arguments: {'videoUrl': parseUrl(file.path!), 'videoName': file.name});
               }
               else{
                 Navigator.pushNamed(context, AppRouters.pdfViewerScreen,
-                    arguments: {'pdfUrl': file.path, 'pdfName': file.name});
+                    arguments: {'pdfUrl': parseUrl(file.path!), 'pdfName': file.name});
               }
             },
             child: ListTile(

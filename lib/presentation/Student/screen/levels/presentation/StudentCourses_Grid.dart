@@ -17,8 +17,7 @@ final List<Map<String, dynamic>>finalCourses;
           horizontal: 24 ),
       child: Column(
         children: [
-          viewAll ? Container() : const SizedBox
-              .shrink(),
+          viewAll ? Container() : const SizedBox.shrink(),
           GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,

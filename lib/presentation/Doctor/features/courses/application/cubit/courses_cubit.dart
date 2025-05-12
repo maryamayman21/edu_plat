@@ -26,6 +26,7 @@ class CoursesCubit extends Cubit<CoursesState> {
         print('got cached courses from cache');
      if (cachedCourses != null && cachedCourses.isNotEmpty) {
         print('Cached courses is not null');
+        print('Cached courses  :  $cachedCourses');
         emit(CoursesSuccess(cachedCourses));
        return;
       } else {

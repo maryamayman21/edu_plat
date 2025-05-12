@@ -48,6 +48,7 @@ class StudentPdfViewerScreen extends StatelessWidget {
             data: students.map((student) {
               return [
                 student.userName,
+               // student.email,
                 student.score.toString(),
                 '${student.scorePercentage.toStringAsFixed(2)}%',
                 student.attendance ? 'Present' : 'Absent',
