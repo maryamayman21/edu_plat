@@ -51,7 +51,8 @@ class WidgetCourseHeader extends StatelessWidget {
               icon: const Icon(
                 Icons.arrow_back,
                 color: Colors.black,
-              )),
+              )
+          ),
         ),
       ),
     );

@@ -187,9 +187,9 @@ static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
           userEmail: userEmail,
         ));
         case doctorCourseDetailsRoute:
-          final courseCode  = settings.arguments  as String;
+          final courseEntity  = settings.arguments  as CourseEntity;
         return CustomPageRoute(page: CourseDetails(
-          courseCode: courseCode,
+        courseEntity: courseEntity,
         ));
       case passwordResetSuccess:
         return MaterialPageRoute(builder: (context) =>  const PasswordResetSuccess(),);
