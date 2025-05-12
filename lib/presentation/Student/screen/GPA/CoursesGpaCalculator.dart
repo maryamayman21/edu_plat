@@ -40,10 +40,10 @@ class _CoursesgpacalculatorState extends State<Coursesgpacalculator> {
     double totalCredits = 0;
     double totalPoints = 0;
     Map<String, double> gradePoints = {
-      "A": 4.000, "A-": 3.670,
-      "B+": 3.330, "B": 3.000,
-      "C+": 2.670, "C": 2.330,
-      "D": 2.000, "F": 0.000,
+      "A": 4.00, "A-": 3.67,
+      "B+": 3.33, "B": 3.00,
+      "C+": 2.67, "C": 2.33,
+      "D": 2.00, "F": 0.000,
     };
 
     for (var course in courses) {

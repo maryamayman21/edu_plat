@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DoctorPrivatechat extends StatefulWidget {
   final String studentName;
@@ -19,6 +20,41 @@ class DoctorPrivatechat extends StatefulWidget {
 }
 
 class _DoctorPrivatechatState extends State<DoctorPrivatechat> {
+  @override
+  void initState() {
+    super.initState();
+    _saveLastOpenedTime();
+    // إعلام الطرف الآخر بأن الرسائل قد قرئت
+    _markMessagesAsRead();
+  }
+  void _saveLastOpenedTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('lastOpenedPrivate', DateTime.now().millisecondsSinceEpoch);
+  }
+
+  void _markMessagesAsRead() async {
+    final profileState = context.read<ProfileCubit>().state;
+    final currentUserEmail = profileState is ProfileLoaded ? profileState.userModel.email : "";
+
+    if (currentUserEmail.isEmpty) return;
+
+    final roomId = "${widget.studentEmail}_${currentUserEmail}";
+
+    // تحديث جميع الرسائل المرسلة للطرف الحالي كمقروءة
+    final query = await FirebaseFirestore.instance
+        .collection('chats')
+        .doc(roomId)
+        .collection('messages')
+        .where('receiverId', isEqualTo: currentUserEmail)
+        .get();
+
+    final batch = FirebaseFirestore.instance.batch();
+    for (final doc in query.docs) {
+      batch.update(doc.reference, {'isRead': true});
+    }
+    await batch.commit();
+  }
+
 
   @override
   Widget build(BuildContext context) {

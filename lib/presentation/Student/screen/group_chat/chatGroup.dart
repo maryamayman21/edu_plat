@@ -17,10 +17,10 @@ import '../../../profile/data/profile_web_services.dart';
 import '../../../profile/repository/profile_repository.dart';
 
 class ChatgroupScreen extends StatefulWidget {
-  final String courseTitle;
+  final String courseCode;
 
 
-  const ChatgroupScreen({super.key, required this.courseTitle});
+  const ChatgroupScreen({super.key, required this.courseCode});
 
   @override
   State<ChatgroupScreen> createState() => _ChatgroupScreenState();
@@ -33,7 +33,7 @@ class _ChatgroupScreenState extends State<ChatgroupScreen> {
   Widget build(BuildContext context) {
     CollectionReference messages = FirebaseFirestore.instance
         .collection('group_chats')
-        .doc(widget.courseTitle)
+        .doc(widget.courseCode)
         .collection('messages');
     return BlocProvider(
       create: (context) => ProfileCubit(
@@ -49,7 +49,7 @@ class _ChatgroupScreenState extends State<ChatgroupScreen> {
           backgroundColor: color.primaryColor,
           iconTheme: IconThemeData(color: Colors.white),
           title: Text(
-            'Group Chat - ${widget.courseTitle}',
+            'Group Chat - ${widget.courseCode}',
             style: TextStyle(
               fontSize: 24.sp,
               fontWeight: FontWeight.bold,
@@ -76,9 +76,12 @@ class _ChatgroupScreenState extends State<ChatgroupScreen> {
                     itemCount: chatDocs.length,
                     itemBuilder: (context, index) {
                       final msg = chatDocs[index];
-                      final message = msg['text'] ?? '';
-                      final senderId = msg['senderId'] ?? '';
-                      final timestamp = (msg['timestamp'] as Timestamp).toDate();
+                      final data = msg.data() as Map<String, dynamic>;
+
+                      final message = data['text'] ?? '';
+                      final senderId = data['senderId'] ?? '';
+                      final senderName = data['name'] ?? 'Unknown';
+                      final timestamp = (data['timestamp'] as Timestamp).toDate();
 
                       final formattedTime = DateFormat('hh:mm a').format(timestamp);
                       final dateLabel = _getDateLabel(timestamp);
@@ -111,16 +114,43 @@ class _ChatgroupScreenState extends State<ChatgroupScreen> {
                                       ),
                                     ),
                                   ),
-                                BubbleNormal(
-                                  text: message,
-                                  isSender: senderId == user?.email,
-                                  color: senderId == user?.email
-                                      ? Color(0xffDCD9D9FF)
-                                      : color.secondColor,
-                                  tail: true,
-                                  textStyle: TextStyle(
-                                    fontSize: 20.sp,
-                                    color: senderId == user?.email ? Colors.black : Colors.white,
+                                Padding(
+                                  padding: REdgeInsets.all(8.0),
+                                  child: Align(
+                                    alignment: senderId == user.email
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                    child: Column(
+                                      crossAxisAlignment: msg.id == user.email
+                                          ? CrossAxisAlignment.end
+                                          : CrossAxisAlignment.start,
+                                      children: [
+                                        if (senderId!=user.email)
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 12.w, right: 12.w),
+                                            child: Text(
+                                              senderName ?? "Unknown",
+                                              style: TextStyle(
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey[600],
+                                              ),
+                                            ),
+                                          ),
+                                        BubbleNormal(
+                                          text: message,
+                                          isSender: senderId == user.email,
+                                          color: senderId == user.email
+                                              ? Color(0xffDCD9D9FF)
+                                              : color.secondColor,
+                                          tail: true,
+                                          textStyle: TextStyle(
+                                            fontSize: 24.sp,
+                                            color: senderId == user.email ? Colors.black : Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Padding(
@@ -152,6 +182,7 @@ class _ChatgroupScreenState extends State<ChatgroupScreen> {
                             'text': text,
                             'senderId': user?.email,
                             'timestamp': Timestamp.now(),
+                            "name": user?.userName,
                           });
                           _controller.animateTo(0,
                               duration: const Duration(milliseconds: 300),

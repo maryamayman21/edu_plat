@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Privatechat extends StatefulWidget {
   final String doctorName;
@@ -19,6 +20,42 @@ class Privatechat extends StatefulWidget {
 }
 
 class _PrivatechatState extends State<Privatechat> {
+  @override
+  void initState() {
+    super.initState();
+    _saveLastOpenedTime();
+    // إعلام الطرف الآخر بأن الرسائل قد قرئت
+    _markMessagesAsRead();
+  }
+  void _saveLastOpenedTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('lastOpenedPrivate', DateTime.now().millisecondsSinceEpoch);
+  }
+
+  void _markMessagesAsRead() async {
+    final profileState = context.read<ProfileCubit>().state;
+    final currentUserEmail = profileState is ProfileLoaded ? profileState.userModel.email : "";
+
+    if (currentUserEmail.isEmpty) return;
+
+    final roomId = "${currentUserEmail}_${widget.doctorEmail}";
+
+    // تحديث جميع الرسائل المرسلة للطرف الحالي كمقروءة
+    final query = await FirebaseFirestore.instance
+        .collection('chats')
+        .doc(roomId)
+        .collection('messages')
+        .where('receiverId', isEqualTo: currentUserEmail)
+        .where('isRead', isEqualTo: false)
+        .get();
+
+    final batch = FirebaseFirestore.instance.batch();
+    for (final doc in query.docs) {
+      batch.update(doc.reference, {'isRead': true});
+    }
+    await batch.commit();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +202,7 @@ class _PrivatechatState extends State<Privatechat> {
                       "createdAt": Timestamp.now(),
                       "senderId": studentEmail.isNotEmpty ? studentEmail : "UNKNOWN",
                       "receiverId": widget.doctorEmail,
+                      "isRead": false,
                     }).then((_) {
                       setState(() {});
                     });

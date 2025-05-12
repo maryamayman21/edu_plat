@@ -16,7 +16,7 @@ import '../../../../../../core/network/internet_connection_service.dart';
 import '../../../../../Doctor/features/course_details/data/data_source/remote_data_source.dart';
 
 
-class CourseDetailsCard extends StatelessWidget {
+class CourseDetailsCard extends StatefulWidget {
   final String courseTitle;
   final int creditHours;
   final int lectures;
@@ -36,6 +36,12 @@ class CourseDetailsCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CourseDetailsCard> createState() => _CourseDetailsCardState();
+}
+
+class _CourseDetailsCardState extends State<CourseDetailsCard> {
+  bool showRedDot = true;
+  @override
   Widget build(BuildContext context) {
     return   Card(
         elevation: 4,
@@ -49,7 +55,7 @@ class CourseDetailsCard extends StatelessWidget {
             children: [
               // Course Title
               Text(
-              courseTitle,
+              widget.courseTitle,
                 style: TextStyle(
                   color: color.primaryColor,
                   fontSize: 22.sp,
@@ -63,11 +69,11 @@ class CourseDetailsCard extends StatelessWidget {
                 children: [
                   DetailIconText(
                     icon: Icons.lock_clock,
-                    text: '$creditHours Credit Hours',
+                    text: '${widget.creditHours} Credit Hours',
                   ),
                   DetailIconText(
                     icon: Icons.library_books,
-                    text: '$lectures Lectures',
+                    text: '${widget.lectures} Lectures',
                   ),
                 ],
               ),
@@ -82,20 +88,43 @@ class CourseDetailsCard extends StatelessWidget {
                     text: 'Grades',
                   ),
                   InkWell(
-                    onTap: (){
+                    onTap: () {
+                      // إخفاء النقطة الحمراء بعد أول مرة يتم الضغط فيها
+                      setState(() {
+                        showRedDot = false;
+                      });
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => GroupMember(
-                            courseCode: courseTitle,
+                            courseCode: widget.courseCode,
                           ),
                         ),
                       );
-
                     },
-                    child: DetailIconText(
-                      icon: Icons.chat,
-                      text: 'Chat          ',
+                    child: Stack(
+                      children: [
+                        DetailIconText(
+                          icon: Icons.chat,
+                          text: 'Chat          ',
+                        ),
+                        if (showRedDot)
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                              width: 15,
+                              height: 20,
+                              padding: EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                 ],
@@ -104,12 +133,11 @@ class CourseDetailsCard extends StatelessWidget {
 
               // Table for Marks
               TableMark(
-                marks: marks,
+                marks: widget.marks,
               ),
             ],
           ),
         ),
-
     );
   }
 }

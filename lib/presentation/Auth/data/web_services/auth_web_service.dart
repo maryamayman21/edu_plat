@@ -49,7 +49,7 @@ class AuthWebService {
         ApiConstants.verifyEmailEndpoint,
         data: {
           'otp': otp,
-          'email':otp
+          'email':email
         },
       );
     } catch (e) {

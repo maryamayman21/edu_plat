@@ -258,9 +258,9 @@ static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
         return MaterialPageRoute(
             builder: (context) => const HomeStudentScreen());
       case chatGroup:
-        final courseTitlle = settings.arguments as String;
+        final courseCode = settings.arguments as String;
         return MaterialPageRoute(
-            builder: (context) => ChatgroupScreen(courseTitle: courseTitlle,));
+            builder: (context) => ChatgroupScreen(courseCode: courseCode,));
       case changePasswordRoute:
         final userEmail = settings.arguments as String;
         return CustomPageRoute(page: Changepassword(

@@ -84,11 +84,11 @@ class _HomeStudentState extends State<HomeStudentScreen>
         drawer: const Drawerr(),
         appBar:  AppBar(
         elevation: 0,
-        backgroundColor: (selectedIndex == 4 || selectedIndex == 3)
+        backgroundColor: (selectedIndex == 4 || selectedIndex == 3||selectedIndex == 2)
             ? color.primaryColor
             : (selectedIndex == 1 ? color.primaryColor : Colors.transparent),
         scrolledUnderElevation: 0,
-        toolbarHeight: (selectedIndex == 4 || selectedIndex == 3)
+        toolbarHeight: (selectedIndex == 4 || selectedIndex == 3||selectedIndex == 2)
             ? 60.h
             : (selectedIndex == 1 ? 80.h : 130.h),
         shape: selectedIndex == 1
@@ -99,10 +99,9 @@ class _HomeStudentState extends State<HomeStudentScreen>
             bottomRight: Radius.circular(30.r),
           ),
         ),
-        title: (selectedIndex == 4 || selectedIndex == 3)
+        title: (selectedIndex == 4 || selectedIndex == 3||selectedIndex == 2)
             ? Text(
-          selectedIndex == 4 ? "Profile" : "Exams",
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          selectedIndex == 2 ? "Chat" : (selectedIndex == 4 ? "Profile" : "Exams"),          style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Colors.white,
             fontSize: 22.sp,
             fontWeight: FontWeight.w500,
