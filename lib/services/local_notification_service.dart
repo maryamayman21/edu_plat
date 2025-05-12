@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'package:edu_platt/presentation/Student/screen/notes/data/model/note.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -47,7 +48,70 @@ class LocalNotificationService {
       onDidReceiveBackgroundNotificationResponse: onTap,
 
     );
+
+    const DarwinInitializationSettings initializationSettingsDarwin =
+    DarwinInitializationSettings(
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission:true,
+        );
+
+    if (Platform.isAndroid) {
+      final AndroidFlutterLocalNotificationsPlugin? androidPlugin =
+      flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      await androidPlugin?.requestNotificationsPermission();
+    } else if (Platform.isIOS) {
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
+
+
+
   }
+
+   static Future<void> scheduleNotification(Note note, int id) async {
+    if (note.date== null || note.date!.isBefore(DateTime.now())) {
+      return;
+    }
+
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'note_reminder_channel',
+      'Note Reminders',
+      channelDescription: 'Notifications for note reminders',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: DarwinNotificationDetails(),
+    );
+    tz.initializeTimeZones();
+    // Use the emulator's local timezone
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        id,
+        note.title,
+        note.description,
+        tz.TZDateTime.from(note.date!, tz.local),
+        platformChannelSpecifics,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
+        payload: note.title,
+    );
+    print('Scheduled notification for ${note.title} at ${note.date} in ${tz.local.name}');
+
+   }
+
+
 
   //basic Notification
   static void showBasicNotification(RemoteMessage message) async {

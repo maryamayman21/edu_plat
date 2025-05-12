@@ -80,6 +80,7 @@ dependencies:
   timezone: ^0.10.1
   flutter_timezone:
   http: ^1.2.1
+  platform: ^3.1.6
 
 
 

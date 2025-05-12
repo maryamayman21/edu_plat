@@ -35,12 +35,10 @@ class NotesCubit extends Cubit<NotesState> {
 
      List<Note> notes = await notesCacheService.saveNote(note, noteID);
 
-
-       LocalNotificationService.showScheduledNotification(
-        scheduledDate: note.date,
-          taskModel: note,
-         id: 5
-      );
+        await LocalNotificationService.scheduleNotification(
+          note,
+          noteID
+        );
 
      emit(NotesSuccess(notes));
       // if (responseData['success'] == true) {

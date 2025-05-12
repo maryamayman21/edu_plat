@@ -62,22 +62,10 @@ void main() async {
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Exams');
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Videos');
   await Future.wait([
-    PushNotificationsService.init(),//2
-    LocalNotificationService.init(),//3
+    PushNotificationsService.init(),
+    LocalNotificationService.init(),
 
   ]);
-
- // DateTime utcDateTime = DateTime.parse("2025-05-10T19:15:00.000Z");
- //    bool  isUtc = utcDateTime.isUtc;
- //    if(isUtc){
- //      print('Is utc');
- //    }else{
- //      print('not utc');
- //    }
- //
- //    DateTime localTime =  utcDateTime.toLocal();
- //    print('Local time : $localTime');
-
 
   runApp(MyApp(
   ));
