@@ -1,5 +1,5 @@
 class ApiConstants {
-  static const String baseUrl = 'https://great-hot-impala.ngrok-free.app';
+  static const String baseUrl = 'https://eduplat123.runasp.net';
   static const String registerEndpoint  = '/api/Accounts/Register';
   static const String loginEndpoint  = '/api/Accounts/Login';
   static const String verifyEmailEndpoint  = '/api/Accounts/VerifyEmail';
