@@ -1,17 +1,94 @@
-<p align="center">
-  <img src="EduPlat.jpeg" alt="EduPlat Logo" width="200"/>
-</p>
 
 <h1 align="center">EduPlat</h1>
 
-##  Project Overview
+##  Key Features
 
-**Edu\_Plat** is an educational mobile platform built using [Flutter](https://flutter.dev/), developed specifically for computer science students and doctors at the Faculty of Science, Ain Shams University. The app provides seamless access to academic resources and services, including:
+Edu\_Plat is designed to enhance the academic experience for both doctors and students in the Computer Science program at the Faculty of Science, Ain Shams University. Below is a detailed breakdown of its core functionalities:
 
-*  **Online and offline PDF exams** (written and multiple-choice)
-*  **Chat functionality** between students and doctors
-*  **Study materials** and resources
-*  Additional academic tools and services
+---
+
+### 1.  Exams Management (Doctor Dashboard)
+
+Doctors have access to a powerful dashboard that allows them to create and manage various types of exams:
+
+* **Online Exams**:
+  Create time-limited online assessments, including support for multiple-choice. Exams are automatically graded where applicable.
+
+* **Offline Exam Announcements**:
+  Schedule and announce upcoming in-person exams. Details like date, time, location, and exam type can be specified.
+
+* **PDF Exams (Written & MCQ)**:
+  Upload PDF versions of exams for download, including written exams and multiple-choice questions that students can solve offline.
+
+* **Exam Management**:
+
+  * View student submissions and grades
+  * Edit or discard previously created exams
+  * Monitor student performance across all assessments
+
+---
+
+### 2.  Accessible Materials
+
+Doctors can share a wide range of academic materials to support students' learning:
+
+* **Types of Materials**:
+
+  * Lecture notes
+  * Lab manuals
+  * Previous exams (with or without solutions)
+  * Educational videos
+
+* **Permissions**:
+
+  * **Doctors**: Can upload, edit, and delete materials
+  * **Students**: Can view materials  (if synced)
+
+---
+
+### 3. 💬 Chat Functionality
+
+Edu\_Plat includes a robust real-time messaging system to enhance communication:
+
+* **Private Chats**:
+  One-on-one messaging between doctors and students
+
+* **Group Chats**:
+  Group discussions based on courses, study groups, or projects
+
+* **Community Chats**:
+  Public channels where general academic topics or announcements can be discussed by all users in the system
+
+---
+
+### 4. Additional Services
+
+Edu\_Plat provides extra utilities that support student and doctor productivity:
+
+* **GPA Calculator** *(Students)*:
+  Helps students track and estimate their Grade Point Average based on course grades and credits.
+
+* **Academic Schedules** *(Both Students & Doctors)*:
+  A centralized place to view important dates such as exams, lecture times and Lab times
+
+* **To-Do List** *(Students)*:
+  A personal productivity tool where students can add, track, and complete tasks related to their studies.
+
+---
+
+### 5.  Course Registration
+
+A structured course management system that enables:
+
+* **Students**:
+  To select and enroll in their current semester courses
+
+* **Doctors**:
+  To select and manage the academic courses they are teaching
+
+This ensures that all interactions (e.g., materials, chats, exams) are tied to the correct course and participants.
+
+---
 
 This document will guide you through setting up and running the app on an Android emulator or physical device using Windows.
 
@@ -45,20 +122,8 @@ This document will guide you through setting up and running the app on an Androi
 
 ##  Setup Instructions
 
-### 1.  Clone the Repository
 
-   ```bash
-git clone https://github.com/maryamayman21/edu_plat.git
-cd Edu_Plat
-```
-
-### 2.  Install Flutter Packages
-
-   ```bash
-flutter pub get
-```
-
-### 3.  Android Setup
+### 1.  Android Setup
 
 * Open Android Studio
 * Go to **More Actions > SDK Manager**
@@ -69,6 +134,21 @@ flutter pub get
     * Android SDK Build-Tools
     * Android Emulator
 * Open **Device Manager** to create an Android Virtual Device (AVD)
+
+
+### 2.  Clone the Repository
+
+   ```bash
+git clone https://github.com/maryamayman21/edu_plat.git
+cd Edu_Plat
+```
+
+### 3.  Install Flutter Packages
+
+   ```bash
+flutter clean
+flutter pub get
+```
 
 ### 3.  Firebase Setup
 
@@ -83,7 +163,17 @@ flutter pub get
   ```bash
 firebase init
 ```
-  4.Place your `google-services.json` file inside `android/app/`
+  4.Use FlutterFire CLI (Recommended)
+
+You can also automate config setup using:
+```bash
+dart pub global activate flutterfire_cli
+```
+at the root of your project run:
+```bash
+flutterfire configure
+```
+This generates firebase_options.dart which you can use for initialization.
 
 
 ### 5.  Run the App
@@ -91,7 +181,6 @@ firebase init
 Make sure your device/emulator is connected:
 
    ```bash
-flutter devices
 flutter run
 ```
 
