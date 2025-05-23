@@ -315,7 +315,7 @@ class ProfileView extends StatelessWidget {
                                       Navigator.pushNamedAndRemoveUntil(
                                         context,
                                         AppRouters.studentOrDoctor,
-                                            (route) => true,
+                                            (route) => false,
                                       );
                                     }
                                     //  context.read<ProfilePhotoCubit>().close();

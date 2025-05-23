@@ -177,7 +177,7 @@ class _DoctorDrawerState extends State<DoctorDrawer>
       Navigator.pushNamedAndRemoveUntil(
         context,
         AppRouters.studentOrDoctor,
-            (route) => true,
+            (route) => false,
       );
     }
     if(state is ProfileError){
