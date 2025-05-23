@@ -70,19 +70,20 @@ flutter pub get
     * Android Emulator
 * Open **Device Manager** to create an Android Virtual Device (AVD)
 
-### 3.  Firebase Setuo
+### 3.  Firebase Setup
 
-    1.Ensure Firebase CLI is installed and added to PATH
+  1.Ensure Firebase CLI is installed and added to PATH
 
-    2.Log in to Firebase:
-```bash
-   firebase login
-```
-   3.Configure Firebase for your project:
+  2.Log in to Firebase:
+   
+  ```bash
+   firebase login 
+  ```
+  3.Configure Firebase for your project:
   ```bash
 firebase init
 ```
-4.Place your `google-services.json` file inside `android/app/`
+  4.Place your `google-services.json` file inside `android/app/`
 
 
 ### 5.  Run the App
