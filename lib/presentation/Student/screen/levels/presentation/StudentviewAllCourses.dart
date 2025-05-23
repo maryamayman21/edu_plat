@@ -47,7 +47,7 @@ class StudentViewallcourses extends StatelessWidget {
               onPressed: () {
                 //Navigation to Courses screen
                 Navigator.pushReplacementNamed(
-                    context, AppRouters.doctorHomeRoute);
+                    context, AppRouters.HomeStudent);
               },
             ),
             body: BlocListener<DialogCubit, dynamic>(
@@ -82,7 +82,7 @@ class StudentViewallcourses extends StatelessWidget {
                       children: [
                         SizedBox(height: 15.h),
                         CoursesGrid(
-                          page: AppRouters.doctorCourseDetailsRoute,
+                          page:AppRouters.doctorCoursesScreen, ///TODO::////
                           courses: state.courses,
                           viewAll: true,
                         ),

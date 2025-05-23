@@ -40,11 +40,15 @@ class ForgetPassCubit extends Cubit<ForgetPassState> {
 
       // Assuming the response has a `success` field
       final success = response.data['success'];
-      final message = response.data['message'] ?? 'Verification successful';
+    //  final message = response.data['message'] ?? 'Verification successful';
 
       if (success == true) {
+        final message = response.data['message'] ?? 'Verification successful';
+
         emit(OTPVerifiedSuccess(message));
       } else {
+        final message = response.data['message'] ?? 'Verification Failed';
+
         emit(ForgetPassFailure(message));
       }
     } catch (error) {
@@ -72,8 +76,9 @@ class ForgetPassCubit extends Cubit<ForgetPassState> {
         final message = responseData['message'] ?? 'Reset password successful.';
         emit(ForgetPassSuccess(message));
       } else {
+        final message = responseData['message'] ?? 'Reset password failed';
         // Handle unexpected cases where 'success' is false or missing
-        emit( ForgetPassFailure('Reset password failed. Please try again.'));
+        emit( ForgetPassFailure(message));
       }
     } catch (error) {
       // Map the error to a user-friendly message and emit failure state
@@ -90,10 +95,13 @@ class ForgetPassCubit extends Cubit<ForgetPassState> {
       final responseData = response.data;
       if (responseData['success'] == true) {
         final message = responseData['message'] ?? 'Reset password successful.';
+
         emit(ForgetPassSuccess(message));
       } else {
+        final message = responseData['message'] ?? 'Reset password failed.';
+
         // Handle unexpected cases where 'success' is false or missing
-        emit( ForgetPassFailure('Reset password failed. Please try again.'));
+        emit( ForgetPassFailure(message));
       }
     } catch (error) {
       // Map the error to a user-friendly message and emit failure state

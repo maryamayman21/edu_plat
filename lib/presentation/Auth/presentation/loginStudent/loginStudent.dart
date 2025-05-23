@@ -45,7 +45,7 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
     if (state is AuthSuccess) {
     print('Message: ${state.message}');
     ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(content: Text('Login successful!')),
+     SnackBar(content: Text(state.message)),
     );
 
     // Retrieve the role from SharedPreferences
@@ -60,7 +60,7 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
 
     }}
     else if (state is AuthFailure) {
-        print('Error: ${state.error}');
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(state.error)),
       );
@@ -109,6 +109,9 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
                     keyboardType: TextInputType.emailAddress,
                     hintText: 'Enter your Email',
                     validator: isEmailValide),
+                SizedBox(
+                  height: 15.h,
+                ),
                 BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
                     bool isPasswordVisible = false;

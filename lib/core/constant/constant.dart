@@ -41,5 +41,8 @@ static const String  getMaterialEndpoint   = 'https://great-hot-impala.ngrok-fre
 static const String  getStudentDegreesEndpoint   = '/api/Exams/GetExamResults/';
 static const String  getUserNotificationEndpoint   = '/api/Notification/notifications';
 static const String  doctorUpdateVideoEndpoint   = '/api/Videos/UpdateVideo';
+static const String  getStudentsForDoctorEndpoint   = '/api/Chat/GetStudentsForDoctor/students';
+static const String  getGroupChatEndpoint   = '/api/Chat/GetGroupChat/groupChat/';
+static const String  getDoctorsForStudentEndpoint   = '/api/Chat/GetDoctorsForStudent/doctors';
 
 }

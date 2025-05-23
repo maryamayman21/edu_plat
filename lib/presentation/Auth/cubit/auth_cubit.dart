@@ -27,12 +27,12 @@ class AuthCubit extends Cubit<AuthState> {
       final responseData = response.data;
       if (responseData['success'] == true) {
         final message = responseData['message'] ?? 'Registration successful.';
-
-
         emit(AuthSuccess(message));
       } else {
+        final message = responseData['message'] ?? 'Registration Failed.';
+
         // Handle unexpected cases where 'success' is false or missing
-        emit(const AuthFailure('Registration failed. Please try again.'));
+        emit(AuthFailure(message));
       }
     } catch (error) {
       // Map the error to a user-friendly message and emit failure state
@@ -66,12 +66,14 @@ class AuthCubit extends Cubit<AuthState> {
       //await prefs.setString('expiration', expiration);
       await SecureStorageService.write('expiration', expiration);
       await prefs.setBool('isLogged', true);
-       if(roles.contains('student')){
-       //  PushNotificationsService.subscribeUserToTopics();
-       }
-      // await prefs.setString('role', roles.isNotEmpty ? roles.first.toString() : '');
+       // if(roles.contains('student')){
+       // //  PushNotificationsService.subscribeUserToTopics();
+       // }
+       final message = response.data['message'] ?? 'Login successful';
+
+       // await prefs.setString('role', roles.isNotEmpty ? roles.first.toString() : '');
       await SecureStorageService.write('role', roles.isNotEmpty ? roles.first.toString() : '');
-      emit(AuthSuccess('Login successful!'));
+      emit(AuthSuccess(message));
     } catch (error) {
       emit(AuthFailure(NetworkHandler.mapErrorToMessage(error)));
     }
@@ -84,11 +86,14 @@ class AuthCubit extends Cubit<AuthState> {
 
       // Assuming the response has a `success` field
       final success = response.data['success'];
-      final message = response.data['message'] ?? 'Verification successful';
 
       if (success == true) {
+        final message = response.data['message'] ?? 'Login successful';
+
         emit(AuthSuccess(message));
       } else {
+        final message = response.data['message'] ?? 'Login failed';
+
         emit(AuthFailure(message));
       }
     } catch (error) {

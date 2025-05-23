@@ -42,13 +42,11 @@ class _ForgetpasswordState extends State<Forgetpassword> {
                 child: BlocListener<ForgetPassCubit, ForgetPassState>(
                     listener: (context, state) {
                       if (state is ForgetPassSuccess) {
-                        print('Message: ${state.message}');
                         Navigator.pushReplacementNamed(
                           context, AppRouters.verifyPassword,
                          arguments:  emailController.text
                         );
                       } else if (state is ForgetPassFailure) {
-                        print('Error: ${state.error}');
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(state.error)),
                         );
@@ -118,8 +116,6 @@ class _ForgetpasswordState extends State<Forgetpassword> {
                                               onPressed: state is ForgetPassLoading
                                                   ? (){}
                                                   : () {
-                                                print('Done');
-                                                print(emailController.text);
                                                 if (formKey.currentState
                                                     ?.validate() == false)
                                                   return;

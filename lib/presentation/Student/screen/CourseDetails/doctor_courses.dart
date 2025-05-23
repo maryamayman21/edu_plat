@@ -7,6 +7,7 @@ import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation/widgets/doctor_courses.dart';
 import 'package:edu_platt/presentation/courses/domain/entity/course_entity.dart';
 import 'package:edu_platt/presentation/sharedWidget/image_container.dart';
+import 'package:edu_platt/presentation/sharedWidget/text_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -36,7 +37,9 @@ class _DoctorCoursesState extends State<DoctorCoursesScreen> {
                 Column(
                   children: [
                     const ImageContainer(),
-                    Expanded(
+                     doctorCourses.isEmpty? Align(
+                         alignment: Alignment.center,
+                         child: TextError(errorMessage: 'No doctor has registered ${widget.courseDetail.courseCode} yet')): Expanded(
                       child: ListView.builder(
                         itemBuilder: (context, index) {
                          return   DoctorCoursesWidget(

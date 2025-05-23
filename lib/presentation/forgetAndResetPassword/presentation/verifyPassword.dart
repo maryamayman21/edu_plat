@@ -41,7 +41,7 @@ class _VerifypasswordState extends State<Verifypassword> {
           listener: (context, state) {
             if (state is ForgetPassSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('OTP sent successfully')),
+                SnackBar(content: Text(state.message)),
               );
 
             }
@@ -53,7 +53,6 @@ class _VerifypasswordState extends State<Verifypassword> {
               );
             }
             else if (state is ForgetPassFailure) {
-              print('Error: ${state.error}');
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.error)),
               );

@@ -29,8 +29,8 @@ class CourseDetailsRemoteDataSourceImpl extends CourseDetailsRemoteDataSource {
 
   @override
   Future<FetchFileResponse> fetchCourseFiles(FetchFileRequest request) async{
-    print('printing from remote data source : ${request.type}');
-    var response = await  apiService.getFromUrl(endPoint: 'https://great-hot-impala.ngrok-free.app/api/Materials/Get-Material-ByType/courseCode/typeFile?courseCode=${request.courseCode}&typeFile=${request.type}');
+   // print('printing from remote data source : ${request.type}');
+    var response = await  apiService.getFromUrl(endPoint: '${ApiConstants.baseUrl}/api/Materials/Get-Material-ByType/courseCode/typeFile?courseCode=${request.courseCode}&typeFile=${request.type}');
     return FetchFileResponse.fromJson(response.data , request.type);
   }
   @override

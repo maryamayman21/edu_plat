@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:edu_platt/core/constant/constant.dart';
 import 'package:edu_platt/presentation/Student/screen/group_chat/cubit/state.dart';
 import 'package:edu_platt/presentation/Student/screen/group_chat/model/GroupChatModel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +18,7 @@ class GroupChatCubit extends Cubit<GroupChatState> {
     try {
       final token = await tokenService.getToken();
 
-      final url = "https://great-hot-impala.ngrok-free.app/api/Chat/GetGroupChat/groupChat/$courseCode";
+      final url = "${ApiConstants.baseUrl}${ApiConstants.getGroupChatEndpoint}$courseCode";
 
       final response = await http.get(
         Uri.parse(url),

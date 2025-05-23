@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:edu_platt/core/constant/constant.dart';
 import 'package:edu_platt/presentation/Student/screen/GPA/model/model.dart';
 
 class GPARepository {
   final Dio dio = Dio();
-  final String getGpaUrl = 'https://great-hot-impala.ngrok-free.app/api/GPA/GetGPA';
-  final String updateGpaUrl = 'https://great-hot-impala.ngrok-free.app/api/GPA/UpdateGPA';
+  final String getGpaUrl = '${ApiConstants.baseUrl}/api/GPA/GetGPA';
+  final String updateGpaUrl = '${ApiConstants.baseUrl}/api/GPA/UpdateGPA';
 
   Future<GpaModel> fetchGpa(String token) async {
     try {
@@ -19,6 +20,7 @@ class GPARepository {
   }
 
   Future<GpaModel> updateGpa(double  gpa, String token) async {
+   print('UPDTAE GPA IN SERVER');
     try {
       final response = await dio.post(
         updateGpaUrl,

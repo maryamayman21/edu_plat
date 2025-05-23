@@ -77,7 +77,7 @@ class _ChatlistdoctorState extends State<Chatlistdoctor> with SingleTickerProvid
         body: Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Colors.white,Color(0xFFBEC6D3) ],
               begin: Alignment.topLeft,
@@ -94,7 +94,7 @@ class _ChatlistdoctorState extends State<Chatlistdoctor> with SingleTickerProvid
                     child: BlocBuilder<ProfileCubit, ProfileState>(
                       builder: (context, state) {
                         if (state is! ProfileLoaded) {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(child: CircularProgressIndicator());
                         }
 
                         final user = state.userModel;
@@ -149,7 +149,7 @@ class _ChatlistdoctorState extends State<Chatlistdoctor> with SingleTickerProvid
                         print("Token: $token");
                         if (token == null || token.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Authentication token not found!"))
+                              const SnackBar(content: Text("Authentication token not found!"))
                           );
                           return;
                         }
@@ -163,7 +163,7 @@ class _ChatlistdoctorState extends State<Chatlistdoctor> with SingleTickerProvid
                             decoration: BoxDecoration(
                               color: color.secondColor,
                               borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
                                   color: Colors.grey,
                                   blurRadius: 15,
@@ -185,7 +185,7 @@ class _ChatlistdoctorState extends State<Chatlistdoctor> with SingleTickerProvid
                               child: Container(
                                 width: 15,
                                 height: 15,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: Colors.red,
                                   shape: BoxShape.circle,
                                 ),
@@ -218,7 +218,7 @@ class _ChatlistdoctorState extends State<Chatlistdoctor> with SingleTickerProvid
             decoration: BoxDecoration(
               color: color.primaryColor,
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Colors.grey,
                   blurRadius: 15,
@@ -244,8 +244,8 @@ class _ChatlistdoctorState extends State<Chatlistdoctor> with SingleTickerProvid
               child: Container(
                 width: 15.w,
                 height: 20.h,
-                padding: EdgeInsets.all(6),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.all(6),
+                decoration: const BoxDecoration(
                   color: Colors.red,
                   shape: BoxShape.circle,
                 ),

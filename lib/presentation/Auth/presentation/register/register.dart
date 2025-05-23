@@ -54,7 +54,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           listener: (context, state) {
             if (state is AuthSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Registration successful!')),
+                  SnackBar(content: Text(state.message)),
               );
               Navigator.pushNamed(context, AppRouters.verifyEmail , arguments:userDate);
             } else if (state is AuthFailure) {
@@ -69,6 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 60.h),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.asset(
                       AppAssets.logo,
@@ -108,7 +109,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         keyboardType: TextInputType.emailAddress,
                         hintText: 'Enter your Email',
                         validator: isEmailValide),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 2.h),
+                    Text(
+                      'Email must ends with (@sci.asu.edu.eg)',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[700],
+                      ),
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
+                    ),
+                    SizedBox(height: 16.h),
                     BlocProvider(
   create: (context) =>PasswordVisiabilityCubit(),
   child: BlocBuilder< PasswordVisiabilityCubit,  PasswordVisiabilityState>(
@@ -139,13 +150,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             icon: Icon(iconData),
                           ),
                           validator: isPasswordValid,
+
                           hintText: 'Enter Password',
                           label: 'Password',
                           isObscure: !isPasswordVisible,
                         );
                       },
                     ),
+
 ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Password must contain at least: 1 lowercase letter, 1 uppercase letter, 1 digit, and 1 special character (!@#\$&*~).',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[700],
+                      ),
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
+                    ),
+
                     SizedBox(height: 20.h),
                     PasswordStrengthChecker(
                       strength: passNotifier,

@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:edu_platt/core/constant/constant.dart';
 import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/doctorModel/modelDoctor.dart';
 
 class ChatRepository {
   final Dio dio = Dio();
-  final String baseUrl = "https://great-hot-impala.ngrok-free.app/api/Chat";
+  final String baseUrl = ApiConstants.baseUrl;
 
   Future<List<DoctorModel>> getDoctors(String token) async {
     final response = await dio.get(
-      "https://great-hot-impala.ngrok-free.app/api/Chat/GetDoctorsForStudent/doctors",
+      "$baseUrl${ApiConstants.getDoctorsForStudentEndpoint}",
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
 

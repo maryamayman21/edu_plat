@@ -61,7 +61,6 @@ class _SetpasswordState extends State<Setpassword> {
                     AppRouters.passwordResetSuccess,
                   );
                 } else if (state is ForgetPassFailure) {
-                  print('Error: ${state.error}');
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(state.error)),
                   );
