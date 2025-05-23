@@ -212,7 +212,7 @@ class _DrawerrState extends State<Drawerr> with SingleTickerProviderStateMixin {
          Navigator.pushNamedAndRemoveUntil(
            context,
            AppRouters.studentOrDoctor,
-               (route) => true,
+               (route) => false,
          );
      }
      if(state is ProfileError){
