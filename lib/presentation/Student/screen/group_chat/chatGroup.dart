@@ -2,19 +2,19 @@ import 'package:chat_bubbles/bubbles/bubble_normal.dart';
 import 'package:chat_bubbles/message_bars/message_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
+import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
 import 'package:edu_platt/core/cashe/services/profile_cashe_service.dart';
 import 'package:edu_platt/core/file_picker/file_picker_service.dart';
+import 'package:edu_platt/core/utils/Color/color.dart';
+import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 import 'package:edu_platt/presentation/profile/cubit/profile_cubit.dart';
+import 'package:edu_platt/presentation/profile/data/profile_web_services.dart';
+import 'package:edu_platt/presentation/profile/repository/profile_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../core/cashe/services/notes_cache_service.dart';
-import '../../../../core/utils/Color/color.dart';
-import '../../../Auth/service/token_service.dart';
-import '../../../profile/data/profile_web_services.dart';
-import '../../../profile/repository/profile_repository.dart';
 
 class ChatgroupScreen extends StatefulWidget {
   final String courseCode;

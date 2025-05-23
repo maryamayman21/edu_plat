@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:edu_platt/core/constant/constant.dart';
 import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/doctorModel/modelDoctor.dart';
 import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/repo/chat_Repo.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +21,7 @@ class ChatCubit extends Cubit<ChatState> {
 
       final response = await http.get(
         Uri.parse(
-            "https://great-hot-impala.ngrok-free.app/api/Chat/GetDoctorsForStudent/doctors"),
+            "${ApiConstants.baseUrl}/api/Chat/GetDoctorsForStudent/doctors"),
         headers: {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json",
