@@ -1,22 +1,22 @@
 
-# 📱 Edu\_Plat
+#  Edu\_Plat
 
-## 🌟 Project Overview
+##  Project Overview
 
 **Edu\_Plat** is an educational mobile platform built using [Flutter](https://flutter.dev/), developed specifically for computer science students and doctors at the Faculty of Science, Ain Shams University. The app provides seamless access to academic resources and services, including:
 
-* 📄 **Online and offline PDF exams** (written and multiple-choice)
-* 💬 **Chat functionality** between students and doctors
-* 📚 **Study materials** and resources
-* 🧰 Additional academic tools and services
+*  **Online and offline PDF exams** (written and multiple-choice)
+*  **Chat functionality** between students and doctors
+*  **Study materials** and resources
+*  Additional academic tools and services
 
 This document will guide you through setting up and running the app on an Android emulator or physical device using Windows.
 
 ---
 
-## 🧰 Prerequisites
+##  Prerequisites
 
-### ✅ System Requirements
+###  System Requirements
 
 * **OS**: Windows 10/11 or macOS 11+
 * **RAM**: Minimum 8 GB
@@ -27,7 +27,7 @@ This document will guide you through setting up and running the app on an Androi
 * **Android Emulator** or physical Android device
 * **Java Development Kit (JDK)**: Version 11
 
-### 📦 Required Software
+###  Required Software
 
 | Tool               | Installation Link                                                                            |
 | ------------------ | -------------------------------------------------------------------------------------------- |
@@ -38,22 +38,22 @@ This document will guide you through setting up and running the app on an Androi
 
 ---
 
-## ⚙️ Setup Instructions
+##  Setup Instructions
 
-### 1. 🔽 Clone the Repository
+### 1.  Clone the Repository
 
 
 git clone https://github.com/maryamayman21/edu_plat.git
 cd Edu_Plat
 
 
-### 2. 📦 Install Flutter Packages
+### 2.  Install Flutter Packages
 
 
 flutter pub get
 
 
-### 3. 🧱 Android Setup
+### 3.  Android Setup
 
 * Open Android Studio
 * Go to **More Actions > SDK Manager**
@@ -65,7 +65,7 @@ flutter pub get
     * Android Emulator
 * Open **Device Manager** to create an Android Virtual Device (AVD)
 
-### 4. ▶️ Run the App
+### 4.  Run the App
 
 Make sure your device/emulator is connected:
 
@@ -76,13 +76,12 @@ flutter run
 
 You can also launch it using the "Run" button in Android Studio or VS Code.
 
----
 
-## 🧩 Configuration
+##  Configuration
 
 * Add `google-services.json` to the `android/app/` directory.
 
-## ❓ Troubleshooting
+##  Troubleshooting
 
 | Issue                        | Solution                                                                                                              |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------- |
