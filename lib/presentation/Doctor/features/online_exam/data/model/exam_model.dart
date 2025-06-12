@@ -210,7 +210,7 @@ class OfflineExamModel extends BaseExamModel {
       courseCode: json['courseCode'],
       examDate: DateTime.parse(json['startTime']),
       examDuration: Duration(minutes: json['durationInMin']),
-      location: json['location'] ?? 'NULL',
+      location: json['locationExam'] ?? 'NULL',
       isOnline: json['isOnline'] ?? false,
       totalMark: json['totalMarks'],
     );

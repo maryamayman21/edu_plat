@@ -160,17 +160,29 @@ class CourseDetailsViewBody extends StatelessWidget {
       if (state is CourseFilesFailure) {
         if(state.errorMessage == 'No internet connection'){
            return SliverToBoxAdapter(
-             child: NoWifiWidget(onPressed:(){
+             child: NoWifiWidget(
+                 onPressed:(){
                BlocProvider.of<CourseDetailsCubit>(context).fetchCourseFilesRequest();
-             }),
+
+                 }),
            );
         }
        else {
-         return SliverToBoxAdapter(child: TextError(errorMessage:  state.errorMessage));
+         return SliverToBoxAdapter(child: TextError(errorMessage:  state.errorMessage,
+    onPressed:(){
+    BlocProvider.of<CourseDetailsCubit>(context).fetchCourseFilesRequest();
+    }
+
+    ));
         }
       }
 
-      return const SliverToBoxAdapter(child: TextError( errorMessage: 'Something went wrong'));
+      return SliverToBoxAdapter(child: TextError( errorMessage: 'Something went wrong',
+    onPressed:() {
+      BlocProvider.of<CourseDetailsCubit>(context).fetchCourseFilesRequest();
+    }
+
+    ));
     },
     ),
       ],

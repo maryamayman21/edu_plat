@@ -7,7 +7,7 @@ class CourseTitleField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      trailing:  Icon(Icons.title ,color : Theme.of(context).primaryColor.withOpacity(0.9),),
+     // trailing:  Icon(Icons.title ,color : Theme.of(context).primaryColor.withOpacity(0.9),),
       title: CustomQuestionField(
         isCourseCode: false,
         hintText: 'Enter exam title',

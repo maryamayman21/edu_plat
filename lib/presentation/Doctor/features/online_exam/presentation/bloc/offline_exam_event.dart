@@ -13,7 +13,9 @@ class SetExamTitleEvent extends OfflineExamEvent {
   final String courseTitle;
    SetExamTitleEvent(this.courseTitle);
 }
-
+class SetUpExamEvent extends OfflineExamEvent {
+   SetUpExamEvent();
+}
 class SetDateEvent extends OfflineExamEvent {
   final DateTime? examDate;
    SetDateEvent (this.examDate);
@@ -40,4 +42,7 @@ class UpdateOfflineExam extends OfflineExamEvent {
 class UpdateDoctorOfflineExam extends OfflineExamEvent {
   final int examId;
   UpdateDoctorOfflineExam (this.examId);
+}
+class SetSuccessModeEvent extends OfflineExamEvent {
+   SetSuccessModeEvent();
 }

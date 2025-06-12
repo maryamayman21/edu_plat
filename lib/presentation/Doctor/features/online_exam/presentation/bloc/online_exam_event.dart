@@ -95,6 +95,11 @@ class SetExamCourseTitleEvent extends OnlineExamEvent {
 class CreateExamEvent extends OnlineExamEvent {
   const CreateExamEvent();
 }
+class SetUpExamEvent extends OnlineExamEvent {
+  const SetUpExamEvent();
+}
+
+
 
 //update exam
 class UpdateExamEvent extends OnlineExamEvent {
@@ -116,6 +121,9 @@ class UpdateDoctorExamEvent extends OnlineExamEvent {
 
 class ClearErrorMessageEvent extends OnlineExamEvent {
   const ClearErrorMessageEvent();
+}
+class SetSuccessModeEvent extends OnlineExamEvent {
+  const SetSuccessModeEvent();
 }
 
 

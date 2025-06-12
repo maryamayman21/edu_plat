@@ -114,9 +114,15 @@ class ExamsView extends StatelessWidget {
                 } else if (state is ExamError) {
                   return TextError(
                     errorMessage: state.message,
+                      onPressed: () {
+                        context
+                            .read<ExamBloc>()
+                            .add(FetchExamsEvent(isExamtaken: isTaken));
+                      }
                   );
                 } else if (state is ExamsNoWifi) {
-                  return NoWifiWidget(onPressed: () {
+                  return NoWifiWidget(
+                      onPressed: () {
                     context
                         .read<ExamBloc>()
                         .add(FetchExamsEvent(isExamtaken: isTaken));

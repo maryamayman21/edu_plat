@@ -50,6 +50,7 @@ class QuestionCard extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: question.options.length,
             itemBuilder: (context, oIndex) {
+              print('option in UI : ${question.options[oIndex].text}');
               return OptionTile(
                 qIndex: qIndex,
                 oIndex: oIndex,

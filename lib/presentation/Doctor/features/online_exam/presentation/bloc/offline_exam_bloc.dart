@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
+import 'package:edu_platt/core/network/failure.dart';
 import 'package:edu_platt/presentation/Doctor/features/course_details/cubit/dialog_cubit.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/exam_model.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/create_exam_request.dart';
@@ -31,8 +33,33 @@ class OfflineExamBloc extends Bloc<OfflineExamEvent, OfflineExamState> {
       on<CreateOfflineExam>(_handleCreateOfflineExamEvent);
       on<UpdateOfflineExam>(_handleUpdateOfflineExamEvent);
       on<UpdateDoctorOfflineExam>(_handleUpdateDoctorOfflineExamEvent);
+      on<SetUpExamEvent>(_handleSetUpExamEvent);
+      on<SetSuccessModeEvent>(_handleSetSuccessModeEvent);
 
-
+  }
+  void _handleSetUpExamEvent(
+      SetUpExamEvent event,
+      Emitter<OfflineExamState> emit,) async {
+    emit(state.copyWith(isCoursesLoading: true)); // Set loading state
+    final result = await  doctorExamRepoImp.fetchCourses();
+    // emit(state.copyWith(isLoading: false));
+    result.fold(
+          (failure) {
+        emit(state.copyWith(
+            isCoursesLoading: false,
+            isCoursesFailed: true,
+            errorMessage: failure.message
+        ));
+      },
+          (courses) {
+        emit(state.copyWith(
+          registeredCourses: courses,
+          isCoursesSuccess: true,
+          isCoursesLoading: false,
+          isCoursesFailed: false,
+        ));
+      },
+    );
   }
 
   void _handleSetExamDateEvent(
@@ -76,34 +103,100 @@ class OfflineExamBloc extends Bloc<OfflineExamEvent, OfflineExamState> {
     result.fold((failure) {
       dialogCubit.setStatus('Failure', message: failure.message);
     }, (successMessage) {
+      dialogCubit.setStatus('Success', message: successMessage);
       emit(state.copyWith(
           isSuccess: true
       ));
     });
   }
+
+
+
+
+
   void _handleUpdateOfflineExamEvent(
-      UpdateOfflineExam event, Emitter<OfflineExamState> emit) async{
-    emit(state.copyWith(
-      isLoading: true
+      UpdateOfflineExam event, Emitter<OfflineExamState> emit
+      )
+  async {
+    emit(state.copyWith(isLoading: true)); // Show loading state
 
-    ));
-    final result = await doctorExamRepoImp.getOfflineExam(UpdateOfflineExamRequest(examId:event.examId ));
-    result.fold((failure) {
+    try {
+      // Run both requests in parallel
+      final results = await Future.wait([
+       doctorExamRepoImp.getOfflineExam(UpdateOfflineExamRequest(examId:event.examId )),
+        doctorExamRepoImp.fetchCourses(), // Adjust the call as needed
+      ]);
+
+      final Either<Failure, OfflineExamModel> offlineExamResult = results[0] as Either<Failure, OfflineExamModel>;
+      final Either<Failure, List<String>> registeredCoursesResult = results[1] as Either<Failure, List<String>>;
+
+      // Handle online exam result
+      offlineExamResult.fold(
+            (failure) {
+          emit(state.copyWith(
+            isLoading: false,
+            isFailure: true,
+            errorMessage: failure.message,
+          ));
+        },
+            (exam) {
+
+          // Now handle the registered courses result
+          registeredCoursesResult.fold(
+                (failure) {
+              emit(state.copyWith(
+                isLoading: false,
+                isFailure: true,
+                errorMessage: failure.message,
+              ));
+            },
+                (courses) {
+              emit(state.copyWith(
+                offlineExamModel: exam,
+                registeredCourses: courses, // Add this field to your state
+                isLoading: false,
+                isDataLoaded: true
+              ));
+            },
+          );
+        },
+      );
+    } catch (e) {
       emit(state.copyWith(
-          errorMessage: failure.message,
-       // offlineExamModel: state.offlineExamModel
-        isFailure: true,
-        isLoading: false
-      ));
-    }, (offlineExam) {
-      emit(state.copyWith(
-         offlineExamModel: offlineExam,
         isLoading: false,
-        isDataLoaded: true
-
+        isSuccess: false,
+        errorMessage: 'Unexpected error: $e',
       ));
-    });
-  }void _handleUpdateDoctorOfflineExamEvent(
+    }
+  }
+
+
+  ///TODO:: REGISTERED COURSES REQUEST
+  // void _handleUpdateOfflineExamEvent(
+  //     UpdateOfflineExam event, Emitter<OfflineExamState> emit) async{
+  //   emit(state.copyWith(
+  //     isLoading: true
+  //
+  //   ));
+  //   final result = await doctorExamRepoImp.getOfflineExam(UpdateOfflineExamRequest(examId:event.examId ));
+  //   result.fold((failure) {
+  //     emit(state.copyWith(
+  //         errorMessage: failure.message,
+  //      // offlineExamModel: state.offlineExamModel
+  //       isFailure: true,
+  //       isLoading: false
+  //     ));
+  //   }, (offlineExam) {
+  //     emit(state.copyWith(
+  //        offlineExamModel: offlineExam,
+  //       isLoading: false,
+  //       isDataLoaded: true
+  //
+  //     ));
+  //   });
+  // }
+
+  void _handleUpdateDoctorOfflineExamEvent(
       UpdateDoctorOfflineExam event, Emitter<OfflineExamState> emit) async{
     dialogCubit.setStatus('Loading');
     final result = await doctorExamRepoImp.updateExam(UpdateExamRequest(examId:event.examId,
@@ -125,5 +218,9 @@ class OfflineExamBloc extends Bloc<OfflineExamEvent, OfflineExamState> {
 
       ));
     });
+  }
+  void _handleSetSuccessModeEvent(SetSuccessModeEvent event, Emitter<OfflineExamState> emit) {
+    emit(state.copyWith(isSuccess: false));
+
   }
 }

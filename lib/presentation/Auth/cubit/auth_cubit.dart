@@ -44,36 +44,26 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> login(String email, String password) async {
     emit(AuthLoading());
     try {
-      // Make the login POST request
        String? deviceToken = await  PushNotificationsService.getDeviceToken();
-        print('device token : $deviceToken');
        final response = await authRepository.login(email, password, deviceToken!);
 
-      // Extract the token and other relevant data from the response
       final data = response.data;
-      final token = data['token'];
-      final roles = data['roles'] as List<dynamic>;
-      final expiration = data['expiration'];
+       if(data['success'] == true){
+         final token = data['userData']['token'];
+         final roles = data['userData']['roles'] as List<dynamic>;
+         final expiration = data['userData']['expiration'];
+         final prefs = await SharedPreferences.getInstance();
 
-      if (token == null) {
-        emit(const AuthFailure('Login failed: Token is null.'));
-        return;
-      }
-
-      final prefs = await SharedPreferences.getInstance();
-
-      await SecureStorageService.write('token', token);
-      //await prefs.setString('expiration', expiration);
-      await SecureStorageService.write('expiration', expiration);
-      await prefs.setBool('isLogged', true);
-       // if(roles.contains('student')){
-       // //  PushNotificationsService.subscribeUserToTopics();
-       // }
-       final message = response.data['message'] ?? 'Login successful';
-
-       // await prefs.setString('role', roles.isNotEmpty ? roles.first.toString() : '');
-      await SecureStorageService.write('role', roles.isNotEmpty ? roles.first.toString() : '');
-      emit(AuthSuccess(message));
+         await SecureStorageService.write('token', token);
+         //await prefs.setString('expiration', expiration);
+         await SecureStorageService.write('expiration', expiration);
+         await prefs.setBool('isLogged', true);
+         await SecureStorageService.write('role', roles.isNotEmpty ? roles.first.toString() : '');
+         final message = data['message'] ?? 'Login successful';
+         emit(AuthSuccess(message));
+       }else if(data['success'] == false){
+         emit(AuthFailure(data['message']));
+       }
     } catch (error) {
       emit(AuthFailure(NetworkHandler.mapErrorToMessage(error)));
     }
@@ -88,11 +78,11 @@ class AuthCubit extends Cubit<AuthState> {
       final success = response.data['success'];
 
       if (success == true) {
-        final message = response.data['message'] ?? 'Login successful';
+        final message = response.data['message'] ?? 'Verification Successful.';
 
         emit(AuthSuccess(message));
       } else {
-        final message = response.data['message'] ?? 'Login failed';
+        final message = response.data['message'] ?? 'Verification Failed.';
 
         emit(AuthFailure(message));
       }

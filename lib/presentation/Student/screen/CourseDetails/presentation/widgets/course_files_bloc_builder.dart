@@ -40,13 +40,19 @@ class CourseFilesBlocBuilder extends StatelessWidget {
         if (state is CourseFilesFailure) {
           if(state.errorMessage == 'No internet connection'){
             return SliverToBoxAdapter(
-              child: NoWifiWidget(onPressed:(){
+              child: NoWifiWidget(
+                  onPressed:(){
                 BlocProvider.of<CourseFilesCubit>(context).fetchCourseFilesRequest();
-              }),
+              }
+              ),
             );
           }
           else {
-            return SliverToBoxAdapter(child: TextError(errorMessage:  state.errorMessage));
+            return SliverToBoxAdapter(child: TextError(errorMessage:  state.errorMessage,
+                onPressed:(){
+                  BlocProvider.of<CourseFilesCubit>(context).fetchCourseFilesRequest();
+                }
+            ));
           }
         }
         return const SliverToBoxAdapter(child: Text('Something went wrong'));

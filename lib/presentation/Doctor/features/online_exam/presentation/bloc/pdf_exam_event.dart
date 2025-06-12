@@ -46,16 +46,9 @@ class UpdateOptionEvent extends PDFExamEvent {
 
 
 
-class SetExamDataEvent extends PDFExamEvent {
+class SetExamDateEvent extends PDFExamEvent {
   final DateTime? examDate;
-  final int? totalMark;
-  final String courseCode;
-  final String courseTitle;
-  final String program;
-  final String level;
-  final String semester;
-  final String timeInHour;
-  const SetExamDataEvent ( {  required this.timeInHour,required this.examDate, required this.totalMark, required this.courseCode, required this.courseTitle, required this.program, required this.level, required this.semester});
+  const SetExamDateEvent ( {required this.examDate,});
 }
 
 class UpdateQuestionMarkEvent extends PDFExamEvent {
@@ -68,3 +61,13 @@ class CreateExamEvent extends PDFExamEvent {
   const CreateExamEvent();
 }
 
+class SetUpExamEvent extends PDFExamEvent {
+   const SetUpExamEvent();
+}
+class FetchCourseDataEvent extends PDFExamEvent {
+  final String courseCode;
+  const FetchCourseDataEvent({required this.courseCode});
+}
+class SetSuccessModeEvent extends PDFExamEvent {
+  const SetSuccessModeEvent();
+}

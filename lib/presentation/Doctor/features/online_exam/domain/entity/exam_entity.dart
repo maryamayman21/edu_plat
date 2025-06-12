@@ -16,15 +16,15 @@ class ExamEntity{
     return ExamEntity(
       json['examTitle'] as String,
       json['courseCode'] as String,
-      DateTime.parse(json['startTime'] as String),
+      DateTime.parse(json['startTime'] as String).toLocal(),
       json['durationInMin'] as int,
       json['isFinished'] as bool,
       json['doctorId'] as int,
       json['id'] as int,
       json['isOnline'] as bool,
       json['totalMarks'] as int,
-      json['location'] as String,
-      json['qusetionsNumber'] ?? 0 //TODO::Correct name
+      json['location'] ?? 'NULL',
+      json['qusetionsNumber'] ?? 0
     );
   }
 

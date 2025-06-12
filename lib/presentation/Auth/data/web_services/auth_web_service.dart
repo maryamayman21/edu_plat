@@ -30,17 +30,14 @@ class AuthWebService {
   }
 
   Future<Response> login(String email, String password, String deviceToken) async {
-    try {
+
       final response = await _dio.post(ApiConstants.loginEndpoint, data: {
         'email': email,
         'password': password,
         'deviceToken': deviceToken
       });
-      print('Login response: ${response.data}'); // Debug print
+     // print('Login response: ${response.data}'); // Debug print
       return response;
-    } catch (e) {
-      rethrow;
-    }
   }
 
   Future<Response> verifyEmail(String otp, String email) async {

@@ -4,14 +4,17 @@
 
 import 'package:edu_platt/core/constant/constant.dart';
 import 'package:edu_platt/core/network/api_service.dart';
+import 'package:edu_platt/core/utils/helper_methds/get_user_type.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/create_exam_request.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/delete_exam_request.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/fetch_course_data.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/getExamsRequest.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/model_answer_request.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/student_degrees_request.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/update_exam_request.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/update_offline_exam_request.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/update_online_exam_request.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/class%20FetchCourseDataResponse.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/create_exam_response.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/delete_exam_response.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/getExamsResponse.dart';
@@ -20,6 +23,7 @@ import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/update_exam_response.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/update_offline_exam_response.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/update_online_exam_response.dart';
+import 'package:edu_platt/presentation/courses/data/network/response/fetch_request_response.dart';
 
 
 abstract class DoctorExamsRemoteDataSource {
@@ -28,10 +32,11 @@ abstract class DoctorExamsRemoteDataSource {
   Future<DeleteExamResponse> deleteExam(DeleteExamRequest request);
   Future<ModelAnswerResponse> getModelAnswer(ModelAnswerRequest request);
   Future<UpdateOnlineExamResponse> getOnlineExam( UpdateOnlineExamRequest request);
- Future<UpdateOfflineExamResponse> getOfflineExam( UpdateOfflineExamRequest request);
- Future<StudentDegreesResponse> getStudentDegrees( StudentDegreesRequest request);
-Future<UpdateExamResponse> updateExam( UpdateExamRequest request);
-
+  Future<UpdateOfflineExamResponse> getOfflineExam( UpdateOfflineExamRequest request);
+  Future<StudentDegreesResponse> getStudentDegrees( StudentDegreesRequest request);
+  Future<UpdateExamResponse> updateExam( UpdateExamRequest request);
+  Future<FetchCoursesResponse>  fetchCourses();
+  Future<FetchCourseDataResponse>  fetchCourseData(FetchCourseDataRequest request);
 
 }
 
@@ -39,7 +44,11 @@ class DoctorExamsRemoteDataSourceImpl extends DoctorExamsRemoteDataSource {
   final ApiService apiService;
 
   DoctorExamsRemoteDataSourceImpl(this.apiService);
-
+  @override
+  Future<FetchCoursesResponse> fetchCourses()async{
+    var response = await  apiService.getFromUrl(endPoint:ApiConstants.getCoursesEndPoint);
+    return FetchCoursesResponse.fromJson(response.data);
+  }
   @override
   Future<CreateExamResponse> createExam(CreateExamRequest request) async {
     try {
@@ -68,6 +77,7 @@ class DoctorExamsRemoteDataSourceImpl extends DoctorExamsRemoteDataSource {
   @override
   Future<GetExamsResponse> getDoctorExams(GetExamsRequest request) async{
    var response = await apiService.get(endPoint: '${ApiConstants.baseUrl}${ApiConstants.doctorGetExamsEndpoint}=${request.isExamTaken}');
+  print(response.data.toString());
    return GetExamsResponse.fromJson(response.data);
   }
    @override
@@ -133,4 +143,11 @@ class DoctorExamsRemoteDataSourceImpl extends DoctorExamsRemoteDataSource {
     }
   }
 
+  @override
+  Future<FetchCourseDataResponse> fetchCourseData(FetchCourseDataRequest request)async {
+    var response = await apiService.get(
+        endPoint: '${ApiConstants.baseUrl}/api/Course/ExamDetails/${request
+            .courseCode}');
+    return FetchCourseDataResponse.fromJson(response.data);
+  }
 }

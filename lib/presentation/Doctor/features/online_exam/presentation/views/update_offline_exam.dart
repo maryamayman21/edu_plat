@@ -7,6 +7,7 @@ import 'package:edu_platt/presentation/Doctor/features/online_exam/data/data_sou
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/repo/exam_repository_impl.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/offline_exam_bloc.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exam_creation_message.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/exam_item_widgets/courses_dropdownmenu.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/course_code_field.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/course_title_field.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/exam_location_filed.dart';
@@ -15,6 +16,8 @@ import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/question_bottom_sheet/date_picker_widget.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/question_duration_picker.dart';
 import 'package:edu_platt/presentation/sharedWidget/buttons/action_button.dart';
+import 'package:edu_platt/presentation/sharedWidget/no_wifi_widget.dart';
+import 'package:edu_platt/presentation/sharedWidget/text_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,6 +49,7 @@ class UpdateOfflineExamView extends StatelessWidget {
         )
       ],
       child: Scaffold(
+
           appBar: AppBar(
             centerTitle: true,
             title:  Text('Edit Offline Exam',
@@ -75,20 +79,23 @@ class UpdateOfflineExamView extends StatelessWidget {
                 if(state.isSuccess){
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (c) => const ExamCreationMessage()),
+                    MaterialPageRoute(builder: (c) => const ExamCreationMessage(successMessage: 'Exam has been updated successfully.',)),
                   );
+                  context.read<OfflineExamBloc>().add( SetSuccessModeEvent());
+
                 }
               },
               child: BlocBuilder<OfflineExamBloc, OfflineExamState>(
                 builder: (context, state) {
                   if (state.isLoading) {
-                    return const CircularProgressIndicator();
+                    return const Center(child: CircularProgressIndicator());
                   }
                   else if (state.isDataLoaded) {
                     return Form(
                       key: _formKey,
                       child: SingleChildScrollView(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             CourseTitleField(
                               courseTitle:
@@ -102,19 +109,8 @@ class UpdateOfflineExamView extends StatelessWidget {
                               },
 
                             ),
-                            CourseCodeField(
 
-                              courseCode:
-                              state
-                                  .offlineExamModel
-                                  .courseCode,
-                              onChanged: (value) {
-                                context
-                                    .read<OfflineExamBloc>()
-                                    .add(SetCourseCodeEvent(value));
-                              },
 
-                            ),
                             ExamLocationField(
                               examLocation: state.offlineExamModel.location,
                               onChanged: (value) {
@@ -133,8 +129,19 @@ class UpdateOfflineExamView extends StatelessWidget {
                                     SetTotalMarkEvent(int.parse(value)));
                               },
                             ),
+                            SizedBox(height: 10.h,),
+                            CourseDropdown(
+                              selectedCourse: state
+                                  .offlineExamModel
+                                  .courseCode,
+                              onCourseSelected: (course) {
+                                // Do something with selected course
+                                context
+                                    .read<OfflineExamBloc>()
+                                    .add(SetCourseCodeEvent(course));
+                              }, courses: state.registeredCourses,
+                            ),
                             SizedBox(height: 20.h,),
-
                             MyDatePicker(
                               date: state
                                   .offlineExamModel
@@ -147,41 +154,50 @@ class UpdateOfflineExamView extends StatelessWidget {
 
                             SizedBox(height: 20.h,),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
                               child: OfflineQuestionDuration(
                                 duration: state.offlineExamModel.examDuration,
                               ),
                             ),
-                            // QuestionDurationPicker(
-                            //   duration: state.offlineExamModel.examDuration,
-                            //   onDurationChanged: (value) {
-                            //     context.read<OfflineExamBloc>().add(
-                            //         SetDurationEvent(value));
-                            //   },
-                            // ),
-
-                            ActionButton(
-                              text: 'Save Changes',
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.green,
-                              iconData: Icons.add,
-                              onPressed: () {
-                                if (!_formKey.currentState!.validate()) return;
-                                context.read<OfflineExamBloc>().add(
-                                    UpdateDoctorOfflineExam(examId));
-                              },
-                            )
+                            SizedBox(height: 60.h,),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ActionButton(
+                                text: 'Save Changes',
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.green,
+                                iconData: Icons.add,
+                                onPressed: () {
+                                  if (!_formKey.currentState!.validate()) return;
+                                  context.read<OfflineExamBloc>().add(
+                                      UpdateDoctorOfflineExam(examId));
+                                },
+                              ),
+                            ),
 
                           ],
                         ),
                       ),
                     );
                   }
-                  else if(state.isFailure){
-                    return Center(child: Text(state.errorMessage));
+                  else if (state.isFailure) {
+                    if (state.errorMessage == 'No internet connection') {
+                      return NoWifiWidget(onPressed: () {
+                        context.read<OfflineExamBloc>().add(UpdateOfflineExam(examId));
+                      });
+                    }
+                    else {
+                      return TextError(onPressed: () {
+                        context.read<OfflineExamBloc>().add(UpdateOfflineExam(examId));
+                      }, errorMessage: state.errorMessage);
+                    }
+                  } else {
+                    return TextError(onPressed: () {
+                      context.read<OfflineExamBloc>().add(UpdateOfflineExam(examId));
+                    }, errorMessage: 'Something went wrong.');
                   }
-                 else { return const Center(child: Text('Something went wrong')); }
-                },
+                }
               ),
             ),
           )),

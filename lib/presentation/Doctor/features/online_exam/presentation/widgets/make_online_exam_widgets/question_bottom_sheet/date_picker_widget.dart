@@ -10,7 +10,7 @@ class MyDatePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.w), // Responsive padding
+      padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h), // Responsive padding
       child: DateTimeFormField(
         initialValue: date,
         validator: (input) {

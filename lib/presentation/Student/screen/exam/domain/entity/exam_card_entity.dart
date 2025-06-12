@@ -60,7 +60,7 @@ class StudentExamCardEntity extends ExamEntity {
     return StudentExamCardEntity(
       examTitle: json['examTitle'],
       courseCode: json['courseCode'],
-      date:  DateTime.parse(json['startTime']).toLocal(),
+      date:DateTime.parse(json['startTime']).toLocal(),
       duration: json['durationInMin'],
       isExamFinished: json['isFinished'],
       doctorId: json['doctorId'] ?? 0,

@@ -3,7 +3,7 @@ class AppAssets {
   static const String onboarding1 = "assets/image/onboarding1.png";
   static const String onboarding2 = "assets/image/onboarding2.png";
   static const String onboarding3 = "assets/image/onboarding3.png";
-  static const String image = "assets/image/img2 2.png";
+  static const String image = "assets/image/asset1.jpg";
   static const String passwordSuccess = "assets/image/Successmark.png";
   static const String level1 = "assets/image/level_one.png";
   static const String level2 = "assets/image/level_two.png";
@@ -14,7 +14,7 @@ class AppAssets {
   static const String trashBin = "assets/image/Trash bin with junk.jpg";
   static const String successMark = "assets/image/Successmark.png";
   static const String eduPlat = "assets/image/eduplat.png";
-  static const String doctorImage = "assets/image/docImage.png";
+  static const String doctorImage = "assets/image/doctor_home.jpg";
   static const String courseBackground = "assets/image/Group.png";
   static const String semester1 = "assets/image/semester2.png";
   static const String semester2 = "assets/image/semester1.png";
@@ -27,6 +27,8 @@ class AppAssets {
  static const String noDataFound = "assets/image/No Search Result.jpg";
 static const String noInternetConnection = "assets/image/no_internet_connection.png";
   static const String chat = "assets/image/chat.png";
+   static const String createExam = "assets/image/createExam.jpeg";
+
 
 
 }

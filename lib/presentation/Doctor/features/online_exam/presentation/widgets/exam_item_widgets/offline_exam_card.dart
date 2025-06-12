@@ -122,24 +122,24 @@ class OfflineExamCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.quiz,
-                        color: Colors.yellow,
-                        size: 16.sp,
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(
-                        'Questions: ${examEntity.questionNumbers}',
-                        style: TextStyle(
-                          color: color.primaryColor,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     Icon(
+                  //       Icons.quiz,
+                  //       color: Colors.yellow,
+                  //       size: 16.sp,
+                  //     ),
+                  //     SizedBox(width: 8.w),
+                  //     Text(
+                  //       'Questions: ${examEntity.questionNumbers}',
+                  //       style: TextStyle(
+                  //         color: color.primaryColor,
+                  //         fontSize: 16.sp,
+                  //         fontWeight: FontWeight.w600,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
               SizedBox(height: 12.h),

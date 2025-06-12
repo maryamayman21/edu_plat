@@ -2,31 +2,41 @@ import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/question_model.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/pdf_exam_bloc.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/question_bottom_sheet/date_picker_widget.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/pdf_exam_widgets/add_mcq_pdf_question.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/pdf_exam_widgets/questions_listview.dart';
 import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
 import 'package:edu_platt/presentation/sharedWidget/buttons/custom_elevated_button.dart';
+import 'package:edu_platt/presentation/sharedWidget/no_wifi_widget.dart';
+import 'package:edu_platt/presentation/sharedWidget/text_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class PdfExamQuestions extends StatefulWidget {
-  const PdfExamQuestions({super.key, required this.isWrittenExam});
- final bool isWrittenExam;
+  const PdfExamQuestions(
+      {super.key, required this.isWrittenExam, required this.courseCode});
+  final bool isWrittenExam;
+  final String courseCode;
+
   @override
   State<PdfExamQuestions> createState() => _PdfExamQuestionsState();
 }
 
 class _PdfExamQuestionsState extends State<PdfExamQuestions> {
-  DateTime selectedDate = DateTime.now();
+  DateTime? _examDate = DateTime.now();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-     print(context.read<PDFExamBloc>().state.exam.courseCode,
-     );
+    //  print(context.read<PDFExamBloc>().state.exam.courseCode,
+    // );
+    context.read<PDFExamBloc>().add(FetchCourseDataEvent(courseCode: widget.courseCode));
+
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,33 +51,65 @@ class _PdfExamQuestionsState extends State<PdfExamQuestions> {
             ),
           )),
       body: BlocListener<PDFExamBloc, PDFExamState>(
-      listener: (context, state) {
-        if (state.isSuccess) {
-       Navigator.pushNamed(context, AppRouters.writtenPdfCreationScreen, arguments: {'examModel' : state.exam, 'isWrittenExam' : widget.isWrittenExam});
-        }
-      },
-      child: BlocBuilder<PDFExamBloc, PDFExamState>(
-        builder: (context, state) {
-          return BlocSelector<PDFExamBloc, PDFExamState,
-              List<QuestionModel>>(
-            selector: (state) => state.exam.questions,
-            builder: (context, questions) {
-              if (questions.isEmpty) {
-                return _buildEmptyStateUI(context);
-              } else {
-                return _buildNonEmptyStateUI(context);
-              }
-            },
-          );
+        listener: (context, state) {
+          if (state.isSuccess) {
+            Navigator.pushNamed(context, AppRouters.writtenPdfCreationScreen,
+                arguments: {
+                  'examModel': state.exam,
+                  'isWrittenExam': widget.isWrittenExam
+                }
+                );
+            context.read<PDFExamBloc>().add(const SetSuccessModeEvent());
+          }
         },
+        child: BlocBuilder<PDFExamBloc, PDFExamState>(
+          builder: (context, state) {
+            if (state.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state.isExamDataLoaded) {
+              return BlocSelector<PDFExamBloc, PDFExamState,
+                  List<QuestionModel>>(
+                selector: (state) => state.exam.questions,
+                builder: (context, questions) {
+                  if (questions.isEmpty) {
+                    return _buildEmptyStateUI(context);
+                  } else {
+                    return _buildNonEmptyStateUI(context);
+                  }
+                },
+              );
+            } else if (state.isExamDataFailure) {
+              if (state.errorMessage == 'No internet connection') {
+                return NoWifiWidget(onPressed: () {
+                  context.read<PDFExamBloc>().add(FetchCourseDataEvent(courseCode: widget.courseCode));
+                });
+              } else {
+                return TextError(
+                    onPressed: () {
+                      context.read<PDFExamBloc>().add(FetchCourseDataEvent(courseCode: widget.courseCode));
+                    },
+                    errorMessage: state.errorMessage);
+              }
+            } else {
+              return TextError(
+                  onPressed: () {
+                    context.read<PDFExamBloc>().add(FetchCourseDataEvent(courseCode: widget.courseCode));
+                  },
+                  errorMessage: 'Something went wrong.');
+            }
+          },
+        ),
       ),
-    ),
     );
   }
 
   Widget _buildEmptyStateUI(BuildContext context) {
     return Column(
       children: [
+               MyDatePicker(
+                 date: _examDate,
+                 onChanged: (value) => _examDate = value,
+               ),
         Expanded(child: Image.asset(AppAssets.nnoNotesFound)),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -88,9 +130,16 @@ class _PdfExamQuestionsState extends State<PdfExamQuestions> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
+              MyDatePicker(
+                date: _examDate,
+                onChanged: (value) => _examDate = value,
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child: Text('Number of questions : ${context.read<PDFExamBloc>().state.exam.questions.length}',
+
+                child: Text(
+                  'Number of questions : ${context.read<PDFExamBloc>().state.exam.questions.length}',
                   style: TextStyle(
                     fontSize: 16.sp, // Slightly smaller for better balance
                     fontWeight: FontWeight.bold,
@@ -123,11 +172,9 @@ class _PdfExamQuestionsState extends State<PdfExamQuestions> {
                 ),
                 CustomElevatedButton(
                   onPressed: () {
-
                     //Navigate to pdf creation view
+                    context.read<PDFExamBloc>().add(SetExamDateEvent(examDate: _examDate));
                     context.read<PDFExamBloc>().add(const CreateExamEvent());
-
-
                   },
                   text: 'Create PDF Exam',
                 ),
@@ -154,7 +201,7 @@ class _PdfExamQuestionsState extends State<PdfExamQuestions> {
           child: SingleChildScrollView(
             child: AddMcqQuestionWidget(
               isWrittenExam: widget.isWrittenExam,
-              pdfExamBloc:pdfExamBloc,
+              pdfExamBloc: pdfExamBloc,
             ),
           ),
         );

@@ -66,6 +66,7 @@ class _AddQuestionWidgetState extends State<AddQuestionWidget> {
                             correctAnswerIndex: correctAnswerIndex,
                           ),
                           AddOptionButton(
+                            isWrittenExam: false,
                             onAddOption: () {
                               setState(() => _optionTexts.add(''));
                             },

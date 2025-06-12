@@ -28,7 +28,14 @@ class _OptionTileState extends State<McqOptionTile> {
     super.initState();
     _controller = TextEditingController(text: widget.optionText);
   }
-
+  @override
+  void didUpdateWidget(McqOptionTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update controller when widget properties change
+    if (oldWidget.optionText != widget.optionText) {
+      _controller.text = widget.optionText;
+    }
+  }
   @override
   void dispose() {
     _controller.dispose();
@@ -82,9 +89,8 @@ class _OptionTileState extends State<McqOptionTile> {
               fillColor: Colors.white,
               contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h), // Reduced padding
             ),
-            onTapOutside: (event) {
-                FocusManager.instance.primaryFocus?.unfocus();
-              context.read<PDFExamBloc>().add(UpdateOptionEvent(widget.qIndex, widget.oIndex, _controller.text));
+            onSubmitted: (value) {
+              context.read<PDFExamBloc>().add(UpdateOptionEvent(widget.qIndex, widget.oIndex, value));
             },
           ),
         ),

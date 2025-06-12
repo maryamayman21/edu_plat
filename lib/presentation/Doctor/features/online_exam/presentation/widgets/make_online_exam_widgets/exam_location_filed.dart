@@ -7,7 +7,7 @@ class ExamLocationField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      trailing:  Icon(Icons.location_on ,color : Theme.of(context).primaryColor.withOpacity(0.9),),
+      //trailing:  Icon(Icons.location_on ,color : Theme.of(context).primaryColor.withOpacity(0.9),),
       title: CustomQuestionField(
         isCourseCode: false,
         hintText: 'Enter exam location',

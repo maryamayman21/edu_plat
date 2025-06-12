@@ -156,11 +156,17 @@ class _NotesState extends State<Notes> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 else if (state is NotesFailure) {
-                  return NoWifiWidget(onPressed: () {
+                  return NoWifiWidget(
+                      onPressed: () {
                     context.read<NotesCubit>().getAllNotes();
-                  });
+                  }
+                  );
                 }
-                return const TextError(errorMessage: 'Something went wrong');
+                return  TextError(errorMessage: 'Something went wrong',
+                    onPressed: () {
+                      context.read<NotesCubit>().getAllNotes();
+                    }
+                );
               },
 
             ),

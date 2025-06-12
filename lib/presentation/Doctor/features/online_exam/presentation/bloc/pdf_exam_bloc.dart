@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/exam_model.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/option_model.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/question_model.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/fetch_course_data.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/data/repo/exam_repository_impl.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -11,7 +13,12 @@ part 'pdf_exam_event.dart';
 part 'pdf_exam_state.dart';
 
 class PDFExamBloc extends Bloc<PDFExamEvent, PDFExamState> {
-  PDFExamBloc() : super(PDFExamState.initial()) {
+  final DoctorExamRepoImp doctorExamRepoImp;
+  PDFExamBloc(
+  {
+    required this.doctorExamRepoImp
+}
+      ) : super(PDFExamState.initial()) {
     // on<PDFExamEvent>((event, emit) {
     on<RemoveQuestionEvent>(_handleRemoveQuestionEvent);
     on<UpdateQuestionEvent>(_handleUpdateQuestionEvent);
@@ -19,10 +26,80 @@ class PDFExamBloc extends Bloc<PDFExamEvent, PDFExamState> {
     on<RemoveOptionEvent>(_handleRemoveOptionEvent);
     on<UpdateOptionEvent>(_handleUpdateOptionEvent); // Debounce rapid updates
     on<AddQuestionWithOptionsEvent>(_handleAddQuestionWithOptionsEvent);
-    on<SetExamDataEvent>(_handleSetExamDataEvent);
+    on<SetExamDateEvent>(_handleSetExamDateEvent);
     on<UpdateQuestionMarkEvent>(_handleUpdateQuestionMarkEvent);
     on<CreateExamEvent>(_handleCreateExamEvent);
-    // });
+    on<SetUpExamEvent>(_handleSetUpExamEvent);
+    on<FetchCourseDataEvent>(_handleFetchCourseDataEvent);
+    on<SetSuccessModeEvent>(_handleSetSuccessModeEvent);
+
+  }
+
+
+  ///TODO:: HANDLE COURSE INFO REQUEST (COURSE CODE)
+  ///TODO:: EMIT LOADING
+  ///TODO:: ON SUCCESS : UPDATE STATE AND EMIT SUCCESS -> SHOW QUESTION SCREEN -> PASS MODEL TO PDF SCREEN
+  ///TODO:: ON FAILURE : SHOW ERROR WIDGET
+
+
+  void _handleFetchCourseDataEvent(FetchCourseDataEvent event,
+      Emitter<PDFExamState> emit)async{
+    emit(state.copyWith(isLoading: true));
+    final result = await  doctorExamRepoImp.fetchCourseData(FetchCourseDataRequest(courseCode: event.courseCode));
+    // emit(state.copyWith(isLoading: false));
+    result.fold(
+          (failure) {
+        emit(state.copyWith(
+            isLoading: false,
+            isExamDataFailure: true,
+            errorMessage: failure.message,
+          isSuccess: false
+        ));
+      },
+          (courseData) {
+        emit(state.copyWith(
+             exam: state.exam.copyWith(
+                 semester: courseData.semester.toString(),
+                 program: courseData.program,
+                 level: courseData.level.toString(),
+                 courseCode: courseData.courseCode,
+                 examTitle: courseData.courseTitle,
+                 totalMark: courseData.totalMark,
+                 timeInHour: courseData.examDuration.toString()),
+            isLoading: false,
+            isExamDataFailure: false,
+            errorMessage:'',
+            isExamDataLoaded: true
+        ));
+      },
+    );
+  }
+
+
+  void _handleSetUpExamEvent(
+      SetUpExamEvent event,
+  Emitter<PDFExamState> emit) async {
+    emit(state.copyWith(isLoading: true)); // Set loading state
+    final result = await  doctorExamRepoImp.fetchCourses();
+    // emit(state.copyWith(isLoading: false));
+    result.fold(
+          (failure) {
+        emit(state.copyWith(
+            isLoading: false,
+            isFailure: true,
+            errorMessage: failure.message
+        ));
+      },
+          (courses) {
+        emit(state.copyWith(
+          courses: courses,
+          isDataLoaded: true,
+          isLoading: false,
+          isFailure: false, // explicitly reset
+            errorMessage:''
+        ));
+      },
+    );
   }
 
   void _handleRemoveQuestionEvent(
@@ -55,7 +132,7 @@ class PDFExamBloc extends Bloc<PDFExamEvent, PDFExamState> {
         OptionModel(text: '')
       ],
     );
-
+    print('ADD OPTION EVENT IN BLOC');
     emit(
         state.copyWith(exam: state.exam.copyWith(questions: updatedQuestions)));
   }
@@ -92,8 +169,9 @@ class PDFExamBloc extends Bloc<PDFExamEvent, PDFExamState> {
       options: options,
       isValid: event.option.isNotEmpty,
     );
-
-    emit(
+       print(state.exam.questions.toString());
+    print('UPDATE OPTION EVENT IN BLOC');
+       emit(
         state.copyWith(exam: state.exam.copyWith(questions: updatedQuestions)));
   }
 
@@ -123,18 +201,12 @@ class PDFExamBloc extends Bloc<PDFExamEvent, PDFExamState> {
     ));
   }
 
-  void _handleSetExamDataEvent(
-      SetExamDataEvent event, Emitter<PDFExamState> emit) {
+  void _handleSetExamDateEvent(
+      SetExamDateEvent event, Emitter<PDFExamState> emit) {
     emit(state.copyWith(
         exam: state.exam.copyWith(
             examDate: event.examDate,
-            semester: event.semester,
-            program: event.program,
-            level: event.level,
-            courseCode: event.courseCode,
-            examTitle: event.courseTitle,
-            totalMark: event.totalMark,
-            timeInHour: event.timeInHour)));
+           )));
   }
 
   void _handleUpdateQuestionMarkEvent(
@@ -159,8 +231,11 @@ class PDFExamBloc extends Bloc<PDFExamEvent, PDFExamState> {
           question.options.any((element) => element.text.isEmpty);
 
       question.isValid = hasEnoughOptions &&
-          //  hasValidDegree &&
+
           !hasEmptyOptionField;
+
+      print('not have empty fields : ${!hasEmptyOptionField}');
+      print('Has enough options  : ${hasEnoughOptions}');
 
       if (!question.isValid) {
         isExamValid = false;
@@ -179,4 +254,12 @@ class PDFExamBloc extends Bloc<PDFExamEvent, PDFExamState> {
       emit(state.copyWith(exam: updatedExam));
     }
   }
+
+  void _handleSetSuccessModeEvent(SetSuccessModeEvent event, Emitter<PDFExamState> emit) {
+    emit(state.copyWith(isSuccess: false));
+
+  }
+
+
 }
+

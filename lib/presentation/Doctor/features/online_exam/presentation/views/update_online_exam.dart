@@ -9,6 +9,7 @@ import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/qu
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/repo/exam_repository_impl.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/online_exam_bloc.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exam_creation_message.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/exam_item_widgets/courses_dropdownmenu.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/counter_listview.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/course_code_field.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/course_title_field.dart';
@@ -17,6 +18,7 @@ import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/question_wigdet_listView.dart';
 import 'package:edu_platt/presentation/sharedWidget/buttons/custom_elevated_button.dart';
 import 'package:edu_platt/presentation/sharedWidget/no_wifi_widget.dart';
+import 'package:edu_platt/presentation/sharedWidget/text_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,8 +75,11 @@ class _MakeOnlineExamState extends State< UpdateOnlineExam> {
             if (state.isSuccess) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (c) => const ExamCreationMessage()),
+                MaterialPageRoute(builder: (c) => const ExamCreationMessage(successMessage:
+                  'Exam has been updated successfully.'
+                  ,)),
               );
+              context.read<OnlineExamBloc>().add(const SetSuccessModeEvent());
             }
             // if (state.errorMessage.isNotEmpty) {
             //   showErrorDialog(context);
@@ -90,16 +95,25 @@ class _MakeOnlineExamState extends State< UpdateOnlineExam> {
                   if(state.isLoading){
                     return const Center(child: CircularProgressIndicator());
                   }
-                  else  if (state.errorMessage.isNotEmpty){
-                    return  Center(child: Text(state.errorMessage));
+                  else  if (state.isFailure) {
+
+                   if (state.errorMessage == 'No internet connection') {
+                    return NoWifiWidget(
+                        onPressed: () {
+                      context.read<OnlineExamBloc>().add(
+                          UpdateExamEvent(examId: widget.examId));
+                    }
+                    );
                   }
-                  else if(state.errorMessage == 'No internet connection'){
-                     return NoWifiWidget(onPressed: () {
-                       context.read<OnlineExamBloc>().add(UpdateDoctorExamEvent(examId: widget.examId));
-                     });
-                  }
+                   else{
+                      return TextError( onPressed: () {
+                        context.read<OnlineExamBloc>().add(
+                            UpdateExamEvent(examId: widget.examId));
+                      }, errorMessage: state.errorMessage);
+                   }
+                }
                   else {
-                    return _buildNonEmptyStateUI(context);
+                    return _buildNonEmptyStateUI(context, state.registeredCourses);
                   }
                 },
               );
@@ -111,43 +125,8 @@ class _MakeOnlineExamState extends State< UpdateOnlineExam> {
 );
   }
 
-  // Widget _buildEmptyStateUI(BuildContext context) {
-  //   return Column(
-  //     children: [
-  //       CourseTitleField(
-  //         courseTitle:context.read<OnlineExamBloc>().state.exam.examTitle,
-  //         onChanged: (value) {
-  //          _courseTitle = value;
-  //           context.read<OnlineExamBloc>().add(SetExamCourseTitleEvent(_courseTitle));
-  //         },
-  //       ), CourseCodeField(
-  //         onChanged: (value) {
-  //           _courseCode = value;
-  //           context.read<OnlineExamBloc>().add(SetExamCourseCodeEvent(_courseCode));
-  //         },
-  //         courseCode: context.read<OnlineExamBloc>().state.exam.courseCode,
-  //       ),
-  //       MyDatePicker(
-  //         date: context.read<OnlineExamBloc>().state.exam.examDate,
-  //         onChanged: (value) {
-  //           selectedDate= value;
-  //           context.read<OnlineExamBloc>().add(SetExamDateEvent(selectedDate));
-  //         },
-  //       ),
-  //
-  //       Expanded(child: Image.asset(AppAssets.nnoNotesFound)),
-  //       Padding(
-  //         padding: const EdgeInsets.all(8.0),
-  //         child: CustomElevatedButton(
-  //           onPressed: () => _showQuestionBottomSheet(context),
-  //           text: '+ New Question',
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 
-  Widget _buildNonEmptyStateUI(BuildContext context) {
+  Widget _buildNonEmptyStateUI(BuildContext context, List<String> courses) {
     String _courseCode = context.read<OnlineExamBloc>().state.exam.courseCode;
     String _courseTitle = context.read<OnlineExamBloc>().state.exam.examTitle;
     return Stack(
@@ -178,12 +157,15 @@ class _MakeOnlineExamState extends State< UpdateOnlineExam> {
                         courseTitle: context.read<OnlineExamBloc>().state.exam.examTitle,
                       ),
 
-                      CourseCodeField(
-                        onChanged: (value) {
-                          _courseCode = value;
+                      CourseDropdown(
+                        courses: courses,
+                        selectedCourse: context.read<OnlineExamBloc>().state.exam.courseCode ,
+                        onCourseSelected: (course) {
+                          // Do something with selected course
+                          _courseCode = course;
                         },
-                        courseCode: context.read<OnlineExamBloc>().state.exam.courseCode,
                       ),
+
                       MyDatePicker(
                         date:context.read<OnlineExamBloc>().state.exam.examDate,
                         onChanged: (value) {
@@ -231,7 +213,7 @@ class _MakeOnlineExamState extends State< UpdateOnlineExam> {
           bottom: 0,
           child: Container(
             color: Colors.white,
-            padding:  EdgeInsets.all(8.0),
+            padding:  const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

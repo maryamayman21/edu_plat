@@ -31,14 +31,14 @@ class DashboardScreen extends StatelessWidget {
       icon: Icons.article_outlined,
       color: Colors.white,
       backGroundColor: Colors.orange,
-      routeName: AppRouters.pdfSetFormDateExamScreen
+      routeName: AppRouters.doctorExamCourseSelectionScreen
     ),
     DashboardItem(
       title: 'Create PDF Exam (MCQ)',
       icon: Icons.quiz_outlined,
       color: Colors.white,
       backGroundColor: Colors.deepPurpleAccent,
-      routeName: AppRouters.pdfSetFormDateExamScreen
+      routeName: AppRouters.doctorExamCourseSelectionScreen
     ),
     DashboardItem(
       backGroundColor: Colors.pinkAccent,

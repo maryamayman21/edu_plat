@@ -4,6 +4,7 @@ import 'package:edu_platt/presentation/Doctor/features/course_details/course_det
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/exam_model.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/entity/student_degree_entity.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/pdf_exam_bloc.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/course_selection_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exam_dashboard_screen.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exams_view.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/make_online_exam.dart';
@@ -141,6 +142,7 @@ class AppRouters {
 static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
   static const String chatGroup= '/chatGroup';
   static const String notificationCenterScreen= '/notificationCenterRoute';
+ static const String doctorExamCourseSelectionScreen= '/doctorExamCourseSelectionRoute';
 
 
   static Route? generateRoute(RouteSettings settings) {
@@ -317,23 +319,30 @@ static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
         return CustomPageRoute(page:ExamsScreen(isTaken: isTaken,));
       case pdfSetQuestionScreen:
         final args = settings.arguments as Map<String, dynamic>? ?? {};
+        final courseCode = args['courseCode'] as String;
         final isWrittenExam = args['isWrittenExam'] as bool;
         final pdfExamBloc = args['bloc'] as PDFExamBloc;
         return CustomPageRoute(
           page: BlocProvider.value(
             value: pdfExamBloc,
-            child: PdfExamQuestions(isWrittenExam: isWrittenExam),
+            child: PdfExamQuestions(isWrittenExam: isWrittenExam,
+            courseCode: courseCode,
+            ),
           ),
         );
-       case pdfSetFormDateExamScreen:
-         final isWrittenExam = settings.arguments as bool;
-        return CustomPageRoute(page: PdfMcqFormExam(
-          isWrittenExam: isWrittenExam,
-        ));
+       // case pdfSetFormDateExamScreen:
+       //   final isWrittenExam = settings.arguments as bool;
+       //  return CustomPageRoute(page: PdfMcqFormExam(
+       //    isWrittenExam: isWrittenExam,
+       //  ));
         case pdfStudentDegreesScreen:
          final studentDegrees = settings.arguments as List<StudentDegreeEntity>;
         return CustomPageRoute(page:  StudentPdfViewerScreen(
         students:studentDegrees,
+        )); case doctorExamCourseSelectionScreen:
+          final isWrittenExam = settings.arguments as bool;
+        return CustomPageRoute(page:   SelectCourseView(
+             isWrittenExam: isWrittenExam,
         ));
         case notificationCenterScreen:
           return CustomPageRoute(page:  const NotificationCenterScreen(
@@ -347,9 +356,9 @@ static const String pdfStudentDegreesScreen= '/PdfStudentDegreesScreenRoute';
             builder: (context) => QuizScreen(
               exam: exam,
             ));
-  case pdfWrittenQuestionScreen:
-        return MaterialPageRoute(
-            builder: (context) => const PdfWrittenQuestionScreen());
+  // case pdfWrittenQuestionScreen:
+  //       return MaterialPageRoute(
+  //           builder: (context) => const PdfWrittenQuestionScreen());
  // case studentQuizScreen:
  //        return MaterialPageRoute(
  //            builder: (context) => const QuizScreen());

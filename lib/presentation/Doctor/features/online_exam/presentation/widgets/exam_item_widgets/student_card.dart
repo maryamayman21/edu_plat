@@ -57,7 +57,7 @@ class StudentCard extends StatelessWidget {
                 ),
                 Icon(
                   student.attendance ?  Icons.cancel : Icons.check_circle,
-                  color: student.attendance ? Colors.green : Colors.red,
+                  color: student.attendance ?   Colors.red : Colors.green,
                   size: 20.w,
                 ),
               ],

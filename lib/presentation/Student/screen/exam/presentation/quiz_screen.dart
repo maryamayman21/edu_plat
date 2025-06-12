@@ -60,12 +60,7 @@ class _ExamdetailsState extends State<QuizScreen>
   void _moveToNextQuestion()async {
 
     if (selectedOptionIndex != null) {
-      print('Selected option index $selectedOptionIndex');
-
-      ///TODO :: SET CACHE SERVICE
      await  QuestionsCacheService().saveQuestion(SubmitQuestionModel(answerId: widget.exam.questions[currentQuestionIndex].id, selectedChoiceId: widget.exam.questions[currentQuestionIndex].choices[selectedOptionIndex!].id));
-         print('answer ID : ${widget.exam.questions[currentQuestionIndex].id} cashed ');
-      print('choice  ID : ${widget.exam.questions[currentQuestionIndex].choices[selectedOptionIndex!].id} cashed ');
 
       // Check if the selected answer is correct
       // if (questions[currentQuestionIndex]

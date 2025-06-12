@@ -49,10 +49,18 @@ class PdfFileScreen extends StatelessWidget {
                );
              }
              else if(state is StudentFilesFailure){
-                 return TextError(errorMessage: state.errorMessage);
+                 return TextError(errorMessage: state.errorMessage,
+                     onPressed:(){
+                       context.read<StudentFilesCubit>().fetchCourseCard(fileType);
+                     }
+                 );
              }
              else {
-               return const TextError(errorMessage:'Something went wrong');
+               return  TextError(errorMessage:'Something went wrong',
+                   onPressed:(){
+                     context.read<StudentFilesCubit>().fetchCourseCard(fileType);
+                   }
+               );
              }
   },
 ),

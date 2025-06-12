@@ -63,10 +63,8 @@ class StudentCoursesListview extends StatelessWidget {
             if (state is CoursesSuccess) {
               final  List<Map<String, dynamic>>  courses = state.courses ?? [];
 
-                 print('courses in UI $courses');
               final finalCourses = viewAll ? courses : courses.take(2)
                   .toList();
-              print(' final courses in UI $finalCourses');
               return StudentCoursesGrid(
                   viewAll: viewAll, finalCourses: finalCourses);
             }
@@ -119,12 +117,18 @@ class StudentCoursesListview extends StatelessWidget {
                 finalCourses: state.courses ?? [],);
             }
             else if(state is CoursesFailure){
-              return NoWifiWidget(onPressed:(){
+              return NoWifiWidget(
+                  onPressed:(){
                 context.read<StudentCoursesCubit>().getCourses();
-              });
+              }
+              );
             }
             else {
-              return const TextError(errorMessage: 'Something went wrong');
+              return  TextError(errorMessage: 'Something went wrong',
+                  onPressed:(){
+                    context.read<StudentCoursesCubit>().getCourses();
+                  }
+              );
             }
           }
 

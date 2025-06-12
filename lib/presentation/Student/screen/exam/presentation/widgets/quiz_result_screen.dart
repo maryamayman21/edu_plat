@@ -41,7 +41,12 @@ class QuizResultScreen extends StatelessWidget {
             if (state is ExamSuccess) return _buildSuccessContent(state, context);
             if (state is ExamError) return _buildErrorContent(context, state);
             if (state is ExamLoading) return const Center(child: CircularProgressIndicator());
-            return const TextError(errorMessage: 'Something went wrong');
+            return  TextError(errorMessage: 'Something went wrong',
+            white: true,
+              onPressed: () {
+                context.read<ExamBloc>().add(SubmitExamScore(exam));
+              },
+            );
           },
         ),
       ),
@@ -132,7 +137,12 @@ class QuizResultScreen extends StatelessWidget {
         },
       );
     } else {
-      return TextError(errorMessage: state.message);
+      return TextError(errorMessage: state.message,
+      white: true,
+        onPressed: () {
+          context.read<ExamBloc>().add(SubmitExamScore(exam));
+        },
+      );
     }
   }
 }

@@ -78,19 +78,26 @@ class _DoctorCoursesScreenState extends State<DoctorHomeCoursesScreen>  with Tic
             }
             else if(state is CoursesFailure){
               if(state.errorMessage  == 'No internet connection'){
-                 return NoWifiWidget(onPressed:(){
+                 return NoWifiWidget(
+                     onPressed:(){
                    context.read<CoursesCubit>().fetchCourses();
                  });
               }
               else{
                 return  TextError(
                   errorMessage: state.errorMessage,
+                    onPressed:(){
+                      context.read<CoursesCubit>().fetchCourses();
+                    }
                 );
               }
             }
             else {
-              return const TextError(
+              return  TextError(
                 errorMessage: 'Something went wrong',
+                  onPressed:(){
+                    context.read<CoursesCubit>().fetchCourses();
+                  }
               );
             }
            },

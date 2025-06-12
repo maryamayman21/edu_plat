@@ -59,6 +59,7 @@ class _AddMcqQuestionWidgetState extends State<AddMcqQuestionWidget> {
                             },
                           ),
                           AddOptionButton(
+                            isWrittenExam: widget.isWrittenExam,
                             onAddOption: () {
                               if(_optionTexts.length < 6) {
                                 setState(() => _optionTexts.add(''));

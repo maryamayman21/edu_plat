@@ -5,8 +5,8 @@ import 'package:edu_platt/presentation/sharedWidget/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ExamCreationMessage extends StatelessWidget {
-  const ExamCreationMessage({super.key});
-
+  const ExamCreationMessage({super.key, required this.successMessage});
+ final String successMessage;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +20,7 @@ class ExamCreationMessage extends StatelessWidget {
             SizedBox(
               height: 32.h,
             ),
-            Text('Exam have been registered successfully.',
+            Text(successMessage,
               style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                   fontFamily: 'Roboto-Mono',
                   color: Colors.black,

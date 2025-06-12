@@ -9,6 +9,7 @@ import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/qu
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/repo/exam_repository_impl.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/bloc/online_exam_bloc.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/views/exam_creation_message.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/exam_item_widgets/courses_dropdownmenu.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/counter_listview.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/course_code_field.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/course_title_field.dart';
@@ -16,6 +17,8 @@ import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/question_bottom_sheet/date_picker_widget.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/question_wigdet_listView.dart';
 import 'package:edu_platt/presentation/sharedWidget/buttons/custom_elevated_button.dart';
+import 'package:edu_platt/presentation/sharedWidget/no_wifi_widget.dart';
+import 'package:edu_platt/presentation/sharedWidget/text_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,44 +55,98 @@ class _MakeOnlineExamState extends State<MakeOnlineExam> {
           NetworkInfoImpl(InternetConnectionChecker()),
         ),
         dialogCubit: context.read<DialogCubit>(),
-      ),
-),
+      )..add(const SetUpExamEvent()),
+     ),
   ],
   child: Scaffold(
-        body: BlocListener<OnlineExamBloc, OnlineExamState>(
+        body:  BlocListener<DialogCubit, dynamic>(
           listener: (context, state) {
-            if (state.isSuccess) {
+            if (state?.status == StatusDialog.SUCCESS) {
               Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (c) => const ExamCreationMessage()),
-              );
+              showSuccessDialog(context, message:   state?.message ?? 'Operation successful' );
             }
-            if (state.isLoading) {
+            if (state?.status == StatusDialog.LOADING) {
               showLoadingDialog(context);
             }
-            if (state.errorMessage.isNotEmpty) {
-             Navigator.pop(context);
-              showErrorDialog(context, message: state.errorMessage);
-              context.read<OnlineExamBloc>().add(const ClearErrorMessageEvent());
+            if (state?.status == StatusDialog.FAILURE) {
+              Navigator.pop(context);
+              showErrorDialog(context,  message:   state?.message ?? 'Something went wrong' );
             }
+          },
+  child: BlocListener<OnlineExamBloc, OnlineExamState>(
+          listener: (context, state) {
+            if (state.isSuccess) {
+            //  Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (c) => const ExamCreationMessage(successMessage: 'Exam has been created successfully.',)),
+              );
+              context.read<OnlineExamBloc>().add(const SetSuccessModeEvent());
+
+            }
+            // if (state.isLoading) {
+            //   showLoadingDialog(context);
+            // }
+            // if (state.errorMessage.isNotEmpty) {
+            //  Navigator.pop(context);
+            //   showErrorDialog(context, message: state.errorMessage);
+            //   context.read<OnlineExamBloc>().add(const ClearErrorMessageEvent());
+            // }
           },
           child: BlocBuilder<OnlineExamBloc, OnlineExamState>(
          builder: (context, state) {
-         return BlocSelector<OnlineExamBloc, OnlineExamState, List<QuestionModel>>(
-            selector: (state) => state.exam.question,
-            builder: (context, questions) {
-                return _buildNonEmptyStateUI(context);
-            },
-          );
+           if(state.isCoursesLoading){
+             return const Center(child: CircularProgressIndicator());
+           }else if(state.isCoursesSuccess){
+             if(state.registeredCourses.isNotEmpty) {
+               return BlocSelector<OnlineExamBloc,
+                   OnlineExamState,
+                   List<QuestionModel>>(
+                 selector: (state) => state.exam.question,
+                 builder: (context, questions) {
+                   return _buildNonEmptyStateUI(
+                       context, state.registeredCourses);
+                 },
+               );
+             }else{
+                  return Center(
+                   child: Text('No registered courses was found',
+                       style: TextStyle(
+                         fontSize: 18.sp,
+                         fontWeight: FontWeight.w500,
+                         color: Colors.grey[700],
+                       )
+                   )
+                  );
+             }
+           }
+           else if(state.isCoursesFailed) {
+             if (state.errorMessage == 'No internet connection') {
+               return NoWifiWidget(onPressed: () {
+                 context.read<OnlineExamBloc>().add(const SetUpExamEvent());
+               });
+             }
+             else {
+               return TextError(onPressed: () {
+                 context.read<OnlineExamBloc>().add(const SetUpExamEvent());
+               }, errorMessage: state.errorMessage);
+             }
+           }else{
+             return TextError(onPressed: (){
+               context.read<OnlineExamBloc>().add(const SetUpExamEvent());
+             }, errorMessage: 'Something went wrong.');
+           }
+
+
   },
 ),
         ),
+),
       ),
 );
   }
 
-  Widget _buildNonEmptyStateUI(BuildContext context) {
+  Widget _buildNonEmptyStateUI(BuildContext context, List<String> courses) {
     return Stack(
       children: [
         Form(
@@ -106,7 +163,7 @@ class _MakeOnlineExamState extends State<MakeOnlineExam> {
                       ),
                     ),
                // toolbarHeight: 100,
-                expandedHeight: 290,
+                expandedHeight: 310,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Column(
                     children: [
@@ -117,12 +174,12 @@ class _MakeOnlineExamState extends State<MakeOnlineExam> {
                         },
                         courseTitle:  _courseTitle,
                       ),
-
-                      CourseCodeField(
-                        onChanged: (value) {
-                          _courseCode = value;
-                        },
-                        courseCode: _courseCode,
+                      CourseDropdown(
+                        selectedCourse: _courseCode ,
+                        onCourseSelected: (course) {
+                          // Do something with selected course
+                          _courseCode = course;
+                        }, courses: courses,
                       ),
                       MyDatePicker(
                         date: _examDate,
@@ -131,6 +188,7 @@ class _MakeOnlineExamState extends State<MakeOnlineExam> {
                           context.read<OnlineExamBloc>().add(SetExamDateEvent(_examDate));
                         },
                       ),
+                     // SizedBox(height: .h),
                     ],
                   ),
                 ),
@@ -141,7 +199,7 @@ class _MakeOnlineExamState extends State<MakeOnlineExam> {
                 pinned: true,
                 delegate: _CounterListHeaderDelegate(
                   child: SizedBox(
-                    height: 70,
+                    height: 200,
                     child: CounterListview(
                       noOfQuestion: context.read<OnlineExamBloc>().state.exam.noOfQuestions,
                       totalDegree: context.read<OnlineExamBloc>().state.exam.totalMark,
@@ -151,13 +209,13 @@ class _MakeOnlineExamState extends State<MakeOnlineExam> {
                 ),
               ) :  const SliverToBoxAdapter(child: SizedBox.shrink()),
                SliverToBoxAdapter(
-                child: SizedBox(height: 30.h),
+                child: SizedBox(height: 10.h),
               ),
               context.read<OnlineExamBloc>().state.exam.question.isNotEmpty ?
 
               QuestionWidgetListView2(
                 questions: context.read<OnlineExamBloc>().state.exam.question,
-              ) :  SliverToBoxAdapter(child: Image.asset(AppAssets.nnoNotesFound)),
+              ) :  SliverToBoxAdapter(child: Image.asset(AppAssets.createExam)),
 
                SliverToBoxAdapter(
                 child: SizedBox(height: 50.h),
@@ -184,7 +242,6 @@ class _MakeOnlineExamState extends State<MakeOnlineExam> {
                 CustomElevatedButton(
                   onPressed: () {
                     if (!_formKey.currentState!.validate()) return;
-                    print(selectedDate);
                     context.read<OnlineExamBloc>().add(SetExamCourseTitleEvent(_courseTitle));
                     context.read<OnlineExamBloc>().add(SetExamCourseCodeEvent(_courseCode));
                     context.read<OnlineExamBloc>().add(const CreateExamEvent());

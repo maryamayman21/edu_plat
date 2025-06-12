@@ -56,7 +56,7 @@ class _SetpasswordState extends State<Changepassword> {
               listener: (context, state) {
                 if (state is ForgetPassSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Password changed successfully')),
+                     SnackBar(content: Text(state.message)),
                   );
                   Navigator.pushReplacementNamed(
                     context,

@@ -8,12 +8,14 @@ import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/op
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/question_model.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/create_exam_request.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/delete_exam_request.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/fetch_course_data.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/getExamsRequest.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/model_answer_request.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/student_degrees_request.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/update_exam_request.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/update_offline_exam_request.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/update_online_exam_request.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/class%20FetchCourseDataResponse.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/create_exam_response.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/delete_exam_response.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/getExamsResponse.dart';
@@ -22,16 +24,40 @@ import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/update_exam_response.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/update_offline_exam_response.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/response/update_online_exam_response.dart';
+import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/entity/course_data_entity.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/entity/exam_entity.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/entity/model_answer.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/entity/student_degree_entity.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/repo/exam_repository.dart';
+import 'package:edu_platt/presentation/courses/data/network/response/fetch_request_response.dart';
 
 class DoctorExamRepoImp implements DoctorExamRepo {
   final DoctorExamsRemoteDataSource doctorExamsRemoteDataSource;
   final NetworkInfo _networkInfo;
 
   DoctorExamRepoImp(this.doctorExamsRemoteDataSource, this._networkInfo);
+  @override
+  Future<Either<Failure, List<String>>> fetchCourses()async {
+    if (await _networkInfo.isConnected) {
+      try {
+        FetchCoursesResponse response =
+        await doctorExamsRemoteDataSource.fetchCourses();
+        if (response.status == true) {
+          return right(response.courses.map((course) => course.courseCode).toList());
+        } else {
+          return left(
+              ServerFailure(response.message ?? 'Something went wrong'));
+        }
+      } catch (e) {
+        if (e is DioError) {
+          return left(ServerFailure.fromDiorError(e));
+        }
+        return left(ServerFailure(e.toString()));
+      }
+    } else {
+      return left(ServerFailure('No internet connection'));
+    }
+  }
 
   @override
   Future<Either<Failure, String>> createExam(CreateExamRequest request) async {
@@ -179,61 +205,6 @@ class DoctorExamRepoImp implements DoctorExamRepo {
            return left(ServerFailure(response.message ?? 'Something went wrong'));
          }
 
-        // final List<QuestionModel> questions = [
-        //   QuestionModel(
-        //     question: "What is the capital of France?",
-        //     degree: 5,
-        //     questionDuration: const Duration(minutes: 2),
-        //     options: [
-        //       OptionModel(text: "Paris", isCorrectAnswer: true),
-        //       OptionModel(text: "London", isCorrectAnswer: false),
-        //       OptionModel(text: "Berlin", isCorrectAnswer: false),
-        //       OptionModel(text: "Madrid", isCorrectAnswer: false),
-        //     ],
-        //   ),
-        //   QuestionModel(
-        //     question: "Which planet is known as the Red Planet?",
-        //     degree: 5,
-        //     questionDuration: const Duration(minutes: 2),
-        //     options: [
-        //       OptionModel(text: "Earth", isCorrectAnswer: false),
-        //       OptionModel(text: "Mars", isCorrectAnswer: true),
-        //       OptionModel(text: "Jupiter", isCorrectAnswer: false),
-        //       OptionModel(text: "Saturn", isCorrectAnswer: false),
-        //     ],
-        //   ),
-        //   QuestionModel(
-        //     question: "What is the chemical symbol for water?",
-        //     degree: 5,
-        //     questionDuration: const Duration(minutes: 2),
-        //     options: [
-        //       OptionModel(text: "H2O", isCorrectAnswer: true),
-        //       OptionModel(text: "CO2", isCorrectAnswer: false),
-        //       OptionModel(text: "O2", isCorrectAnswer: false),
-        //       OptionModel(text: "NaCl", isCorrectAnswer: false),
-        //     ],
-        //   ),
-        //   QuestionModel(
-        //     question: "Who wrote 'To Kill a Mockingbird'?",
-        //     degree: 5,
-        //     questionDuration: const Duration(minutes: 2),
-        //     options: [
-        //       OptionModel(text: "Harper Lee", isCorrectAnswer: true),
-        //       OptionModel(text: "Mark Twain", isCorrectAnswer: false),
-        //       OptionModel(text: "J.K. Rowling", isCorrectAnswer: false),
-        //       OptionModel(text: "Ernest Hemingway", isCorrectAnswer: false),
-        //     ],
-        //   ),
-        // ];
-        // OnlineExamModel examModel = OnlineExamModel(
-        //     examTitle: 'Midterm',
-        //     courseCode: 'COMP104',
-        //     examDate: DateTime.now(),
-        //     examDuration: const Duration(minutes: 15),
-        //     question: questions,
-        //     noOfQuestions: 4,
-        //     totalMark: 120);
-        // return right(examModel);
       } catch (e) {
         if (e is DioError) {
           return left(ServerFailure.fromDiorError(e));
@@ -258,15 +229,6 @@ class DoctorExamRepoImp implements DoctorExamRepo {
            return left(ServerFailure(response.message ?? 'Something went wrong'));
          }
 
-        // OfflineExamModel examModel = OfflineExamModel(
-        //     examTitle: 'Midterm',
-        //     courseCode: 'COMP104',
-        //     examDate: DateTime.now(),
-        //     examDuration: const Duration(minutes: 8),
-        //     totalMark: 120,
-        //     location: 'Hall 5',
-        //     isOnline: false);
-        // return right(examModel);
       } catch (e) {
         if (e is DioError) {
           return left(ServerFailure.fromDiorError(e));
@@ -284,28 +246,42 @@ class DoctorExamRepoImp implements DoctorExamRepo {
     if (await _networkInfo.isConnected) {
       try {
         StudentDegreesResponse response = await doctorExamsRemoteDataSource.getStudentDegrees(request);
-            print('1');
          if (response.status == true) {
-           print('2');
            return right(response.studentDegreeEntity);
-
          }
          else{
-           print('3');
            return left(ServerFailure(response.message ?? 'Something went wrong'));
          }
       } catch (e) {
         if (e is DioError) {
-          print('4');
           return left(ServerFailure.fromDiorError(e));
         }
-        print('5');
         return left(ServerFailure(e.toString()));
       }
     } else {
-      print('6');
       return left(ServerFailure('No internet connection'));
     }
   }
 
+  @override
+  Future<Either<Failure, CourseDataEntity>> fetchCourseData(FetchCourseDataRequest request)async {
+    if (await _networkInfo.isConnected) {
+      try {
+        FetchCourseDataResponse response = await doctorExamsRemoteDataSource.fetchCourseData(request);
+        if (response.status == true) {
+          return right(response.courseDataModel);
+        }
+        else{
+          return left(ServerFailure(response.message ?? 'Something went wrong'));
+        }
+      } catch (e) {
+        if (e is DioError) {
+          return left(ServerFailure.fromDiorError(e));
+        }
+        return left(ServerFailure(e.toString()));
+      }
+    } else {
+      return left(ServerFailure('No internet connection'));
+    }
+  }
 }

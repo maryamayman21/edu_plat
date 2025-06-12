@@ -3,6 +3,7 @@ import 'package:edu_platt/presentation/Doctor/features/courseRegisteration/data/
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Cubit/Student_Course_RegisterCubit.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Widget/dropdown_list.dart';
 import 'package:edu_platt/presentation/Student/screen/StudentCourseRegister/Widget/dropdown_toggle.dart';
+import 'package:edu_platt/presentation/sharedWidget/no_wifi_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../sharedWidget/buttons/custom_button.dart';
@@ -56,33 +57,37 @@ class _StudentCourseRegisterationBodyState extends State<StudentCourseRegisterat
                 child: CircularProgressIndicator());
           }
           else if(state is CourseRegisterationFailure){
-            return Column(
-              children: [
-                Center(child: Image.asset(AppAssets.noWifiConnection)),
-                const Text('No internet connection',
-                  style: TextStyle(
-                      color: Colors.black
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 40),
-                  child: CustomButtonWidget(
-                    onPressed: () {
-                      context.read<StudentCourseRegisterationCubit>().fetchRegistrationCourses(widget.semesterID);
-                    },
-                    child: const Text('Retry',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                      ),
-                    ),
-                  ),
-                )
 
-              ],
-            );
+              return NoWifiWidget(onPressed: (){
+                context.read<StudentCourseRegisterationCubit>().fetchRegistrationCourses(widget.semesterID);
+              });
+            // return Column(
+            //   children: [
+            //     Center(child: Image.asset(AppAssets.noWifiConnection)),
+            //     const Text('No internet connection',
+            //       style: TextStyle(
+            //           color: Colors.black
+            //       ),
+            //     ),
+            //     Padding(
+            //       padding: const EdgeInsets.symmetric(
+            //           horizontal: 20, vertical: 40),
+            //       child: CustomButtonWidget(
+            //         onPressed: () {
+            //           context.read<StudentCourseRegisterationCubit>().fetchRegistrationCourses(widget.semesterID);
+            //         },
+            //         child: const Text('Retry',
+            //           style: TextStyle(
+            //               color: Colors.white,
+            //               fontSize: 20,
+            //               fontWeight: FontWeight.bold
+            //           ),
+            //         ),
+            //       ),
+            //     )
+            //
+            //   ],
+            // );
 
           }
           return const Center(

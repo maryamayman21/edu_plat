@@ -83,18 +83,31 @@ class ExamsScreen extends StatelessWidget {
             }
             else if (state is ExamError) {
                if(state.message == 'No internet connection'){
-                 return NoWifiWidget(onPressed: () {
+                 return NoWifiWidget(
+                     onPressed: () {
                    context
                        .read<ExamBloc>()
                        .add(FetchExamsEvent(isExamtaken: isTaken));
                  });
                }
               else {
-                 return TextError(errorMessage: state.message,);
+                 return TextError(errorMessage: state.message,
+                 onPressed:() {
+                   context
+                       .read<ExamBloc>()
+                       .add(FetchExamsEvent(isExamtaken: isTaken));
+                 } ,
+                 );
                  //return Center(child: Text(state.message));
                }
               } else {
-              return const TextError(errorMessage:'Something went wrong',);
+              return  TextError(errorMessage:'Something went wrong',
+                onPressed:() {
+                  context
+                      .read<ExamBloc>()
+                      .add(FetchExamsEvent(isExamtaken: isTaken));
+                } ,
+              );
             }
           },
         ),

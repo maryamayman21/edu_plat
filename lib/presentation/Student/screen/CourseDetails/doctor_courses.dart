@@ -7,6 +7,7 @@ import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation
 import 'package:edu_platt/presentation/Student/screen/CourseDetails/presentation/widgets/doctor_courses.dart';
 import 'package:edu_platt/presentation/courses/domain/entity/course_entity.dart';
 import 'package:edu_platt/presentation/sharedWidget/image_container.dart';
+import 'package:edu_platt/presentation/sharedWidget/no_wifi_widget.dart';
 import 'package:edu_platt/presentation/sharedWidget/text_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +40,7 @@ class _DoctorCoursesState extends State<DoctorCoursesScreen> {
                     const ImageContainer(),
                      doctorCourses.isEmpty? Align(
                          alignment: Alignment.center,
-                         child: TextError(errorMessage: 'No doctor has registered ${widget.courseDetail.courseCode} yet')): Expanded(
+                         child: Text( 'No doctor has registered ${widget.courseDetail.courseCode} yet')): Expanded(
                       child: ListView.builder(
                         itemBuilder: (context, index) {
                          return   DoctorCoursesWidget(
@@ -56,8 +57,22 @@ class _DoctorCoursesState extends State<DoctorCoursesScreen> {
             if (state is DoctorCoursesLoading) {
               return const Center(child: CircularProgressIndicator());
             }
-            if(state is DoctorCoursesFailure){
-              return  Center(child: Text(state.errorMessage));
+            if(state is DoctorCoursesFailure) {
+              if (state.errorMessage == 'No internet connection') {
+                   return NoWifiWidget( onPressed: () {
+                     BlocProvider.of<DoctorCoursesCubit>(context)
+                         .fetchDoctorCourses(widget.courseDetail.courseCode);
+                   },);
+              } else {
+                return Center(child: TextError(
+                  errorMessage: state.errorMessage,
+                  onPressed: () {
+                  BlocProvider.of<DoctorCoursesCubit>(context)
+                      .fetchDoctorCourses(widget.courseDetail.courseCode);
+                },
+                )
+                );
+              }
             }
             return const Center(child: CircularProgressIndicator());
           }

@@ -30,6 +30,7 @@ class CustomQuestionField extends StatelessWidget {
         keyboardType: keyboardType,
         onChanged: onChanged,
         validator: validator,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           hintStyle: TextStyle(
             fontSize: 16.sp, // Responsive font size

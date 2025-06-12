@@ -31,6 +31,14 @@ class _OptionTileState extends State<OptionTile> {
   }
 
   @override
+  void didUpdateWidget(OptionTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update controller when widget properties change
+    if (oldWidget.optionText != widget.optionText) {
+      _controller.text = widget.optionText;
+    }
+  }
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();

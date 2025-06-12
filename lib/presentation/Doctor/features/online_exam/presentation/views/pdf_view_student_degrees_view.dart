@@ -28,7 +28,6 @@ class StudentPdfViewerScreen extends StatelessWidget {
   Future<Uint8List> _generatePdf(
       PdfPageFormat format, List<StudentDegreeEntity> students) async {
     final pdf = pw.Document();
-      print(students.length);
     pdf.addPage(
       pw.MultiPage(
         pageFormat: format,
@@ -51,7 +50,7 @@ class StudentPdfViewerScreen extends StatelessWidget {
                // student.email,
                 student.score.toString(),
                 '${student.scorePercentage.toStringAsFixed(2)}%',
-                student.attendance ? 'Present' : 'Absent',
+                student.attendance ?   'Absent' : 'Present',
               ];
             }).toList(),
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
