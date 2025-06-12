@@ -16,7 +16,7 @@ class ExamEntity{
     return ExamEntity(
       json['examTitle'] as String,
       json['courseCode'] as String,
-      DateTime.parse(json['startTime'] as String).toLocal(),
+      DateTime.parse(json['startTime'] as String),
       json['durationInMin'] as int,
       json['isFinished'] as bool,
       json['doctorId'] as int,

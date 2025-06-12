@@ -1,7 +1,7 @@
 import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/entity/exam_entity.dart';
 
 class StudentExamCardEntity extends ExamEntity {
-  final int? score;
+  final double? score;
   final int? percentage;
   final bool attended;
 
@@ -35,32 +35,32 @@ class StudentExamCardEntity extends ExamEntity {
   );
 
   // Convert a FinishedExamCardEntity instance to a JSON map
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'examTitle': examTitle,
-      'courseCode': courseCode,
-      'date': date.toIso8601String(),
-      'duration': duration,
-      'isExamFinished': isExamFinished,
-      'doctorId': doctorId,
-      'examId': examId,
-      'isOnline': isOnline,
-      'totalMarks': totalMark,
-      'location': location,
-      'questionsNumber': questionNumbers,
-      'score': score,
-      'percentage': percentage,
-      'attended': attended,
-    };
-  }
+  // @override
+  // Map<String, dynamic> toJson() {
+  //   return {
+  //     'examTitle': examTitle,
+  //     'courseCode': courseCode,
+  //     'date': date.toIso8601String(),
+  //     'duration': duration,
+  //     'isExamFinished': isExamFinished,
+  //     'doctorId': doctorId,
+  //     'examId': examId,
+  //     'isOnline': isOnline,
+  //     'totalMarks': totalMark,
+  //     'location': location,
+  //     'questionsNumber': questionNumbers,
+  //     'score': score,
+  //     'percentage': percentage,
+  //     'attended': attended,
+  //   };
+  // }
 
   // Create a FinishedExamCardEntity instance from a JSON map
   factory StudentExamCardEntity.fromJson(Map<String, dynamic> json) {
     return StudentExamCardEntity(
       examTitle: json['examTitle'],
       courseCode: json['courseCode'],
-      date:DateTime.parse(json['startTime']).toLocal(),
+      date:DateTime.parse(json['startTime']),
       duration: json['durationInMin'],
       isExamFinished: json['isFinished'],
       doctorId: json['doctorId'] ?? 0,

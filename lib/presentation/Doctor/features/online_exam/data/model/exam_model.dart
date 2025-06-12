@@ -39,6 +39,7 @@ class BaseExamModel {
 
   // Common toJson method for base properties
   Map<String, dynamic> toJson() {
+    print(examDate.toUtc().toIso8601String(),);
     return {
       'examTitle': examTitle,
       'courseCode': courseCode,
@@ -120,7 +121,7 @@ class OnlineExamModel extends BaseExamModel {
       totalMark: json['totalMarks'] ?? 0,
       examTitle: json['examTitle'] ?? '',
       courseCode: json['courseCode'] ?? '',
-      examDate: DateTime.parse(json['startTime']),///TODO:: Test
+      examDate: DateTime.parse(json['startTime']),
       examDuration: Duration(minutes: json['durationInMin'] ?? 0),
       noOfQuestions: json['questionsNumber'] ?? 0,
       question: (json['questions'] as List)

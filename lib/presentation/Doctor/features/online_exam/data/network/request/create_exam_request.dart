@@ -8,6 +8,7 @@ class CreateExamRequest {
  CreateExamRequest({required this.exam});
 
  Map<String, dynamic> toJson() {
+  print(exam.examDate);
   return exam.toJson();
  }
 }
