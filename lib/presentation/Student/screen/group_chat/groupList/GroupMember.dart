@@ -32,8 +32,12 @@ class GroupMember extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Colors.white,
           )),
-          leading: Icon(Icons.arrow_back,color: Colors.white,),
-          backgroundColor: color.primaryColor,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),          backgroundColor: color.primaryColor,
         ),
         body:Container(
           color: Colors.grey[200],

@@ -94,6 +94,39 @@ This document will guide you through setting up and running the app on an Androi
 
 ---
 
+
+##  Download & Installation (Android APK)
+
+To run the **Edu\_Plat** app on your Android device without building from source, follow these steps:
+
+### Step 1: Go to the Releases Page
+
+or Click here : [https://github.com/maryamayman21/edu_plat/releases](https://github.com/maryamayman21/edu_plat/releases)
+
+###  Step 2: Download the APK
+
+1. Under the latest release, scroll to the **Assets** section
+2. Click to download the file named something like:
+
+   ```
+   edu_plat-v1.0.0.apk
+   ```
+
+###  Step 3: Install on Your Android Device
+
+1. Transfer the APK to your Android device (via USB, Bluetooth, or cloud service)
+2. On your device:
+
+   * Go to **Settings > Security**
+   * Enable **Install unknown apps** or **Allow from this source**
+3. Open the APK file and follow the on-screen instructions to install it
+
+>  **Note**: Make sure your device runs **Android 5.0 (Lollipop)** or higher.
+
+---
+
+
+
 ##  Prerequisites
 
 ###  System Requirements
@@ -121,7 +154,7 @@ This document will guide you through setting up and running the app on an Androi
 ---
 
 ##  Setup Instructions
-
+---
 
 ### 1.  Android Setup
 
