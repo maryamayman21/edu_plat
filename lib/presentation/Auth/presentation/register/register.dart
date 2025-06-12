@@ -71,17 +71,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset(
-                      AppAssets.logo,
-                      height: 90.h,
+                    Center(
+                      child: Image.asset(
+                        AppAssets.logo,
+                        height: 90.h,
+                      ),
                     ),
                     SizedBox(
                       height: 15.h,
                     ),
-                    Text(
-                      Strings.makeEduPlatAcc,
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          fontSize: 22.sp, fontWeight: FontWeight.w500),
+                    Center(
+                      child: Text(
+                        Strings.makeEduPlatAcc,
+                        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            fontSize: 22.sp, fontWeight: FontWeight.w500),
+                      ),
                     ),
                     SizedBox(
                       height: 40.h,

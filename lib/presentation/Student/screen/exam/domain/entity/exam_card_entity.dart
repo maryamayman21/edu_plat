@@ -1,7 +1,7 @@
 import 'package:edu_platt/presentation/Doctor/features/online_exam/domain/entity/exam_entity.dart';
 
 class StudentExamCardEntity extends ExamEntity {
-  final double? score;
+  final int? score;
   final int? percentage;
   final bool attended;
 
@@ -58,19 +58,19 @@ class StudentExamCardEntity extends ExamEntity {
   // Create a FinishedExamCardEntity instance from a JSON map
   factory StudentExamCardEntity.fromJson(Map<String, dynamic> json) {
     return StudentExamCardEntity(
-      examTitle: json['examTitle'],
-      courseCode: json['courseCode'],
+      examTitle: json['examTitle']??'null',
+      courseCode: json['courseCode']??'NULL',
       date:DateTime.parse(json['startTime']),
-      duration: json['durationInMin'],
-      isExamFinished: json['isFinished'],
-      doctorId: json['doctorId'] ?? 0,
-      examId: json['id'],
-      isOnline: json['isOnline'],
-      totalMark: json['totalMarks'],
-      location: json['location'],
+      duration: json['durationInMin']??0,
+      isExamFinished: json['isFinished']??false,
+     doctorId: json['doctorId'] ?? 0,
+      examId: json['id']??0,
+      isOnline: json['isOnline']??false,
+      totalMark: json['totalMarks']??0,
+      location: json['location']?? 'NULL',
       questionNumbers: json['qusetionsNumber'],
-      score: json['score'] ?? 0,
-      percentage: json['percentageExam'] ??0 ,
+      score: json['score'] as int,
+      percentage: json['percentageExam'] as int ,
       attended: json['isAbsent'] ?? true,
     );
   }

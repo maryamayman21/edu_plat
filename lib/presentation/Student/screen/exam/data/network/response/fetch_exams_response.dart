@@ -22,6 +22,8 @@ class FetchExamsResponse extends BaseResponse {
 
   // Create a FetchExamsResponse instance from a JSON map
   factory FetchExamsResponse.fromJson(Map<String, dynamic> json) {
+   print(json.toString());
+
     return FetchExamsResponse(
       message: json['message'],
       success: json['success'],
