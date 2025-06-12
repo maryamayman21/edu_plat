@@ -22,6 +22,13 @@ class AuthRepository {
       rethrow; // Pass the error to be handled by the Cubit
     }
   }
+  Future<Response> resendOtp( String email) async {
+    try {
+      return await authWebService.resendOtp(email);
+    } catch (e) {
+      rethrow; // Pass the error to be handled by the Cubit
+    }
+  }
 
 }
 

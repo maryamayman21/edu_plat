@@ -56,6 +56,21 @@ class AuthWebService {
       }
       rethrow; // Rethrow the error to be handled by the Cubit
     }
+  }Future<Response> resendOtp(String email) async {
+    try {
+      return await _dio.post(
+        ApiConstants.resendOtpEndpoint,
+        data: {
+          'email':email
+        },
+      );
+    } catch (e) {
+      if (e is DioError) {
+        // Log or inspect the error response for debugging
+        print('API Error: ${e.response?.data}');
+      }
+      rethrow; // Rethrow the error to be handled by the Cubit
+    }
   }
 
 

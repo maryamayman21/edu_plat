@@ -9,6 +9,14 @@ abstract class AuthState extends Equatable {
 class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
+class ResendCodeSuccess extends AuthState {
+  final String successMessage;
+  ResendCodeSuccess({required this.successMessage});
+}
+class ResendCodeFailure extends AuthState {
+  final String errorMessage;
+  ResendCodeFailure({required this.errorMessage});
+}
 
 class AuthSuccess extends AuthState {
   final String message;

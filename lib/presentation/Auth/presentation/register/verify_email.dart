@@ -54,6 +54,16 @@ class _VerifypasswordState extends State<VerifyEmail> {
                 SnackBar(content: Text(state.error)),
               );
             }
+            else if(state is ResendCodeSuccess){
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.successMessage)),
+              );
+            }
+            else if(state is ResendCodeFailure){
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.errorMessage)),
+              );
+            }
           },
           child: SingleChildScrollView(
             child: Padding(
@@ -162,11 +172,9 @@ class _VerifypasswordState extends State<VerifyEmail> {
                             ? null
                             : () {
             
-                            print(widget.arguemnt[0]); print(widget.arguemnt[1]); print(widget.arguemnt[2]); print(widget.arguemnt[3]);
-                            print('Done');
-                            BlocProvider.of<AuthCubit>(context)
-                                .register(widget.arguemnt[0] ,widget.arguemnt[1] , widget.arguemnt[2] , widget.arguemnt[3]);
-                            print('Done');
+                          //  print(widget.arguemnt[0]); print(widget.arguemnt[1]); print(widget.arguemnt[2]); print(widget.arguemnt[3]);
+                          print(widget.arguemnt[1]);
+                          BlocProvider.of<AuthCubit>(context).resendOtp(widget.arguemnt[1]);
             
                         },
                         child: Text('Resend code',

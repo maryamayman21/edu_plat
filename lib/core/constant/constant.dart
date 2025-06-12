@@ -44,5 +44,6 @@ static const String  doctorUpdateVideoEndpoint   = '/api/Videos/UpdateVideo';
 static const String  getStudentsForDoctorEndpoint   = '/api/Chat/GetStudentsForDoctor/students';
 static const String  getGroupChatEndpoint   = '/api/Chat/GetGroupChat/groupChat/';
 static const String  getDoctorsForStudentEndpoint   = '/api/Chat/GetDoctorsForStudent/doctors';
+static const String  resendOtpEndpoint   = '/api/Accounts/ResendOtp';
 
 }

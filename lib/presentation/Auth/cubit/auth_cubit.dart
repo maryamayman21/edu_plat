@@ -89,7 +89,8 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (error) {
       if (error is DioError && error.response != null) {
         // Handle specific API errors
-        final errorMessage = error.response?.data['message'] ?? 'An unexpected error occurred';
+        final errorMessage = error.response?.data['message'] ??
+            'An unexpected error occurred';
         emit(AuthFailure(errorMessage));
       } else {
         // Handle other unexpected errors
@@ -99,8 +100,34 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
 
+  Future<void> resendOtp(String email) async {
+  //  emit(AuthLoading());
+    try {
+      final response = await authRepository.resendOtp(email);
 
+      // Assuming the response has a `success` field
+      final success = response.data['success'];
 
+      if (success == true) {
+        final message = response.data['message'] ?? 'OTP send successfully, please check your email.';
+
+        emit(ResendCodeSuccess(successMessage: message));
+      } else {
+        final message = response.data['message'] ?? 'Error occurred in requesting OTP';
+
+        emit(ResendCodeFailure(errorMessage: message));
+      }
+    } catch (error) {
+      if (error is DioError && error.response != null) {
+        // Handle specific API errors
+        final errorMessage = error.response?.data['message'] ?? 'An unexpected error occurred';
+        emit(AuthFailure(errorMessage));
+      } else {
+        // Handle other unexpected errors
+        emit(AuthFailure(NetworkHandler.mapErrorToMessage(error)));
+      }
+    }
+  }
 
 
 
