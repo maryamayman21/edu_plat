@@ -165,8 +165,8 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
                     ),
                     indicatorSize: TabBarIndicatorSize.label,
                     tabs: const [
-                      Tab(child: Text("CGPA Calculator",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),),
-                      Tab(child: Text("SGPA Calculator",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20))),
+                      Tab(child: Text("CGPA Calculator",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),),
+                      Tab(child: Text("SGPA Calculator",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 18))),
                     ],),
                 ),
                 Expanded(
