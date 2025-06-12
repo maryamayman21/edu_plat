@@ -69,8 +69,8 @@ class StudentExamCardEntity extends ExamEntity {
       totalMark: json['totalMarks']??0,
       location: json['location']?? 'NULL',
       questionNumbers: json['qusetionsNumber'],
-      score: json['score'] as int,
-      percentage: json['percentageExam'] as int ,
+      score: json['score'] ?? 0,
+      percentage: json['percentageExam']?? 0 ,
       attended: json['isAbsent'] ?? true,
     );
   }
