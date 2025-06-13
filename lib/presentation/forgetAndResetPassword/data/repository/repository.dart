@@ -17,6 +17,8 @@ class ForgetPassRepository {
   }
   Future<Response> resetPassword( String currentPassword, String password, String confirmPassword , String token, String userEmail) async {
     return await forgetPassWebService.resetPassword( currentPassword, password , confirmPassword, token, userEmail );
+  } Future<Response> resendOtp(String userEmail) async {
+    return await forgetPassWebService.resendOtp(  userEmail );
   }
 }
 

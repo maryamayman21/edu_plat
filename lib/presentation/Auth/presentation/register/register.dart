@@ -163,11 +163,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
 
 ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8.h),
                     Text(
                       'Password must contain at least: 1 lowercase letter, 1 uppercase letter, 1 digit, and 1 special character (!@#\$&*~).',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         color: Colors.grey[700],
                       ),
                       softWrap: true,
@@ -249,7 +249,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
                         return Padding(
-                          padding: REdgeInsets.only(top: 30, bottom: 10),
+                          padding: REdgeInsets.only(top: 30.h, bottom: 10.h),
                           child: CustomButtonWidget(
                             onPressed: state is AuthLoading
                                 ? (){}
@@ -277,23 +277,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     }
                                   },
                               child: state is AuthLoading?
-                              const Row(
+                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text('Sign up', style: TextStyle(
-                                      color: Colors.white , fontSize: 20
+                                      color: Colors.white , fontSize: 20.sp
                                   ),),
-                                  SizedBox(width: 15,),
+                                  SizedBox(width: 15.w,),
                                   SizedBox(
-                                    height: 15,
-                                    width: 15,
-                                    child: CircularProgressIndicator(
+                                    height: 15.h,
+                                    width: 15.w,
+                                    child: const CircularProgressIndicator(
                                       color: Colors.white,
                                     ),
                                   )
                                 ],
-                              ): const Text('Sign up', style: TextStyle(
-                                  color: Colors.white , fontSize: 20
+                              ):  Text('Sign up', style: TextStyle(
+                                  color: Colors.white , fontSize: 20.sp
                               ),)
 
                           ),

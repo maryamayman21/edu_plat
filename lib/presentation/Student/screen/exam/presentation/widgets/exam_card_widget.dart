@@ -89,6 +89,26 @@ class ExamCard extends StatelessWidget {
               ),
                SizedBox(height: 16.h), // Increased spacing
 
+              Row(
+                children: [
+                  Icon(
+                    Icons.code,
+                    color: Colors.deepOrangeAccent,
+                    size: 16.sp,
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    "Course Code: ${studentExam.courseCode}",
+                    style: TextStyle(
+                      color: color.primaryColor,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 12.h),
+
               // Duration and Question Numbers
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

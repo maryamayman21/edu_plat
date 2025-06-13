@@ -98,7 +98,22 @@ class OfflineExamCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 16.h),
+             // SizedBox(height: 16.h),
+              SizedBox(height: 20.h),
+              Row(
+                children: [
+                  Icon(Icons.code, color: Colors.green, size: 16.sp),
+                  SizedBox(width: 8.w),
+                  Text(
+                    "Course code: ${examEntity.totalMark}",
+                    style: TextStyle(
+                      color: color.primaryColor,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
 
               // Duration and Questions
               Row(
@@ -145,6 +160,7 @@ class OfflineExamCard extends StatelessWidget {
               SizedBox(height: 12.h),
 
               // Grading
+
               Row(
                 children: [
                   Icon(

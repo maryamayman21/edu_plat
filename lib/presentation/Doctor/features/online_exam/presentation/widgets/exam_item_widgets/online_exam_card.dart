@@ -85,6 +85,25 @@ class OnlineExamCard extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: 20.h),
+              Row(
+                children: [
+                  Icon(Icons.code, color: Colors.green, size: 16.sp),
+                  SizedBox(width: 8.w),
+                  Text(
+                    "Course code: ${examEntity.totalMark}",
+                    style: TextStyle(
+                      color: color.primaryColor,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+
+
+
+
               SizedBox(height: 16.h),
 
               // Duration & Questions
@@ -105,6 +124,9 @@ class OnlineExamCard extends StatelessWidget {
                       ),
                     ],
                   ),
+
+
+
                   Row(
                     children: [
                       Icon(Icons.quiz, color: Colors.yellowAccent, size: 16.sp),

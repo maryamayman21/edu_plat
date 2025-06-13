@@ -142,8 +142,17 @@ class _SetpasswordState extends State<Changepassword> {
                         ),
 ),
 
-                        SizedBox(height: 5.h,),
-
+                         SizedBox(height: 8.h),
+                        Text(
+                          'Password must contain at least: 1 lowercase letter, 1 uppercase letter, 1 digit, and 1 special character (!@#\$&*~).',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.grey[700],
+                          ),
+                          softWrap: true,
+                          overflow: TextOverflow.visible,
+                        ),
+                         SizedBox(height: 8.h),
                         Text(
                           'Password',
                           style: Theme.of(context)
@@ -195,7 +204,7 @@ class _SetpasswordState extends State<Changepassword> {
                         ),
 ),
                         // SizedBox(height: 5.h),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         PasswordStrengthChecker(
                           strength: passNotifier,
                           configuration:
@@ -278,44 +287,69 @@ class _SetpasswordState extends State<Changepassword> {
                         BlocBuilder<ForgetPassCubit, ForgetPassState>(
                             builder: (context, state){
                               return Padding(
-                                padding: REdgeInsets.only(
-                                    top: 30, bottom: 10),
-                                child: CustomButtonWidget(
-                                  onPressed: state is ForgetPassLoading
-                                      ? (){}
-                                      : () async{
-                                    print('Done');
-                                    passValue.trim();
-                                    confirmPassValue.trim();
-                                    currentPassValue.trim();
-                                    if (passValue != null && confirmPassValue !=  null && currentPassValue!=null) {
-                                      print('current pass : $currentPassValue');
-                                      print('pass value : $passValue');
-                                      print('confirm pass value : $confirmPassValue');
-                                      final token =  await SecureStorageService.read('token');
-                                      BlocProvider.of<ForgetPassCubit>(context)
-                                          .resetPassword(currentPassValue ,passValue , confirmPassValue , token! , widget.email);
-                                    }
-                                  },
-                                   child: state is ForgetPassLoading?
-                                const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('Change Password', style: TextStyle(
-                                        color: Colors.white , fontSize: 20
-                                    ),),
-                                    SizedBox(width: 15,),
-                                    SizedBox(
-                                      height: 15,
-                                      width: 15,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
+                                padding: EdgeInsets.only(top: 30.h, bottom: 10.h), // Responsive padding
+                                child: SizedBox(
+                                  width: double.infinity, // Make button full width
+                                  child: CustomButtonWidget(
+                                    onPressed: state is ForgetPassLoading
+                                        ? null // Disable button when loading
+                                        : () async {
+                                      passValue = passValue.trim();
+                                      confirmPassValue = confirmPassValue.trim();
+                                      currentPassValue = currentPassValue.trim();
+
+                                      if (passValue.isNotEmpty &&
+                                          confirmPassValue.isNotEmpty &&
+                                          currentPassValue.isNotEmpty) {
+                                        debugPrint('current pass: $currentPassValue');
+                                        debugPrint('pass value: $passValue');
+                                        debugPrint('confirm pass value: $confirmPassValue');
+
+                                        final token = await SecureStorageService.read('token');
+                                        if (token != null) {
+                                          BlocProvider.of<ForgetPassCubit>(context)
+                                              .resetPassword(
+                                              currentPassValue,
+                                              passValue,
+                                              confirmPassValue,
+                                              token,
+                                              widget.email
+                                          );
+                                        }
+                                      }
+                                    },
+                                    child: state is ForgetPassLoading
+                                        ? Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Change Password',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.sp, // Responsive font size
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        SizedBox(width: 15.w), // Responsive spacing
+                                        SizedBox(
+                                          height: 15.h, // Responsive height
+                                          width: 15.w, // Responsive width
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 2.w, // Responsive stroke width
+                                          ),
+                                        ),
+                                      ],
                                     )
-                                  ],
-                                ): const Text('Change Password', style: TextStyle(
-                                  color: Colors.white , fontSize: 20
-                              ),)
+                                        : Text(
+                                      'Change Password',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20.sp, // Responsive font size
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               );
                             }

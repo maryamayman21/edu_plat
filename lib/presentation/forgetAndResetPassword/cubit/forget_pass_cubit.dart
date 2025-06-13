@@ -24,8 +24,9 @@ class ForgetPassCubit extends Cubit<ForgetPassState> {
         final message = responseData['message'] ?? 'successful.';
         emit(ForgetPassSuccess(message));
       } else {
+        final message = responseData['message'] ?? 'Request failed. Please try again.';
         // Handle unexpected cases where 'success' is false or missing
-        emit( ForgetPassFailure('Request failed. Please try again.'));
+        emit( ForgetPassFailure(message));
       }
     } catch (error) {
       // Map the error to a user-friendly message and emit failure state
@@ -90,6 +91,29 @@ class ForgetPassCubit extends Cubit<ForgetPassState> {
     emit(ForgetPassLoading());
     try {
       final response = await forgetRepository.resetPassword( currentPassword, password, confirmPassword, token, userEmail);
+
+      // Parse the response data
+      final responseData = response.data;
+      if (responseData['success'] == true) {
+        final message = responseData['message'] ?? 'Reset password successful.';
+
+        emit(ForgetPassSuccess(message));
+      } else {
+        final message = responseData['message'] ?? 'Reset password failed.';
+
+        // Handle unexpected cases where 'success' is false or missing
+        emit( ForgetPassFailure(message));
+      }
+    } catch (error) {
+      // Map the error to a user-friendly message and emit failure state
+      emit(ForgetPassFailure(_mapErrorToMessage(error)));
+    }
+  }
+
+ Future<void> resendOtp( String userEmail) async {
+   // emit(ForgetPassLoading());
+    try {
+      final response = await forgetRepository.resendOtp(userEmail);
 
       // Parse the response data
       final responseData = response.data;
