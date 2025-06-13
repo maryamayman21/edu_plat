@@ -129,19 +129,21 @@ class _HomeStudentState extends State<HomeStudentScreen>
           ],
         )),
         centerTitle: true,
-          actions: [
+          actions: selectedIndex == 0
+              ? [
             BlocBuilder<NotificationCounterCubit, int>(
               builder: (context, count) {
                 return Stack(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.notifications,
+                      icon: const Icon(
+                        Icons.notifications,
                         color: Colors.grey,
                       ),
                       onPressed: () {
                         Navigator.push(
                           context,
-                         CustomPageRoute(page:  const NotificationCenterScreen()),
+                          CustomPageRoute(page: const NotificationCenterScreen()),
                         );
                       },
                     ),
@@ -162,8 +164,10 @@ class _HomeStudentState extends State<HomeStudentScreen>
                 );
               },
             ),
-          ],
-      ),
+          ]
+              : [],
+
+        ),
 
       body: tabs[selectedIndex],
         bottomNavigationBar: BottomNavigationBar(

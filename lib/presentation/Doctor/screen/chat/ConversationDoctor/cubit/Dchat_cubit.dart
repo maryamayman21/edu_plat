@@ -21,7 +21,7 @@ class DoctorChatCubit extends Cubit<DoctorChatState> {
 
       final response = await http.get(
         Uri.parse(
-            "https://great-hot-impala.ngrok-free.app/api/Chat/GetStudentsForDoctor/students"),
+            "https://eduplat123.runasp.net/api/Chat/GetStudentsForDoctor/students"),
         headers: {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json",
@@ -51,4 +51,5 @@ class DoctorChatCubit extends Cubit<DoctorChatState> {
       emit(ChatError("An error occurred while fetching students") );
     }
   }
+
 }

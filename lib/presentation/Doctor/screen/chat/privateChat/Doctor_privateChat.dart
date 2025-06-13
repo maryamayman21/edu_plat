@@ -3,6 +3,7 @@ import 'package:chat_bubbles/message_bars/message_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
+import 'package:edu_platt/presentation/Doctor/screen/chat/ConversationDoctor/cubit/Dchat_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/Private_chat/Model/modelPrivateChat.dart';
 import 'package:edu_platt/presentation/profile/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
@@ -23,37 +24,10 @@ class _DoctorPrivatechatState extends State<DoctorPrivatechat> {
   @override
   void initState() {
     super.initState();
-    _saveLastOpenedTime();
-    // إعلام الطرف الآخر بأن الرسائل قد قرئت
-    _markMessagesAsRead();
-  }
-  void _saveLastOpenedTime() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('lastOpenedPrivate', DateTime.now().millisecondsSinceEpoch);
+
   }
 
-  void _markMessagesAsRead() async {
-    final profileState = context.read<ProfileCubit>().state;
-    final currentUserEmail = profileState is ProfileLoaded ? profileState.userModel.email : "";
 
-    if (currentUserEmail.isEmpty) return;
-
-    final roomId = "${widget.studentEmail}_${currentUserEmail}";
-
-    // تحديث جميع الرسائل المرسلة للطرف الحالي كمقروءة
-    final query = await FirebaseFirestore.instance
-        .collection('chats')
-        .doc(roomId)
-        .collection('messages')
-        .where('receiverId', isEqualTo: currentUserEmail)
-        .get();
-
-    final batch = FirebaseFirestore.instance.batch();
-    for (final doc in query.docs) {
-      batch.update(doc.reference, {'isRead': true});
-    }
-    await batch.commit();
-  }
 
 
   @override
@@ -202,6 +176,7 @@ class _DoctorPrivatechatState extends State<DoctorPrivatechat> {
                 "createdAt": Timestamp.now(),
                 "senderId": doctorEmail ,
                 "receiverId": widget.studentEmail,
+                "isSeen": false,
               }).then((_) {
                 setState(() {});
               });
@@ -234,4 +209,7 @@ class _DoctorPrivatechatState extends State<DoctorPrivatechat> {
           messageDate);
     }
   }
+
+
 }
+

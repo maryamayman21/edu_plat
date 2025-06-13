@@ -2,6 +2,7 @@
 
 import 'package:edu_platt/core/DataModel/exam_dashboard_model.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
+import 'package:edu_platt/presentation/Doctor/features/home/presentation/widgets/doctor_drawer.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/exam_item_widgets/exam_dashboard_card.dart';
 import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
 import 'package:flutter/material.dart';
@@ -60,16 +61,28 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const DoctorDrawer(),
       appBar: AppBar(
-
-        title:  Text('Exam Dashboard',
-          style: TextStyle(
-            fontSize: 22.sp, // Slightly smaller for better balance
-            fontWeight: FontWeight.bold,
-            color: color.primaryColor,
+        elevation: 0,
+        backgroundColor:color.primaryColor,
+        scrolledUnderElevation: 0,
+        toolbarHeight:80.h,
+        shape:RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30.r),
+            bottomRight: Radius.circular(30.r),
+          ),
+        ),
+        title: Text(
+          "Exam",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: Colors.white,
+            fontSize: 22.sp,
+            fontWeight: FontWeight.w500,
           ),
         ),
         centerTitle: true,
+
       ),
       body: Padding(
         padding: EdgeInsets.all(16.w), // Responsive padding

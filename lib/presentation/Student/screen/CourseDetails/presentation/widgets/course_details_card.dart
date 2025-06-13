@@ -89,9 +89,8 @@ class _CourseDetailsCardState extends State<CourseDetailsCard> {
                   ),
                   InkWell(
                     onTap: () {
-                      // إخفاء النقطة الحمراء بعد أول مرة يتم الضغط فيها
                       setState(() {
-                        showRedDot = false;
+                        // showRedDot = false;
                       });
 
                       Navigator.push(
@@ -109,21 +108,21 @@ class _CourseDetailsCardState extends State<CourseDetailsCard> {
                           icon: Icons.chat,
                           text: 'Chat          ',
                         ),
-                        if (showRedDot)
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: Container(
-                              width: 15,
-                              height: 20,
-                              padding: EdgeInsets.all(6),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                              ),
-
-                            ),
-                          ),
+                        // if (showRedDot)
+                        //   Positioned(
+                        //     top: 0,
+                        //     right: 0,
+                        //     child: Container(
+                        //       width: 15,
+                        //       height: 20,
+                        //       padding: EdgeInsets.all(6),
+                        //       decoration: BoxDecoration(
+                        //         color: Colors.red,
+                        //         shape: BoxShape.circle,
+                        //       ),
+                        //
+                        //     ),
+                        //   ),
                       ],
                     ),
                   ),
