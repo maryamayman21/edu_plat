@@ -142,8 +142,7 @@ class _DoctorDrawerState extends State<DoctorDrawer>
                 icons: Icons.home,
                 text: "Home",
                 onTap: () {
-                  Navigator.pop(context);
-                },
+                  Navigator.pushNamed(context, AppRouters.doctorHomeRoute );                },
               )),
           FadeTransition(
             opacity: _fadeAnimations[1],

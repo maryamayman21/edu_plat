@@ -73,81 +73,105 @@ class _CoursesgpacalculatorState extends State<Coursesgpacalculator> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TitleWidget(text: "Credit"),
-            TitleWidget(text: "Course Grade"),
-            TitleWidget(text: "Remove"),
-          ],
-        ),
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.all(10.h),
-            itemCount: courses.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: REdgeInsets.symmetric(vertical: 5.h),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(width: 10.w),
-                        SizedBox(
-                          width: 100.w,
-                          child: CreditWidget(
-                            selectedHour: courses[index]["credit"],
-                            onChanged: (value) {
-                              setState(() {
-                                courses[index]["credit"] = value;
-                              });
-                            },
-                          ),
+    return LayoutBuilder( builder: (context, constraints) {
+      return Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(bottom: MediaQuery
+                  .of(context)
+                  .viewInsets
+                  .bottom + 20.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+            
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TitleWidget(text: "Credit"),
+                      TitleWidget(text: "Course Grade"),
+                      TitleWidget(text: "Remove"),
+                    ],
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.all(10.h),
+                    itemCount: courses.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: REdgeInsets.symmetric(vertical: 5.h),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(width: 10.w),
+                                SizedBox(
+                                  width: 100.w,
+                                  child: CreditWidget(
+                                    selectedHour: courses[index]["credit"],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        courses[index]["credit"] = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                SizedBox(width: 20.w),
+                                SizedBox(
+                                  width: 90.w,
+                                  child: GradeWidget(
+                                    selectedGrade: courses[index]["grade"],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        courses[index]["grade"] = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                SizedBox(width: 30.w),
+                                IconButton(
+                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () => removeCourse(index),
+                                ),
+                                SizedBox(width: 10.w),
+                              ],
+                            ),
+                            Divider(thickness: 2.r, color: Colors.white,)
+                          ],
                         ),
-                        SizedBox(width: 20.w),
-                        SizedBox(
-                          width: 90.w,
-                          child: GradeWidget(
-                            selectedGrade: courses[index]["grade"],
-                            onChanged: (value) {
-                              setState(() {
-                                courses[index]["grade"] = value;
-                              });
-                            },
-                          ),
-                        ),
-                        SizedBox(width: 30.w),
-                        IconButton(
-                          icon: Icon(Icons.delete, color: Colors.red),
-                          onPressed: () => removeCourse(index),
-                        ),
-                        SizedBox(width: 10.w),
-                      ],
-                    ),
-                    Divider(thickness: 2.r,color: Colors.white,)
-                  ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10.h),
+            color: Colors.transparent,
+            child:Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                    CourseWidget(icon: Icons.add, text: "Add Course",onTap: addCourse,),
+              Padding(
+                  padding: REdgeInsets.all(20.0),
+                  child: InkWell(
+                    onTap:calculateCGPA ,
+                    child: TitleWidget(
+                        text: "                    Calculate                    "),
+                  ),
                 ),
-              );
-            },
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CourseWidget(icon: Icons.add, text: "Add Course",onTap: addCourse,),
-          ],),
-        Padding(
-          padding: REdgeInsets.all(20.0),
-          child: InkWell(
-            onTap:calculateCGPA ,
-            child: TitleWidget(
-                text: "                    Calculate                    "),
-          ),
-        ),
-      ],
+
+              ],
+            )
+
+          )
+        ],
+      );
+    }
     );
   }
 }

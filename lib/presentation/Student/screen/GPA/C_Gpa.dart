@@ -102,7 +102,7 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
                       bottomRight: Radius.circular(30.r),)
                 ),
                 child: Padding(
-                  padding: REdgeInsets.all(30.0),
+                  padding: REdgeInsets.only(left: 30.0,bottom: 30,top: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -119,7 +119,6 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
                       Row(
                         children: [
                       BlocBuilder<GpaCubit, GpaState>(
-                          buildWhen: (previous, current) => current is GpaLoaded,
                         builder: (context, state) {
                           if (state is GpaLoading) {
                             return const Center(child: CircularProgressIndicator());
@@ -143,8 +142,19 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
                                   ]
                               ),
                             );
+                          } else if (state is GpaError) {
+                            return Row(
+                              children: [
+                                TextButton.icon(
+                                  onPressed: () => context.read<GpaCubit>().fetchGpa(),
+                                  icon:  Icon(Icons.refresh),
+                                  label:  Text(state.message,style:
+                                  TextStyle(fontSize: 15.sp,fontWeight: FontWeight.bold,color: Colors.red),),
+                                )
+                              ],
+                            );
                           }
-                          return const Center(child: SizedBox());
+                          return const SizedBox();
                         }
                       ),
                         ],

@@ -71,13 +71,14 @@ key: formKey,
                 decoration: const InputDecoration(hintText: 'Task Description'),
               ),
               SizedBox(
-                height: 30.h,
+                height: 10.h,
               ),
               // const Text(
               //   'Select Date',
               //   style: TextStyle(
               //     fontSize: 19,
-              //     fontWeight: FontWeight.w500,
+              //     fontWeight: FontWeight.w500,15+
+
               //     color: color.primaryColor,
               //   ),
               //   textAlign: TextAlign.center,
@@ -103,9 +104,6 @@ key: formKey,
               //     textAlign: TextAlign.center,
               //   ),
               // ),
-              SizedBox(
-                height: 30.h,
-              ),
               Container(
                   padding: REdgeInsets.symmetric(vertical: 1, horizontal: 10),
                   decoration: BoxDecoration(
