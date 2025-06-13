@@ -2,12 +2,12 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
 import 'package:edu_platt/core/network_handler/network_handler.dart';
+import 'package:edu_platt/core/utils/validations/date_validation.dart';
 
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/data/model/note.dart';
 import 'package:edu_platt/services/local_notification_service.dart';
 import 'package:meta/meta.dart';
-
 
 import '../data/notes_repository/notes_repository.dart';
 
@@ -18,29 +18,24 @@ class NotesCubit extends Cubit<NotesState> {
   final TokenService tokenService;
   final NotesCacheService notesCacheService;
 
-  NotesCubit({
-    required this.notesRepository,
-    required this.tokenService,
-    required this.notesCacheService
-  }) : super(NotesInitial());
-
+  NotesCubit(
+      {required this.notesRepository,
+      required this.tokenService,
+      required this.notesCacheService})
+      : super(NotesInitial());
 
   Future<void> saveNote(Note note) async {
     try {
 
-     final token = await tokenService.getToken();
+      final token = await tokenService.getToken();
 
-     final noteID = await notesRepository.saveNote(note, token!);
+      final noteID = await notesRepository.saveNote(note, token!);
 
+      List<Note> notes = await notesCacheService.saveNote(note, noteID);
 
-     List<Note> notes = await notesCacheService.saveNote(note, noteID);
+      await LocalNotificationService.scheduleNotification(note, noteID);
 
-        await LocalNotificationService.scheduleNotification(
-          note,
-          noteID
-        );
-
-     emit(NotesSuccess(notes));
+      emit(NotesSuccess(notes));
       // if (responseData['success'] == true) {
       //   final message = responseData['message'] ?? 'Registration successful.';
       //
@@ -56,8 +51,7 @@ class NotesCubit extends Cubit<NotesState> {
               error.response?.data['message'] ?? 'An unexpected error occurred';
           emit(NotesFailure(errorMessage));
         } else {
-          emit(NotesFailure(
-              NetworkHandler.mapErrorToMessage(error)));
+          emit(NotesFailure(NetworkHandler.mapErrorToMessage(error)));
         }
       }
     }
@@ -67,14 +61,13 @@ class NotesCubit extends Cubit<NotesState> {
     try {
       //cache note
       //update server
-     final token = await tokenService.getToken();
+      final token = await tokenService.getToken();
 
-     final response = await notesRepository.updateNote(isDone, id, token!);
+      final response = await notesRepository.updateNote(isDone, id, token!);
 
-     final responseData = response.data;
+      final responseData = response.data;
       if (responseData['success'] == true) {
         final message = responseData['message'] ?? 'Note updated successfully.';
-
       } else {
         emit(NotesFailure('Failed to update notes'));
       }
@@ -83,8 +76,7 @@ class NotesCubit extends Cubit<NotesState> {
       print("Note updated in cache  successfully");
       if (updatedList.isNotEmpty && updatedList != null) {
         emit(NotesSuccess(updatedList));
-      }
-      else {
+      } else {
         emit(NotesFailure('Failed to update notes'));
       }
     } catch (error) {
@@ -95,8 +87,7 @@ class NotesCubit extends Cubit<NotesState> {
               error.response?.data['message'] ?? 'An unexpected error occurred';
           emit(NotesFailure(errorMessage));
         } else {
-          emit(NotesFailure(
-              NetworkHandler.mapErrorToMessage(error)));
+          emit(NotesFailure(NetworkHandler.mapErrorToMessage(error)));
         }
       }
     }
@@ -118,8 +109,7 @@ class NotesCubit extends Cubit<NotesState> {
       print("Note deleted in cache  successfully");
       if (updatedList.isNotEmpty && updatedList != null) {
         emit(NotesSuccess(updatedList));
-      }
-      else {
+      } else {
         emit(NotesNotFound());
       }
     } catch (error) {
@@ -130,8 +120,7 @@ class NotesCubit extends Cubit<NotesState> {
           //     error.response?.data['message'] ?? 'An unexpected error occurred';
           emit(NotesFailure(error.message));
         } else {
-          emit(NotesFailure(
-              NetworkHandler.mapErrorToMessage(error)));
+          emit(NotesFailure(NetworkHandler.mapErrorToMessage(error)));
         }
       }
     }
@@ -174,7 +163,6 @@ class NotesCubit extends Cubit<NotesState> {
 
   Future<void> getNotesByDate(DateTime date) async {
     try {
-
       emit(NotesLoading());
       // final cachedNotes = await notesCacheService.getNotes();
       // if (cachedNotes != null && cachedNotes.isNotEmpty) {

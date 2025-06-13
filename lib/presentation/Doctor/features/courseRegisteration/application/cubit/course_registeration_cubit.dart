@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:edu_platt/presentation/Doctor/features/courseRegisteration/data/models/course.dart';
+import 'package:edu_platt/presentation/Doctor/features/course_details/cubit/dialog_cubit.dart';
 import 'package:meta/meta.dart';
 import '../../../../../../core/cashe/services/course_cashe_service.dart';
 import '../../../../../../core/network_handler/network_handler.dart';
@@ -13,10 +14,13 @@ class CourseRegisterationCubit extends Cubit<CourseRegisterationState> {
   final TokenService tokenService;
   final CourseRegistrationRepository courseRegistrationRepository;
   final CourseCacheService courseCacheService;
+  final DialogCubit dialogCubit;
   CourseRegisterationCubit(
       {required this.courseRegistrationRepository,
       required this.tokenService,
-      required this.courseCacheService})
+      required this.courseCacheService,
+      required this.dialogCubit
+      })
       : super(CourseRegisterationInitial());
 
   Future<void> fetchRegistrationCourses(int semesterID) async {
@@ -54,7 +58,7 @@ class CourseRegisterationCubit extends Cubit<CourseRegisterationState> {
 
   Future<void> registerCourses(List<String> courses) async {
     try {
-
+      dialogCubit.setStatus('Loading');
       //List<String> courseCodes = courses.map((course) => course['courseCode'] as String).toList();
 
       final token = await tokenService.getToken();
@@ -64,12 +68,20 @@ class CourseRegisterationCubit extends Cubit<CourseRegisterationState> {
 
       final responseData = response.data;
       if (responseData['success'] == true) {
+
         // await courseCacheService.saveCourses(courses);
         //print('Registered courses in cache : $courses');
         final message = responseData['message'] ?? 'Registration successful.';
+        dialogCubit.setStatus( 'Success', message:message, );
         emit(CoursesRegistered(message));
-      } else {
-        emit(CourseRegisterationFailure('Registration failed'));
+      } else if (responseData['success'] == false){
+        final message = responseData['message'] ?? 'Registration failed.';
+        print('done4');
+        dialogCubit.setStatus('Failure', message:message );
+       // emit(CourseRegisterationFailure(message));
+      }else{
+        print('done3');
+        dialogCubit.setStatus('Failure', message:'No internet connection');
       }
     } catch (error) {
       if (!isClosed) {
@@ -77,10 +89,14 @@ class CourseRegisterationCubit extends Cubit<CourseRegisterationState> {
           // Handle specific API errors
           final errorMessage =
               error.response?.data['message'] ?? 'An unexpected error occurred';
-          emit(CourseRegisterationFailure(errorMessage));
+        //  emit(CourseRegisterationFailure(errorMessage));
+          print('done2');
+          dialogCubit.setStatus('Failure', message:errorMessage);
         } else {
-          emit(CourseRegisterationFailure(
-              NetworkHandler.mapErrorToMessage(error)));
+          print('done1');
+          dialogCubit.setStatus('Failure', message:NetworkHandler.mapErrorToMessage(error));
+          // emit(CourseRegisterationFailure(
+          //     NetworkHandler.mapErrorToMessage(error)));
         }
       }
     }

@@ -147,33 +147,39 @@ class _MakeOnlineExamState extends State< UpdateOnlineExam> {
                 // toolbarHeight: 100,
                 expandedHeight: 290,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Column(
-                    children: [
-                      SizedBox(height: 70.h),
-                      CourseTitleField(
-                        onChanged: (value) {
-                          _courseTitle = value;
-                        },
-                        courseTitle: context.read<OnlineExamBloc>().state.exam.examTitle,
-                      ),
-
-                      CourseDropdown(
-                        courses: courses,
-                        selectedCourse: context.read<OnlineExamBloc>().state.exam.courseCode ,
-                        onCourseSelected: (course) {
-                          // Do something with selected course
-                          _courseCode = course;
-                        },
-                      ),
-
-                      MyDatePicker(
-                        date:context.read<OnlineExamBloc>().state.exam.examDate,
-                        onChanged: (value) {
-                          _examDate = value;
-                          context.read<OnlineExamBloc>().add(SetExamDateEvent(_examDate));
-                        },
-                      ),
-                    ],
+                  background: SingleChildScrollView(  // Add this
+                    child: Column(
+                      children: [
+                        SizedBox(height: 70.h),
+                        CourseTitleField(
+                          onChanged: (value) {
+                            _courseTitle = value;
+                          },
+                          courseTitle: _courseTitle,
+                        ),
+                        // SizedBox(height: 16.h),  // Add spacing between fields
+                        CourseDropdown(
+                          selectedCourse: _courseCode,
+                          onCourseSelected: (course) {
+                            _courseCode = course;
+                          },
+                          courses: courses,
+                        ),
+                        //SizedBox(height: 16.h),  // Add spacing between fields
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: 100.h,  // Limit height if needed
+                          ),
+                          child: MyDatePicker(
+                            date: _examDate,
+                            onChanged: (value) {
+                              _examDate = value;
+                              context.read<OnlineExamBloc>().add(SetExamDateEvent(_examDate));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -199,7 +205,7 @@ class _MakeOnlineExamState extends State< UpdateOnlineExam> {
 
               QuestionWidgetListView2(
                 questions: context.read<OnlineExamBloc>().state.exam.question,
-              ) :  SliverToBoxAdapter(child: Image.asset(AppAssets.nnoNotesFound)),
+              ) :  SliverToBoxAdapter(child: Image.asset(AppAssets.createExam)),
 
               SliverToBoxAdapter(
                 child: SizedBox(height: 50.h),
@@ -215,24 +221,44 @@ class _MakeOnlineExamState extends State< UpdateOnlineExam> {
             color: Colors.white,
             padding:  const EdgeInsets.all(8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CustomElevatedButton(
-                  onPressed: () => _showQuestionBottomSheet(context),
-                  text: '+ New Question',
+                // Spacer to push buttons to center when only one exists
+                if (context.read<OnlineExamBloc>().state.exam.question.isEmpty)
+                  const Spacer(),
+
+                // First button
+                Expanded(
+                  flex: context.read<OnlineExamBloc>().state.exam.question.isNotEmpty ? 1 : 2,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: CustomElevatedButton(
+                      onPressed: () => _showQuestionBottomSheet(context),
+                      text: '+ New Question',
+                    ),
+                  ),
                 ),
-                context.read<OnlineExamBloc>().state.exam.question.isNotEmpty ?
 
-                CustomElevatedButton(
-                  onPressed: () {
-                    if (!_formKey.currentState!.validate()) return;
-                    context.read<OnlineExamBloc>().add(SetExamCourseTitleEvent(_courseTitle));
-                    context.read<OnlineExamBloc>().add(SetExamCourseCodeEvent(_courseCode));
-                    context.read<OnlineExamBloc>().add(UpdateDoctorExamEvent(examId: widget.examId));
+                // Second button (conditionally shown)
+                if (context.read<OnlineExamBloc>().state.exam.question.isNotEmpty)
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: CustomElevatedButton(
+                        onPressed: () {
+                          if (!_formKey.currentState!.validate()) return;
+                          context.read<OnlineExamBloc>().add(SetExamCourseTitleEvent(_courseTitle));
+                          context.read<OnlineExamBloc>().add(SetExamCourseCodeEvent(_courseCode));
+                          context.read<OnlineExamBloc>().add(const CreateExamEvent());
+                        },
+                        text: 'Create Online Exam',
+                      ),
+                    ),
+                  ),
 
-                  },
-                  text: 'Save Changes',
-                ):  const SizedBox.shrink()
+                // Spacer to push buttons to center when only one exists
+                if (context.read<OnlineExamBloc>().state.exam.question.isEmpty)
+                  const Spacer(),
               ],
             ),
           ),

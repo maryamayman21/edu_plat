@@ -1,3 +1,4 @@
+import 'package:edu_platt/presentation/Doctor/features/course_details/cubit/dialog_cubit.dart';
 import 'package:edu_platt/presentation/Doctor/features/home/presentation/widgets/appBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,8 +21,12 @@ class Courseregisterationscreen extends StatelessWidget {
         BlocProvider<DropdownCubit>(
           create: (context) => DropdownCubit(),
         ),
+        BlocProvider<DialogCubit>(
+          create: (context) => DialogCubit(),
+        ),
         BlocProvider<CourseRegisterationCubit>(
           create: (context) => CourseRegisterationCubit(
+              dialogCubit: context.read<DialogCubit>(),
               courseRegistrationRepository:
                   CourseRegistrationRepository(CourseRegistrationWebService()),
               tokenService: TokenService() , courseCacheService: CourseCacheService())..fetchRegistrationCourses(semesterID)

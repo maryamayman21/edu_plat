@@ -110,7 +110,7 @@ class _PdfExamQuestionsState extends State<PdfExamQuestions> {
                  date: _examDate,
                  onChanged: (value) => _examDate = value,
                ),
-        Expanded(child: Image.asset(AppAssets.nnoNotesFound)),
+        Expanded(child: Image.asset(AppAssets.createExam)),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: CustomElevatedButton(

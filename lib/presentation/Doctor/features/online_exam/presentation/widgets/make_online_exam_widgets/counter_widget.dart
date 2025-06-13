@@ -11,71 +11,81 @@ class AnimatedCounter extends StatelessWidget {
     Key? key,
     required this.value,
     required this.label,
-    required this.color, this.isDuration = false,
+    required this.color,
+    this.isDuration = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Define text styles internally
-     TextStyle valueTextStyle = TextStyle(
-      fontSize: 20.sp,
-      fontWeight: FontWeight.bold,
-      color: Colors.white,
-    );
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Responsive sizing based on available width
+        final isSmallScreen = constraints.maxWidth < 300;
 
-     TextStyle labelTextStyle = TextStyle(
-      fontSize: 12.sp,
-      fontWeight: FontWeight.w600,
-      color: Colors.white,
-    );
-
-    return Container(
-      padding:  EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-      margin: EdgeInsets.symmetric(horizontal: 18.w),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(15.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 10.r,
-            offset: const Offset(0, 5),
+        return Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: isSmallScreen ? 12.w : 20.w,
+            vertical: isSmallScreen ? 8.h : 10.h,
           ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 800), // Fixed duration
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              // Flip animation
-              return RotationTransition(
-                turns: Tween<double>(begin: 0.5, end: 1.0).animate(
-                  CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-                ),
-                child: FadeTransition(
-                  opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+          margin: EdgeInsets.symmetric(
+            horizontal: isSmallScreen ? 8.w : 18.w,
+          ),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(15.r),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 10.r,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 800),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return RotationTransition(
+                    turns: Tween<double>(begin: 0.5, end: 1.0).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+                    ),
+                    child: FadeTransition(
+                      opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                        CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+                      ),
+                      child: child,
+                    ),
+                  );
+                },
+                child: Text(
+                  key: ValueKey<int>(value),
+                  isDuration ? '${value.toString()} min' : value.toString(),
+                  style: TextStyle(
+                    fontSize: isSmallScreen ? 16.sp : 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                  child: child,
                 ),
-              );
-            },
-            child: Text(
-              key: ValueKey<int>(value), // Unique key for each value
-              isDuration ? '${value.toString()} min' :
-              value.toString(),
-              style: valueTextStyle,
-            ),
+              ),
+              SizedBox(height: isSmallScreen ? 2.h : 3.h),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: isSmallScreen ? 10.sp : 11.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
-        //  const SizedBox(height: 3),
-          Text(
-            label,
-            style: labelTextStyle,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

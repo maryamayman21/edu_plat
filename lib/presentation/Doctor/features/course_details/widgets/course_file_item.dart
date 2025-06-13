@@ -27,6 +27,7 @@ class FileListWidget extends StatelessWidget {
       delegate: SliverChildBuilderDelegate(
             (context, index) {
           final file = courseDetailsEntity[index];
+          print('File extension : ${file.extention}');
           return InkWell(
             onTap: () {
               if (isImage(file.extention!)) {
@@ -101,6 +102,6 @@ class FileListWidget extends StatelessWidget {
     return extension =='png' || extension =='jpg' || extension =='jpeg';
   }
   bool isVideo(String extension){
-    return extension =='mp4' || extension =='mov';
+    return extension =='.mp4' || extension =='.mov';
   }
 }

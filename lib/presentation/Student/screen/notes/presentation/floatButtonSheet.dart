@@ -1,4 +1,6 @@
 import 'package:edu_platt/core/utils/Color/color.dart';
+import 'package:edu_platt/core/utils/validations/date_validation.dart';
+import 'package:edu_platt/presentation/Doctor/features/course_details_utils/dialog_helper_function.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/presentation/widgets/make_online_exam_widgets/question_bottom_sheet/date_picker_widget.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/cubit/notes_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/notes/data/model/note.dart';
@@ -115,12 +117,18 @@ key: formKey,
                       return IconButton(
                         onPressed: () {
                           if (!formKey.currentState!.validate()) return;
+                          print('selected date : ${SelectDate}');
+                          if (isDateTimeInPast(SelectDate?? DateTime.now())) {
 
-                          context.read<NotesCubit>().saveNote(Note(
-                              title: taskTitleController.text.trim(),
-                              description: taskDescController.text.trim(),
-                              date: SelectDate ?? DateTime.now()));
-                          Navigator.pop(context);
+                            showErrorDialog(context,  message:  'Date cannot be in the past' );
+
+                          }else {
+                            context.read<NotesCubit>().saveNote(Note(
+                                title: taskTitleController.text.trim(),
+                                description: taskDescController.text.trim(),
+                                date: SelectDate ?? DateTime.now()));
+                            Navigator.pop(context);
+                          }
                         },
                         icon: Icon(
                           Icons.check,

@@ -108,7 +108,7 @@ class _VerifypasswordState extends State<VerifyEmail> {
                       onCodeChanged: (String code) {
                         //handle validation or checks here
                       },
-                      //runs when every textfield is filled
+
                       onSubmit: (String verificationCode) {
                         setState(() {
                           code = verificationCode;
@@ -171,11 +171,7 @@ class _VerifypasswordState extends State<VerifyEmail> {
                         onPressed: state is AuthLoading
                             ? null
                             : () {
-            
-                          //  print(widget.arguemnt[0]); print(widget.arguemnt[1]); print(widget.arguemnt[2]); print(widget.arguemnt[3]);
-                          print(widget.arguemnt[1]);
                           BlocProvider.of<AuthCubit>(context).resendOtp(widget.arguemnt[1]);
-            
                         },
                         child: Text('Resend code',
                             style: Theme.of(context)
