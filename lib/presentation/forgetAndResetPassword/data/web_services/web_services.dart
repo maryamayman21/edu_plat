@@ -77,6 +77,24 @@ class ForgetPassWebService {
     } catch (e) {
       rethrow;
     }
+  }Future<Response> resendOtp( String userEmail) async {
+    try {
+      final response = await _dio.post(
+        ApiConstants.resendOtpEndpoint,
+        data: {
+          'email' : userEmail
+        },
+        // options: Options(
+        //   headers: {
+        //     "Authorization": "Bearer $token",
+        //   },
+        // ),
+      );
+      print('resend OTP response: ${response.data}'); // Debug print
+      return response;
+    } catch (e) {
+      rethrow;
+    }
   }
 
 }

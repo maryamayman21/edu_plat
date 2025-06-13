@@ -60,124 +60,134 @@ class _VerifypasswordState extends State<Verifypassword> {
           },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 64.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Check your email',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium!
-                      .copyWith(fontWeight: FontWeight.bold, fontSize: 22.sp),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Text(
-                  'We sent a reset code to ${widget.userEmail}',
-                ),
-                const Text(
-                  'Enter 5 digit code that mentioned in the email',
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: OtpTextField(
-                    fieldWidth: 60.w,
-
-                    numberOfFields: 5,
-                    borderWidth: 1,
-                    borderColor: color.primaryColor,
-                    //set to true to show as box or false to show as dash
-                    showFieldAsBox: true,
-                    //runs when a code is typed in
-                    onCodeChanged: (String code) {
-                      //handle validation or checks here
-                    },
-                    //runs when every textfield is filled
-                    onSubmit: (String verificationCode) {
-                      setState(() {
-                        code = verificationCode;
-                      });
-                    }, // end onSubmit
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Check your email',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium!
+                        .copyWith(fontWeight: FontWeight.bold, fontSize: 22.sp),
                   ),
-                ),
-                SizedBox(
-                  height: 15.h,
-                ),
-                BlocBuilder<ForgetPassCubit, ForgetPassState>(
-                    builder: (context, state) {
-                  return Padding(
-                    padding: REdgeInsets.only(top: 30, bottom: 10),
-                    child: CustomButtonWidget(
-                        onPressed: state is ForgetPassLoading
-                            ? () {}
-                            : () {
-
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Text(
+                    'We sent a reset code to ${widget.userEmail}',
+                  ),
+                  const Text(
+                    'Enter 5 digit code that mentioned in the email',
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: OtpTextField(
+                      fieldWidth: 60.w,
+              
+                      numberOfFields: 5,
+                      borderWidth: 1,
+                      borderColor: color.primaryColor,
+                      //set to true to show as box or false to show as dash
+                      showFieldAsBox: true,
+                      //runs when a code is typed in
+                      onCodeChanged: (String code) {
+                        //handle validation or checks here
+                      },
+                      //runs when every textfield is filled
+                      onSubmit: (String verificationCode) {
+                        setState(() {
+                          code = verificationCode;
+                        });
+                      }, // end onSubmit
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  BlocBuilder<ForgetPassCubit, ForgetPassState>(
+                      builder: (context, state) {
+                        return Padding(
+                          padding: EdgeInsets.only(top: 30.h, bottom: 10.h),
+                          child: SizedBox(
+                            width: double.infinity, // Makes button take full width
+                            child: CustomButtonWidget(
+                              onPressed: state is ForgetPassLoading
+                                  ? () {}
+                                  : () {
                                 if (code != null && code.length == 5) {
                                   BlocProvider.of<ForgetPassCubit>(context)
                                       .verifyEmail(code, widget.userEmail);
                                 }
                               },
-                        child: state is ForgetPassLoading
-                            ? const Row(
+                              child: state is ForgetPassLoading
+                                  ? Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     'Verify Email',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                  SizedBox(width: 15,),
-                                  SizedBox(
-                                    height: 15,
-                                    width: 15,
-                                    child: CircularProgressIndicator(
                                       color: Colors.white,
+                                      fontSize: 20.sp, // Responsive font size
                                     ),
-                                  )
+                                  ),
+                                  // SizedBox(width: 15.w), // Responsive width
+                                  // SizedBox(
+                                  //   height: 15.h, // Responsive height
+                                  //   width: 15.w, // Responsive width
+                                  //   child: CircularProgressIndicator(
+                                  //     color: Colors.white,
+                                  //     strokeWidth: 2.w, // Responsive stroke width
+                                  //   ),
+                                  // ),
                                 ],
                               )
-                            : const Text(
+                                  : Text(
                                 'Verify Email',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
-                              )),
-                  );
-                }),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Haven\'t got the email yet?',
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 16.sp,
-                            color: Colors.black)),
-                    BlocBuilder<ForgetPassCubit, ForgetPassState>(
-                      builder: (context, state) {
-                        return TextButton(
-                          onPressed: state is ForgetPassLoading
-                              ? null
-                              : () {
-                                  BlocProvider.of<ForgetPassCubit>(context)
-                                      .forgetPassword(widget.userEmail);
-                                },
-                          child: Text('Resend code',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 16.sp,
-                                      color: color.primaryColor)),
+                                  color: Colors.white,
+                                  fontSize: 20.sp, // Responsive font size
+                                ),
+                              ),
+                            ),
+                          ),
                         );
-                      },
-                    )
-                  ],
-                )
-              ],
+                  }),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Haven\'t got the email yet?',
+                          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16.sp,
+                              color: Colors.black)),
+                      BlocBuilder<ForgetPassCubit, ForgetPassState>(
+                        builder: (context, state) {
+                          return TextButton(
+                            onPressed: state is ForgetPassLoading
+                                ? null
+                                : () {
+                                    BlocProvider.of<ForgetPassCubit>(context)
+                                        .forgetPassword(widget.userEmail);
+                                  },
+                            child: Text('Resend code',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 16.sp,
+                                        color: color.primaryColor)),
+                          );
+                        },
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
