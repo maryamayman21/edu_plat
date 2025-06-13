@@ -49,12 +49,11 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const DoctorDrawer(),
       appBar: AppBar(
         elevation: 0,
         backgroundColor:color.primaryColor,
         scrolledUnderElevation: 0,
-        toolbarHeight:80.h,
+        toolbarHeight:70.h,
         shape:RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(30.r),
