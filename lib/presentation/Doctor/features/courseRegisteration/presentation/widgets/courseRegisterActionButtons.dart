@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:edu_platt/presentation/Doctor/features/course_details/cubit/dialog_cubit.dart';
+import 'package:edu_platt/presentation/Doctor/features/course_details_utils/dialog_helper_function.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,18 +31,36 @@ class CourseRegisterationActionButtons extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child:
-            BlocListener<CourseRegisterationCubit, CourseRegisterationState>(
+            BlocListener<DialogCubit, dynamic>(
+              listener: (context, state)async{
+                // final dialogCubit = context.read<DialogCubit>();
+                if(state?.status  == StatusDialog.SUCCESS){
+                  print('DONE SUCCESS');
+                  Navigator.pop(context);
+                  showSuccessDialog(context, message:  state?.message ?? 'Operation Successful');
+                }
+                if(state?.status  == StatusDialog.LOADING){
+                  print('DONE LOADING');
+                  showLoadingDialog(context);
+                }
+                if(state?.status  == StatusDialog.FAILURE){
+                  print('DONE FAILURE');
+                  Navigator.pop(context);
+                  showErrorDialog(context, message:  state?.message ?? 'Something went wrong');
+                }
+              },
+  child: BlocListener<CourseRegisterationCubit, CourseRegisterationState>(
                 listener: (context, state) {
                   // TODO: implement listener
                   if (state is CoursesRegistered) {
                     Navigator.pushReplacementNamed(context,
                         AppRouters.doctorCoursesRegisterSuccessRoute);
                   }
-                  else if (state is CourseRegisterationFailure) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text('${state.errorMessage}')));
-                  }
+                  // else if (state is CourseRegisterationFailure) {
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //       SnackBar(
+                  //           content: Text('${state.errorMessage}')));
+                  // }
                 },
                 child:
                 BlocBuilder<CourseRegisterationCubit, CourseRegisterationState>(
@@ -91,7 +111,7 @@ class CourseRegisterationActionButtons extends StatelessWidget {
                                    imageUrl: AppAssets.books);
 
                                if (isRegistered != null && isRegistered) {
-                                 print("Doctor registeration in UI");
+                               
                                  context
                                      .read<CourseRegisterationCubit>()
                                      .registerCourses(registerCourses);
@@ -114,6 +134,7 @@ class CourseRegisterationActionButtons extends StatelessWidget {
                 )
 
             ),
+),
 
           )
       );

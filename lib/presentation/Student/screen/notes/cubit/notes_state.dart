@@ -12,5 +12,9 @@ final class NotesFailure extends NotesState {
   final errorMessage;
   NotesFailure(this.errorMessage);
 }
+final class NoteDateNotValid extends NotesState {
+  final errorMessage;
+  NoteDateNotValid(this.errorMessage);
+}
 final class NotesLoading extends NotesState {}
 final class NotesNotFound extends NotesState {}

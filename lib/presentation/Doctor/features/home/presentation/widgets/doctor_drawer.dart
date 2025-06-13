@@ -155,11 +155,32 @@ class _DoctorDrawerState extends State<DoctorDrawer>
                   Navigator.pushNamed(context, AppRouters.doctorSemesterRoute);
                 }),
           ),
-          FadeTransition(
-              opacity: _fadeAnimations[3],
-              child: ContainerDrawer(
-                  icons: Icons.schedule, text: "Schedule", onTap: () {})),
-          BlocProvider(
+              FadeTransition(
+                opacity: _fadeAnimations[2],
+                child: ContainerDrawer(
+                    icons: Icons.golf_course, text: "Lecture Schedule", onTap: () {
+                  Navigator.pushNamed(context, AppRouters.pdfFileScreen , arguments: 'LectureSchedule');
+
+                }),
+              ),
+              FadeTransition(
+                opacity: _fadeAnimations[3],
+                child: ContainerDrawer(
+                    icons: Icons.schema, text: "Labs Schedule", onTap: () {
+                  Navigator.pushNamed(context, AppRouters.pdfFileScreen , arguments: 'LabSchedule');
+
+                }),
+              ),
+              FadeTransition(
+                  opacity: _fadeAnimations[4],
+                  child: ContainerDrawer(
+                      icons: Icons.schedule, text: "Exam Schedule", onTap: () {
+                    Navigator.pushNamed(context, AppRouters.pdfFileScreen , arguments: 'ExamSchedule');
+
+                  })),
+
+
+              BlocProvider(
             create: (context) => ProfileCubit(
                 profileRepository: ProfileRepository(ProfileWebServices()),
                 tokenService: TokenService(),

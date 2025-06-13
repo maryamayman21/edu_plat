@@ -125,6 +125,12 @@ class _NotesState extends State<Notes> {
                       content: Text('${state.errorMessage}')),
                 );
               }
+              // if(state is NoteDateNotValid){
+              //   ScaffoldMessenger.of(context).showSnackBar(
+              //     SnackBar(
+              //         content: Text('${state.errorMessage}')),
+              //   );
+             // }
             },
             child: BlocBuilder<NotesCubit, NotesState>(
               builder: (context, state) {

@@ -32,7 +32,7 @@ class ProfilePhotoCubit extends Cubit<ProfilePhotoState> {
 
   Future<void> selectPhoto() async {
     try {
-      emit(ProfilePhotoLoading());
+     // emit(ProfilePhotoLoading());
 
       final token = await tokenService.getToken();
       final File? selectedFile = await filePickerService.pickImage();
@@ -40,11 +40,13 @@ class ProfilePhotoCubit extends Cubit<ProfilePhotoState> {
       if (selectedFile != null) {
         final List<int> fileBytes = await selectedFile.readAsBytes();
         final String base64String = base64Encode(fileBytes);
-        emit(ProfilePhotoSuccess( base64String));
+
 
      //  final compressedUintFile =  await FileCompressionService.uintListToUintList(fileBytes);
 
         await _uploadAndCachePhoto(token, selectedFile, base64String);
+        emit(ProfilePhotoSuccess( base64String));
+
          ///TODO : TEST
        // final cachedProfilePhoto = await profileCacheService.getProfilePhoto();
         // if (cachedProfilePhoto != null) {
@@ -53,9 +55,8 @@ class ProfilePhotoCubit extends Cubit<ProfilePhotoState> {
         // } else {
         //   emit(ProfilePhotoFailure("Failed to retrieve cached photo."));
         // }
-      } else {
-        emit(ProfilePhotoFailure("No photo selected."));
       }
+
     } catch (e) {
       emit(ProfilePhotoFailure("Failed to select photo: $e"));
     }

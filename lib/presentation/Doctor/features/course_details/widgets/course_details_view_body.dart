@@ -58,135 +58,119 @@ class CourseDetailsViewBody extends StatelessWidget {
         ),
       ],
       child:
-      BlocListener<DialogCubit, dynamic>(
-      listener: (context, state)async{
-        // final dialogCubit = context.read<DialogCubit>();
-       if(state?.status  == StatusDialog.SUCCESS){
-           Navigator.pop(context);
-            showSuccessDialog(context, message:  state?.message ?? 'Operation Successful');
-         }
-       if(state?.status  == StatusDialog.LOADING){
-         showLoadingDialog(context);
-        }
-         if(state?.status  == StatusDialog.FAILURE){
-          Navigator.pop(context);
-          showErrorDialog(context, message:  state?.message ?? 'Something went wrong');
-      }
-      },
-  child: CustomScrollView(
-          slivers: [
-          CourseHeader(courseCode: courseCode),
-      const SliverToBoxAdapter(child: SizedBox(height: 15)),
+      CustomScrollView(
+              slivers: [
+              CourseHeader(courseCode: courseCode),
+          const SliverToBoxAdapter(child: SizedBox(height: 15)),
 
-            const TabsBlocBuilder(
-              hasLab: true,
-            ),
+                const TabsBlocBuilder(
+                  hasLab: true,
+                ),
 
-      const SliverToBoxAdapter(child: SizedBox(height: 15)),
+          const SliverToBoxAdapter(child: SizedBox(height: 15)),
 
-      SliverToBoxAdapter(
-          child: BlocConsumer<CourseDetailsCubit, CourseDetailsState>(
-            listener: (context, state) {
-              if (state is CourseFilesFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.errorMessage),
-                  ),
-                );
-              }
-            },
-            builder: (context, state) {
+          SliverToBoxAdapter(
+              child: BlocConsumer<CourseDetailsCubit, CourseDetailsState>(
+                listener: (context, state) {
+                  if (state is CourseFilesFailure) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.errorMessage),
+                      ),
+                    );
+                  }
+                },
+                builder: (context, state) {
 
-              return UploadFileHeader(
-                onTap:
-                BlocProvider
-                    .of<CourseDetailsCubit>(context)
-                    .saveCourseFile,
-              );
-            },
-          )
-      ),
-            BlocBuilder<StatusCubit, dynamic>(
-              builder: (context, uploadStatus) {
-                if (uploadStatus is CourseDetailsEntity) {
-                  return SliverToBoxAdapter(child: FileLoadingWidget(courseDetailsEntity: uploadStatus,));
-                }
-                return const SliverToBoxAdapter(child: SizedBox.shrink()); // Hide if not uploading
-              },
-            ),
-
-
-
-      BlocConsumer<CourseDetailsCubit, CourseDetailsState > (
-    listener: (context, state) {
-      if (state is CourseFilesFailure) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(state.errorMessage),
+                  return UploadFileHeader(
+                    onTap:
+                    BlocProvider
+                        .of<CourseDetailsCubit>(context)
+                        .saveCourseFile,
+                  );
+                },
+              )
           ),
-        );
-      }
-    },
-    builder: (context, state) {
-      if (state is CourseFilesSuccess) {
-        final courseFiles = state.coursesFiles;
-        return
-          FileListWidget(
-            courseCode: courseCode,
-            courseDetailsEntity: courseFiles,
-            onDeleteFile:(index)async{
-          bool? confirmed = await showConfirmDialog(context, message: 'Are you sure to delete ${courseFiles[index].name}');
-          if(confirmed !=null && confirmed){
-            BlocProvider.of<CourseDetailsCubit>(context).deleteFile(index);
+                BlocBuilder<StatusCubit, dynamic>(
+                  builder: (context, uploadStatus) {
+                    if (uploadStatus is CourseDetailsEntity) {
+                      return SliverToBoxAdapter(child: FileLoadingWidget(courseDetailsEntity: uploadStatus,));
+                    }
+                    return const SliverToBoxAdapter(child: SizedBox.shrink()); // Hide if not uploading
+                  },
+                ),
+
+
+
+          BlocConsumer<CourseDetailsCubit, CourseDetailsState > (
+        listener: (context, state) {
+          if (state is CourseFilesFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage),
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is CourseFilesSuccess) {
+            final courseFiles = state.coursesFiles;
+            return
+              FileListWidget(
+                courseCode: courseCode,
+                courseDetailsEntity: courseFiles,
+                onDeleteFile:(index)async{
+              bool? confirmed = await showConfirmDialog(context, message: 'Are you sure to delete ${courseFiles[index].name}');
+              if(confirmed !=null && confirmed){
+                BlocProvider.of<CourseDetailsCubit>(context).deleteFile(index);
+              }
+
+            }  ,
+            onUpdateFile: (index){
+              BlocProvider.of<CourseDetailsCubit>(context).updateFile(index);
+            },
+
+            );
+          }
+          if (state is CourseFilesNotFound) {
+            return SliverToBoxAdapter(child: Center(child:
+            Image.asset(AppAssets.noFilesYet)
+            )
+            );
+          }
+          if (state is CourseFilesLoading) {
+            return const SliverToBoxAdapter(
+                child: Center(child: CircularProgressIndicator()));
+          }
+          if (state is CourseFilesFailure) {
+            if(state.errorMessage == 'No internet connection'){
+               return SliverToBoxAdapter(
+                 child: NoWifiWidget(
+                     onPressed:(){
+                   BlocProvider.of<CourseDetailsCubit>(context).fetchCourseFilesRequest();
+
+                     }),
+               );
+            }
+           else {
+             return SliverToBoxAdapter(child: TextError(errorMessage:  state.errorMessage,
+        onPressed:(){
+        BlocProvider.of<CourseDetailsCubit>(context).fetchCourseFilesRequest();
+        }
+
+        ));
+            }
           }
 
-        }  ,
-        onUpdateFile: (index){
-          BlocProvider.of<CourseDetailsCubit>(context).updateFile(index);
+          return SliverToBoxAdapter(child: TextError( errorMessage: 'Something went wrong',
+        onPressed:() {
+          BlocProvider.of<CourseDetailsCubit>(context).fetchCourseFilesRequest();
+        }
+
+        ));
         },
-
-        );
-      }
-      if (state is CourseFilesNotFound) {
-        return SliverToBoxAdapter(child: Center(child:
-        Image.asset(AppAssets.noFilesYet)
-        )
-        );
-      }
-      if (state is CourseFilesLoading) {
-        return const SliverToBoxAdapter(
-            child: Center(child: CircularProgressIndicator()));
-      }
-      if (state is CourseFilesFailure) {
-        if(state.errorMessage == 'No internet connection'){
-           return SliverToBoxAdapter(
-             child: NoWifiWidget(
-                 onPressed:(){
-               BlocProvider.of<CourseDetailsCubit>(context).fetchCourseFilesRequest();
-
-                 }),
-           );
-        }
-       else {
-         return SliverToBoxAdapter(child: TextError(errorMessage:  state.errorMessage,
-    onPressed:(){
-    BlocProvider.of<CourseDetailsCubit>(context).fetchCourseFilesRequest();
-    }
-
-    ));
-        }
-      }
-
-      return SliverToBoxAdapter(child: TextError( errorMessage: 'Something went wrong',
-    onPressed:() {
-      BlocProvider.of<CourseDetailsCubit>(context).fetchCourseFilesRequest();
-    }
-
-    ));
-    },
-    ),
-      ],
-    ),
-),);
+        ),
+          ],
+        ),);
   }
 }

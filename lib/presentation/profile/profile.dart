@@ -64,11 +64,11 @@ class ProfileView extends StatelessWidget {
                       ..fetchProfilePhoto(), // Initialize cubit and load cached photo
                     child: BlocListener<ProfilePhotoCubit, ProfilePhotoState>(
   listener: (context, state) {
-    // TODO: implement listener
+
     if (state is ProfilePhotoFailure) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('No internet connection')),
+        SnackBar(
+            content: Text(state.errorMessage)),
       );
     }
 

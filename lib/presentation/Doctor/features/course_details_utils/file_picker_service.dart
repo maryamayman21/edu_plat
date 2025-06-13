@@ -17,7 +17,7 @@ class FilePickerService {
 
     return null; // No file selected
   }
-  Future<FilePickerResult?> pickFile({List<String> allowedExtensions = const ['png', 'jpeg', 'jpg' , 'pdf' , 'doc' , 'docx' , 'ppt' , 'pptx']}) async {
+  Future<FilePickerResult?> pickFile({List<String> allowedExtensions = const ['pdf']}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: allowedExtensions,
