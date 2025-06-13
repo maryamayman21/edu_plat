@@ -3,8 +3,8 @@ String? isNameValid(String? value) {
     return 'Name cannot be empty';
   }
 
-  // Regex: two or more words separated by single spaces, with optional single trailing space
-  final regExp = RegExp(r"^[A-Za-z]+( [A-Za-z]+)+ ?$");
+  // Regex: one or more words (single name) or two or more words separated by single spaces, with optional single trailing space
+  final regExp = RegExp(r"^[A-Za-z]+( [A-Za-z]+)* ?$");
 
   if (value.length < 4) {
     return 'Name must be at least 3 characters long';

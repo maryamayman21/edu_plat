@@ -258,7 +258,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       formKey.currentState!.save();
                                       confirmPassValue.trim();
                                       passValue.trim();
-                                      userDate.add(nameController.text);
+                                      userDate.add(nameController.text.trim());
                                       userDate.add(emailController.text);
                                       userDate.add(passValue);
                                       userDate.add(confirmPassValue);
@@ -269,7 +269,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           confirmPassValue.isNotEmpty) {
                                         BlocProvider.of<AuthCubit>(context)
                                             .register(
-                                                nameController.text!,
+                                                nameController.text!.trim(),
                                                 emailController.text!,
                                                 passValue,
                                                 confirmPassValue);

@@ -91,7 +91,7 @@ class OnlineExamCard extends StatelessWidget {
                   Icon(Icons.code, color: Colors.green, size: 16.sp),
                   SizedBox(width: 8.w),
                   Text(
-                    "Course code: ${examEntity.totalMark}",
+                    "Course code: ${examEntity.courseCode}",
                     style: TextStyle(
                       color: color.primaryColor,
                       fontSize: 16.sp,
