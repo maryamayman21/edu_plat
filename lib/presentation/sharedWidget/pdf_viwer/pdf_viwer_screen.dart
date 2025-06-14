@@ -29,25 +29,79 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     _loadPdf();
   }
 
-  Future<void> _loadPdf() async {
+  Future<void> _loadPdf1() async {
     try {
-      // Attempt to load the PDF document
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
 
+      // 1. Download PDF data
       final pdfData = await InternetFile.get(widget.pdfUrl);
 
-      // Open the PDF document
-      final pdfDocument = PdfDocument.openData(pdfData);
+      // 2. Open PDF document (with proper await)
+      final pdfDocument =  PdfDocument.openData(pdfData).catchError((e) {
+        print('ASYNC ERROR: $e');
+        throw e; // Re-throw to be caught by the catch block
+      });
+
       if (!mounted) return;
+
       setState(() {
         _pdfController = PdfControllerPinch(document: pdfDocument);
         _isLoading = false;
       });
-    } catch (e) {
-      // Handle errors and update the state
-      print(' ERRROOORRRR ${e.toString()}');
+    } catch (e, stackTrace) {
+      print('PDF LOAD ERROR: $e');
+      print('STACK TRACE: $stackTrace');
+
+      if (!mounted) return;
 
       setState(() {
-        _errorMessage =  getUserFriendlyErrorMessage(e);
+       _errorMessage = getUserFriendlyErrorMessage(e);
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _loadPdf() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+
+      // 1. Download PDF data
+      final pdfData = await InternetFile.get(widget.pdfUrl);
+
+      // Verify PDF data is not empty
+      if (pdfData.isEmpty) {
+        throw Exception('Downloaded PDF is empty');
+      }
+
+      // 2. Open PDF document with error handling
+      Future<PdfDocument> pdfDocument;
+      try {
+         pdfDocument =   PdfDocument.openData(pdfData);
+      } catch (e) {
+        // Special handling for PDF rendering errors
+        print('PDF RENDER ERROR: $e');
+        throw Exception('The PDF file is corrupted or invalid');
+      }
+
+      if (!mounted) return;
+
+      setState(() {
+        _pdfController = PdfControllerPinch(document: pdfDocument);
+        _isLoading = false;
+      });
+
+    } catch (e) {
+
+      if (!mounted) return;
+
+      setState(() {
+        _errorMessage = getUserFriendlyErrorMessage(e);
         _isLoading = false;
       });
     }
