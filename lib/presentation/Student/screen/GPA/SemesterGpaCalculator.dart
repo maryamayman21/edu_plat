@@ -217,12 +217,14 @@ class _SemestergpacalculatorState extends State<Semestergpacalculator> {
                                     SizedBox(
                                       width: 100.w,
                                       child: SgpaWidget(
+                                        allowDecimal: false,
                                           controller: semesters[index]["credit"],
                                           textColor: Colors.pinkAccent),
                                     ),
                                     SizedBox(
                                       width: 100.w,
                                       child: SgpaWidget(
+                                        allowDecimal: true,
                                           controller: semesters[index]["sgpa"],
                                           textColor: color.primaryColor),
                                     ),

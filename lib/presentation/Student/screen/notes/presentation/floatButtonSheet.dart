@@ -33,15 +33,15 @@ key: formKey,
           height: MediaQuery
               .of(context)
               .size
-              .height * .4,
+              .height * .4.h,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text(
+               Text(
                 'Add New Task',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.w500,
                     color: color.primaryColor),
               ),
