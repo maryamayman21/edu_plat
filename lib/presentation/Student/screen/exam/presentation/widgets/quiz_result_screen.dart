@@ -41,12 +41,7 @@ class QuizResultScreen extends StatelessWidget {
             if (state is ExamSuccess) return _buildSuccessContent(state, context);
             if (state is ExamError) return _buildErrorContent(context, state);
             if (state is ExamLoading) return const Center(child: CircularProgressIndicator());
-            return  TextError(errorMessage: 'Something went wrong',
-            white: true,
-              onPressed: () {
-                context.read<ExamBloc>().add(SubmitExamScore(exam));
-              },
-            );
+            return _buildDefaultError(context);
           },
         ),
       ),
@@ -61,10 +56,9 @@ class QuizResultScreen extends StatelessWidget {
           Icon(Icons.celebration, size: 80.sp, color: Colors.yellow),
           SizedBox(height: 20.h),
           Text(
-            textAlign: TextAlign.center,
             state.successMessage,
+            textAlign: TextAlign.center,
             style: TextStyle(
-
               fontSize: 32.sp,
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -77,8 +71,6 @@ class QuizResultScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 20.h),
-        //  _buildScoreCard(),
           SizedBox(height: 40.h),
           _buildBackButton(context),
         ],
@@ -86,76 +78,80 @@ class QuizResultScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildScoreCard() {
-    return Container(
-      width: 300.w,
-      padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: Colors.white.withOpacity(0.5), width: 2.w),
-      ),
+  Widget _buildErrorContent(BuildContext context, ExamError state) {
+    return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // You can add score details here later
-          SizedBox(height: 10.h),
-          SizedBox(height: 10.h),
-          SizedBox(height: 10.h),
+          if (state.message == 'No internet connection')
+            NoWifiWidget(
+              onPressed: () {
+                context.read<ExamBloc>().add(SubmitExamScore(exam));
+              },
+            )
+          else
+            TextError(
+              isnotTry: true,
+              errorMessage: state.message,
+              white: true,
+              onPressed: () {
+                context.read<ExamBloc>().add(SubmitExamScore(exam));
+              },
+            ),
+          SizedBox(height: 20.h),
+          _buildBackButton(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDefaultError(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextError(
+            errorMessage: 'Something went wrong',
+            white: true,
+            onPressed: () {
+              context.read<ExamBloc>().add(SubmitExamScore(exam));
+            },
+          ),
+          SizedBox(height: 20.h),
+          _buildBackButton(context),
         ],
       ),
     );
   }
 
   Widget _buildBackButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.pushNamedAndRemoveUntil(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 40.w),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.pushNamedAndRemoveUntil(
             context,
-            AppRouters.HomeStudent, (route) => false);
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green,
-        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 24.w),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
-      ),
-      child: Text(
-        "Back to Home",
-        style: TextStyle(
-          fontSize: 20.sp,
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
+            AppRouters.HomeStudent,
+                (route) => false,
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+          padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 24.w),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.r),
+          ),
+          minimumSize: Size(double.infinity, 50.h), // Full-width button
+        ),
+        child: Text(
+          "Back to Home",
+          style: TextStyle(
+            fontSize: 18.sp,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
   }
-
-  Widget _buildErrorContent(BuildContext context, ExamError state) {
-    if (state.message == 'No internet connection') {
-      return Column(
-        children: [
-          NoWifiWidget(
-            onPressed: () {
-              context.read<ExamBloc>().add(SubmitExamScore(exam));
-            },
-          ),
-          SizedBox(height: 10.h,),
-          _buildBackButton(context)
-        ],
-      );
-    } else {
-      return Column(
-        children: [
-          TextError(errorMessage: state.message,
-          white: true,
-            onPressed: () {
-              context.read<ExamBloc>().add(SubmitExamScore(exam));
-            },
-          ),
-          SizedBox(height: 10.h,),
-          _buildBackButton(context)
-        ],
-      );
-    }
-  }
-
 }

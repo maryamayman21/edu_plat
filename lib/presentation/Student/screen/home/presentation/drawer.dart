@@ -216,7 +216,7 @@ class _DrawerrState extends State<Drawerr> with SingleTickerProviderStateMixin {
                (route) => false,
          );
      }
-     if(state is ProfileError){
+     if(state is LogoutError){
        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
              content: Text(state.errorMessage)),

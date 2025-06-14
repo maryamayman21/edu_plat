@@ -41,7 +41,7 @@ class CourseDetailsRepoImp implements CourseDetailsRepo {
         if(response.status == true){
           // coursesFiles = getCourses(response.data , type);
           if(response.courses!.isNotEmpty) {
-            print(response.courses);
+            print(response.courses.toString());
 
             coursesFiles =
             await  courseDetailsLocalDataSource.saveCourseFiles(response.courses!);

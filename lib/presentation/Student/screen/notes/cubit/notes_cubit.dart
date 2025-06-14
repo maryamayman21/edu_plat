@@ -46,13 +46,11 @@ class NotesCubit extends Cubit<NotesState> {
       // }
     } catch (error) {
       if (!isClosed) {
-        if (error is DioError && error.response != null) {
+        if (error is DioError) {
           // Handle specific API errors
-          final errorMessage =
-              error.response?.data['message'] ?? 'An unexpected error occurred';
-          emit(NotesFailure(errorMessage));
+          emit(NotesFailure(ServerFailure.fromDiorError(error).message));
         } else {
-          emit(NotesFailure(ServerFailure(error.toString())));
+          emit(NotesFailure(ServerFailure(error.toString()).message));
         }
       }
     }
@@ -82,13 +80,13 @@ class NotesCubit extends Cubit<NotesState> {
       }
     } catch (error) {
       if (!isClosed) {
-        if (error is DioError && error.response != null) {
+        if (error is DioError) {
           // Handle specific API errors
-          final errorMessage =
-              error.response?.data['message'] ?? 'An unexpected error occurred';
-          emit(NotesFailure(errorMessage));
+          emit(NotesFailure(ServerFailure
+              .fromDiorError(error)
+              .message));
         } else {
-          emit(NotesFailure(NetworkHandler.mapErrorToMessage(error)));
+          emit(NotesFailure(ServerFailure(error.toString()).message));
         }
       }
     }
@@ -102,26 +100,24 @@ class NotesCubit extends Cubit<NotesState> {
       final responseData = response.data;
       if (responseData['success'] == true) {
         LocalNotificationService.cancelNotification(noteID);
+
+        List<Note> updatedList = await notesCacheService.deleteNoteById(noteID);
+        print("Note deleted in cache  successfully");
+        if (updatedList.isNotEmpty && updatedList != null) {
+          emit(NotesSuccess(updatedList));
+        } else {
+          emit(NotesNotFound());
+        }
       } else {
         emit(NotesFailure('Failed to update notes'));
       }
-
-      List<Note> updatedList = await notesCacheService.deleteNoteById(noteID);
-      print("Note deleted in cache  successfully");
-      if (updatedList.isNotEmpty && updatedList != null) {
-        emit(NotesSuccess(updatedList));
-      } else {
-        emit(NotesNotFound());
-      }
     } catch (error) {
       if (!isClosed) {
-        if (error is DioError && error.response != null) {
+        if (error is DioError) {
           // Handle specific API errors
-          // final errorMessage =
-          //     error.response?.data['message'] ?? 'An unexpected error occurred';
-          emit(NotesFailure(error.message));
+          emit(NotesFailure(ServerFailure.fromDiorError(error).message));
         } else {
-          emit(NotesFailure(NetworkHandler.mapErrorToMessage(error)));
+          emit(NotesFailure(ServerFailure(error.toString()).message));
         }
       }
     }
@@ -150,13 +146,11 @@ class NotesCubit extends Cubit<NotesState> {
       }
     } catch (error) {
       if (!isClosed) {
-        if (error is DioError && error.response != null) {
+        if (error is DioError) {
           // Handle specific API errors
-          final errorMessage =
-              error.response?.data['message'] ?? 'An unexpected error occurred';
-          emit(NotesFailure(errorMessage));
+          emit(NotesFailure(ServerFailure.fromDiorError(error).message));
         } else {
-          emit(NotesFailure(NetworkHandler.mapErrorToMessage(error)));
+          emit(NotesFailure(ServerFailure(error.toString()).message));
         }
       }
     }

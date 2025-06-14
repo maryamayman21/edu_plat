@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextError extends StatelessWidget {
-  const TextError({super.key, required this.onPressed,required this.errorMessage, this.white=false});
+  const TextError({super.key, required this.onPressed,required this.errorMessage, this.white=false,  this.isnotTry = false});
   final String errorMessage;
   final bool white;
+  final bool isnotTry;
   final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class TextError extends StatelessWidget {
                   ),
               ),
             ),
-            CustomElevatedButton(
+           isnotTry ? const SizedBox.shrink() :   CustomElevatedButton(
               onPressed: onPressed,
               text: 'Retry',
             )

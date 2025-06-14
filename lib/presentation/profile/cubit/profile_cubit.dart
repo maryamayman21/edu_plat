@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
 import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
+import 'package:edu_platt/core/network/failure.dart';
 import '../../../core/cashe/services/profile_cashe_service.dart';
 import '../../../core/file_picker/file_picker_service.dart';
 import '../../../core/localDB/secureStorage/secure_stoarge.dart';
@@ -98,6 +99,8 @@ class ProfileCubit extends Cubit<ProfileState> {
       // }
       final token = await tokenService.getToken();
       await profileRepository.logout(token!);
+
+
       await clearUserData();
       await  profileCacheService.clearProfileCache();
       await  profileCacheService.clearPhoneNumberCache();
@@ -106,14 +109,11 @@ class ProfileCubit extends Cubit<ProfileState> {
     } catch (error) {
       print(error.toString());
       if (!isClosed) {
-        if (error is DioError && error.response != null) {
-          print(error.type);
+        if (error is DioError) {
           // Handle specific API errors
-          final errorMessage =
-              error.response?.data['message'] ?? 'An unexpected error occurred';
-          print(errorMessage);
+          emit(LogoutError(ServerFailure.fromDiorError(error).message));
         } else {
-          emit(ProfileError(NetworkHandler.mapErrorToMessage(error)));
+          emit(LogoutError(ServerFailure(error.toString()).message));
         }
       }
     }

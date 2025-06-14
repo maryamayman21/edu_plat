@@ -35,7 +35,7 @@ class QuestionDurationWidget extends StatelessWidget {
             final resultingDuration = await showDurationPicker(
               context: context,
               initialTime: const Duration(minutes: 1),
-              baseUnit: BaseUnit.second,
+              baseUnit: BaseUnit.minute,
               upperBound: const Duration(minutes: 15),
               lowerBound: const Duration(minutes: 1),
             );

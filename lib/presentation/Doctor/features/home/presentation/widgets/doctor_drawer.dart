@@ -200,7 +200,7 @@ class _DoctorDrawerState extends State<DoctorDrawer>
             (route) => false,
       );
     }
-    if(state is ProfileError){
+    if(state is LogoutError){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text(state.errorMessage)),

@@ -38,3 +38,8 @@ class ProfileError extends ProfileState {
 
   ProfileError(this.errorMessage);
 }
+class LogoutError extends ProfileState {
+  final String errorMessage;
+
+  LogoutError(this.errorMessage);
+}

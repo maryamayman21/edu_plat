@@ -130,7 +130,6 @@ class _ExamdetailsState extends State<QuizScreen>
       backgroundColor: color.primaryColor, // Replace with your color
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(height: 100.h),
           Row(
@@ -138,14 +137,13 @@ class _ExamdetailsState extends State<QuizScreen>
             children: [
               QuestionTimer(
                 iconData: Icons.grade,
-                questionData:currentQuestion.marks.toString(),
+                questionData: currentQuestion.marks.toString(),
                 questionText: 'marks',
               ),
               QuestionTimer(
-                  questionData:formatTime(timeRemaining),
+                questionData: formatTime(timeRemaining),
                 questionText: 'min',
                 iconData: Icons.timer,
-
               ),
             ],
           ),
@@ -154,8 +152,10 @@ class _ExamdetailsState extends State<QuizScreen>
             currentQuestion.questionText,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: Colors.white,
-                fontSize: 20.sp, fontWeight: FontWeight.bold),
+              color: Colors.white,
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Expanded(
             child: ListView.builder(
@@ -164,11 +164,9 @@ class _ExamdetailsState extends State<QuizScreen>
                 final option = currentQuestion.choices[index];
                 final isSelected = index == selectedOptionIndex;
                 return GestureDetector(
-                  onTap: () =>
-                      selectAnswer(index), // Allow selecting any answer
+                  onTap: () => selectAnswer(index),
                   child: Container(
-                    margin:
-                        EdgeInsets.symmetric(vertical: 5.h, horizontal: 16.w),
+                    margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 16.w),
                     padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
                       color: isSelected ? Colors.green[300] : Colors.grey[200],
@@ -186,47 +184,49 @@ class _ExamdetailsState extends State<QuizScreen>
               },
             ),
           ),
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 120.w),
-                child: ElevatedButton(
-                  onPressed:(){
-                    _navigateToQuizResultView();
-                  }, // Always enabled
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green, // Replace with your color
-                    padding: EdgeInsets.symmetric(vertical: 10.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.r),
+          // Fixed Button Row (Submit & Next)
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _navigateToQuizResultView,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding: EdgeInsets.symmetric(vertical: 12.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.r),
+                      ),
+                    ),
+                    child: Text(
+                      "Submit",
+                      style: TextStyle(fontSize: 18.sp, color: Colors.white),
                     ),
                   ),
-                  child: Text(
-                    "Submit",
-                    style: TextStyle(fontSize: 22.sp, color: Colors.white),
-                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 120.w),
-                child: ElevatedButton(
-                  onPressed:selectedOptionIndex  != null ? _moveToNextQuestion:null, // Always enabled
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green, // Replace with your color
-                    padding: EdgeInsets.symmetric(vertical: 10.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.r),
+                SizedBox(width: 16.w), // Spacing between buttons
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: selectedOptionIndex != null ? _moveToNextQuestion : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding: EdgeInsets.symmetric(vertical: 12.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.r),
+                      ),
+                    ),
+                    child: Text(
+                      "Next",
+                      style: TextStyle(fontSize: 18.sp, color: Colors.white),
                     ),
                   ),
-                  child: Text(
-                    "Next",
-                    style: TextStyle(fontSize: 22.sp, color: Colors.white),
-                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-       SizedBox(height: 100.h,)
+          SizedBox(height: 40.h), // Bottom spacing
         ],
       ),
     );

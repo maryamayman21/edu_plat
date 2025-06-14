@@ -55,7 +55,7 @@ class ProfileRepository {
       PushNotificationsService.unsubscribeUserToTopics();
     } else {
       // Handle failure
-      throw Exception('Failed to log out');
+      throw Exception('Failed to log out, or bad connection');
     }
   }
   Future<dynamic> fetchPhoneNumber(String token) async {

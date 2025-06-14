@@ -66,7 +66,7 @@ class ProfilePhotoCubit extends Cubit<ProfilePhotoState> {
   Future<void> _uploadAndCachePhoto(String? token, File? image, String imagebase64) async {
     try {
       await profileRepository.uploadProfilePhoto(token!, image);
-      //await profileCacheService.saveProfilePhoto(imagebase64);
+      await profileCacheService.saveProfilePhoto(imagebase64);
     } catch (e) {
       emit(ProfilePhotoFailure("Failed to upload photo"));
        // throw Exception('"Failed to upload photo"');
