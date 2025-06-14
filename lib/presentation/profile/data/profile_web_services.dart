@@ -97,7 +97,7 @@ class ProfileWebServices {
     }
   }
   Future<Response> logout(String token,) async {
-    try {
+
       final response =  await _dio.post(
         ApiConstants.userLogout, // Replace with your endpoint
         options: Options(
@@ -107,8 +107,6 @@ class ProfileWebServices {
         ),
       );
       return response;
-    } catch (e) {
-      throw Exception('Failed to fetch user data');
-    }
+
   }
 }

@@ -23,7 +23,7 @@ class QuestionDurationPicker extends StatelessWidget {
         ),
         DurationPicker(
           duration: duration,
-          baseUnit: BaseUnit.second,
+          baseUnit: BaseUnit.minute,
           onChange: onDurationChanged,
           upperBound: const Duration(minutes: 15),
           lowerBound: const Duration(minutes: 1),

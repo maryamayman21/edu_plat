@@ -90,7 +90,7 @@ class ProfileView extends StatelessWidget {
 
     if (state is ProfilePhotoFailure) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             content: Text('No internet connection')),
       );
     }
@@ -165,12 +165,12 @@ class ProfileView extends StatelessWidget {
                           Navigator.pushNamedAndRemoveUntil(
                             context,
                             AppRouters.studentOrDoctor,
-                            (route) => true,
+                            (route) => false,
                           );
                         }
                         if (state is ProfileError) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                             SnackBar(
+                             const SnackBar(
                                 content: Text("No internet conncetion")),
                           );
                         }
@@ -314,55 +314,55 @@ class ProfileView extends StatelessWidget {
                                     );
                                   },
                                 ),
-                                SizedBox(height: 20.h),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    bool? result = await CustomDialogs
-                                        .showConfirmationDialog(
-                                      context: context,
-                                      title: "",
-                                      content:
-                                          "Are you sure you want to log out?",
-                                      confirmText: "Yes",
-                                      cancelText: "No",
-                                      imageUrl: AppAssets.logout,
-                                    );
-                                    if (result == true) {
-                                      context.read<ProfileCubit>().close();
-                                      context.read<ProfileCubit>().clearUponUserType();
-                                      // context.read<PhoneCubit>().close();
-                                      context.read<ProfileCubit>().logout();
-                                      PushNotificationsService.onNewNotification = () {
-                                        context.read<NotificationCounterCubit>().reset();
-                                      };
-                                      Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        AppRouters.studentOrDoctor,
-                                            (route) => false,
-                                      );
-                                    }
-                                    //  context.read<ProfilePhotoCubit>().close();
-
-
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: color.primaryColor,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 130.w, vertical: 15.h),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25).r,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Logout",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleSmall
-                                        ?.copyWith(
-                                            color: Colors.white,
-                                            fontSize: 17.sp),
-                                  ),
-                                ),
+                                // SizedBox(height: 20.h),
+                                // ElevatedButton(
+                                //   onPressed: () async {
+                                //     bool? result = await CustomDialogs
+                                //         .showConfirmationDialog(
+                                //       context: context,
+                                //       title: "",
+                                //       content:
+                                //           "Are you sure you want to log out?",
+                                //       confirmText: "Yes",
+                                //       cancelText: "No",
+                                //       imageUrl: AppAssets.logout,
+                                //     );
+                                //     if (result == true) {
+                                //       context.read<ProfileCubit>().close();
+                                //       context.read<ProfileCubit>().clearUponUserType();
+                                //       // context.read<PhoneCubit>().close();
+                                //       context.read<ProfileCubit>().logout();
+                                //       PushNotificationsService.onNewNotification = () {
+                                //         context.read<NotificationCounterCubit>().reset();
+                                //       };
+                                //       Navigator.pushNamedAndRemoveUntil(
+                                //         context,
+                                //         AppRouters.studentOrDoctor,
+                                //             (route) => false,
+                                //       );
+                                //     }
+                                //     //  context.read<ProfilePhotoCubit>().close();
+                                //
+                                //
+                                //   },
+                                //   style: ElevatedButton.styleFrom(
+                                //     backgroundColor: color.primaryColor,
+                                //     padding: EdgeInsets.symmetric(
+                                //         horizontal: 130.w, vertical: 15.h),
+                                //     shape: RoundedRectangleBorder(
+                                //       borderRadius: BorderRadius.circular(25).r,
+                                //     ),
+                                //   ),
+                                //   child: Text(
+                                //     "Logout",
+                                //     style: Theme.of(context)
+                                //         .textTheme
+                                //         .titleSmall
+                                //         ?.copyWith(
+                                //             color: Colors.white,
+                                //             fontSize: 17.sp),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),

@@ -32,10 +32,9 @@ class _StartExamScreenState extends State<StartExamScreen> {
                 child: Image.asset(AppAssets.onboarding3),
               ),
               SizedBox(height: 32.h),
-
-              // Instructions
               _buildInstruction("Make sure you have a stable internet connection."),
               _buildInstruction("You are permitted to take the exam only once."),
+              _buildInstruction("You must submit all your questions at least 1 min before end time to ensure correct submission."),
               _buildInstruction("Prepare yourself to test your knowledge. Click on 'Start Exam' to begin."),
               SizedBox(height: 60.h),
 
