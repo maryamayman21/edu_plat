@@ -18,11 +18,11 @@ class PhoneCubit extends Cubit<PhoneState> {
   final ProfileCacheService profileCacheService;
   final TextEditingController phoneController = TextEditingController();
   PhoneCubit(
-  {required this.profileRepository,
-    required this.tokenService,
-    required this.profileCacheService,
-  }
-  ) : super(PhoneNumberInitial());
+      {required this.profileRepository,
+        required this.tokenService,
+        required this.profileCacheService,
+      }
+      ) : super(PhoneNumberInitial());
 
 
   Future<void> updatePhoneNumber(String phoneNumber) async {
@@ -57,10 +57,10 @@ class PhoneCubit extends Cubit<PhoneState> {
       } else {
       }
       final token = await tokenService.getToken();
-       String? phoneNumber =    await profileRepository.fetchPhoneNumber(token!);
-       if(phoneNumber != null) {
-         await profileCacheService.savePhoneNumber(phoneNumber);
-       }
+      String? phoneNumber =    await profileRepository.fetchPhoneNumber(token!);
+      if(phoneNumber != null) {
+        await profileCacheService.savePhoneNumber(phoneNumber);
+      }
       phoneController.text = phoneNumber?? "";
       if (!isClosed) {
         emit(PhoneNumberSuccess(phoneNumber));

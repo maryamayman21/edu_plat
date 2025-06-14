@@ -68,8 +68,10 @@ class _AddQuestionWidgetState extends State<AddQuestionWidget> {
                           AddOptionButton(
                             isWrittenExam: false,
                             onAddOption: () {
-                              setState(() => _optionTexts.add(''));
-                            },
+                              if (_optionTexts.length < 5) {
+                                setState(() => _optionTexts.add(''));
+                              }
+                            }
                           ),
                           // Question Degree Input Field
                           QuestionDegreeField(

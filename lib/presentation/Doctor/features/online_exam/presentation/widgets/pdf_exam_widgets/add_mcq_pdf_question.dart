@@ -37,7 +37,7 @@ class _AddMcqQuestionWidgetState extends State<AddMcqQuestionWidget> {
         return Padding(
           padding: EdgeInsets.all(16.r), // Responsive padding
           child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7, // 70% of screen height
+            height: MediaQuery.of(context).size.height * 0.6, // 70% of screen height
             child: Form(
               key: _formKey,
               child: Column(
@@ -51,17 +51,19 @@ class _AddMcqQuestionWidgetState extends State<AddMcqQuestionWidget> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          McqOptionsList(
-                            isWritten: widget.isWrittenExam,
-                            optionTexts: _optionTexts,
-                            onRemoveOption: (index) {
-                              setState(() => _optionTexts.removeAt(index));
-                            },
+                          SingleChildScrollView(
+                            child: McqOptionsList(
+                              isWritten: widget.isWrittenExam,
+                              optionTexts: _optionTexts,
+                              onRemoveOption: (index) {
+                                setState(() => _optionTexts.removeAt(index));
+                              },
+                            ),
                           ),
                           AddOptionButton(
                             isWrittenExam: widget.isWrittenExam,
                             onAddOption: () {
-                              if(_optionTexts.length < 6) {
+                              if(_optionTexts.length < 5) {
                                 setState(() => _optionTexts.add(''));
                               }
                             },
@@ -77,15 +79,16 @@ class _AddMcqQuestionWidgetState extends State<AddMcqQuestionWidget> {
                             SizedBox(
                               height: 40.h,
                             ),
+                      
                           McqSaveQuestionButton(
                             formKey: _formKey,
                             questionController: _questionController,
                             optionTexts: _optionTexts,
                             questionDegree: _questionDegree,
                             pdfExamBloc: widget.pdfExamBloc,
-
+                      
                           ),
-
+                      
                         ],
                       ),
                     ),

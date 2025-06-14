@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyDatePicker extends StatelessWidget {
-  const MyDatePicker({super.key, this.onChanged, required this.date, this.mode});
+  const MyDatePicker({super.key, this.onChanged, required this.date, this.dateMode = false});
   final void Function(DateTime?)? onChanged;
   final DateTime? date;
-  final String? mode;
+  final bool dateMode;
   @override
   Widget build(BuildContext context) {
+    print(dateMode);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h), // Responsive padding
       child: DateTimeFormField(
@@ -61,7 +62,7 @@ class MyDatePicker extends StatelessWidget {
           color: Colors.black,
           fontWeight: FontWeight.bold,
         ),
-        mode: mode == 'date' ? DateTimeFieldPickerMode.date :  DateTimeFieldPickerMode.dateAndTime,
+        mode:  dateMode ? DateTimeFieldPickerMode.date :  DateTimeFieldPickerMode.dateAndTime,
         onChanged: onChanged,
         autovalidateMode: AutovalidateMode.onUserInteraction,
       ),

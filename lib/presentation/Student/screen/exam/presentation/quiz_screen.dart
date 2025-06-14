@@ -186,22 +186,45 @@ class _ExamdetailsState extends State<QuizScreen>
               },
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 120.w),
-            child: ElevatedButton(
-              onPressed:selectedOptionIndex  != null ? _moveToNextQuestion:null, // Always enabled
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green, // Replace with your color
-                padding: EdgeInsets.symmetric(vertical: 10.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.r),
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 120.w),
+                child: ElevatedButton(
+                  onPressed:(){
+                    _navigateToQuizResultView();
+                  }, // Always enabled
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green, // Replace with your color
+                    padding: EdgeInsets.symmetric(vertical: 10.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                  ),
+                  child: Text(
+                    "Submit",
+                    style: TextStyle(fontSize: 22.sp, color: Colors.white),
+                  ),
                 ),
               ),
-              child: Text(
-                "Next",
-                style: TextStyle(fontSize: 22.sp, color: Colors.white),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 120.w),
+                child: ElevatedButton(
+                  onPressed:selectedOptionIndex  != null ? _moveToNextQuestion:null, // Always enabled
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green, // Replace with your color
+                    padding: EdgeInsets.symmetric(vertical: 10.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                  ),
+                  child: Text(
+                    "Next",
+                    style: TextStyle(fontSize: 22.sp, color: Colors.white),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
        SizedBox(height: 100.h,)
         ],

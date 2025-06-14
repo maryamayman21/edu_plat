@@ -1,3 +1,5 @@
+import 'package:edu_platt/core/utils/helper_methds/get_friendly_messages.dart';
+import 'package:edu_platt/presentation/sharedWidget/text_error.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
@@ -16,7 +18,7 @@ class _NetworkVideoPlayerScreenState extends State<NetworkVideoPlayerScreen> {
   late VideoPlayerController _videoPlayerController;
   late ChewieController _chewieController;
   bool _isLoading = true;
-  bool _hasError = false;
+  String? _hasError;
 
   @override
   void initState() {
@@ -45,8 +47,8 @@ class _NetworkVideoPlayerScreenState extends State<NetworkVideoPlayerScreen> {
 
       );
     } catch (e) {
+      _hasError = getUserFriendlyErrorMessage(e);
       setState(() {
-        _hasError = true;
         _isLoading = false;
       });
     }
@@ -55,7 +57,7 @@ class _NetworkVideoPlayerScreenState extends State<NetworkVideoPlayerScreen> {
   @override
   void dispose() {
     _videoPlayerController.dispose();
-    if(!_hasError) {
+    if(!_isLoading && _hasError == null) {
       _chewieController.dispose();
     }
     super.dispose();
@@ -70,8 +72,14 @@ class _NetworkVideoPlayerScreenState extends State<NetworkVideoPlayerScreen> {
       body: Center(
         child: _isLoading
             ? const CircularProgressIndicator() // Show loader while initializing
-            : _hasError
-            ? const Text('Failed to load video') // Show error message
+            : _hasError != null
+            ? Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(child: TextError( onPressed:(){
+                        _initializeVideo();
+
+                      } , errorMessage:   _hasError!)),
+            ) // Show error message
             : Chewie(
           controller: _chewieController,
         ),

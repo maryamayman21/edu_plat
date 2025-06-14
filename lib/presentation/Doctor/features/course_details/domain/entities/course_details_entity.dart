@@ -33,19 +33,54 @@ class CourseDetailsEntity {
         required  this.courseCode,
 
       });
-
-  factory CourseDetailsEntity.fromJson(Map<String, dynamic> json) {
+  factory CourseDetailsEntity.initial() {
     return CourseDetailsEntity(
-        name: json['fileName'],
-        type: json['typeFile'],
-        path: json['filePath'],
-        size: json['size'],
-        extention:  json['fileExtension'],
-        date: json['uploadDateFormatted'],
-        id: json['id'],
-      courseCode: json['courseCode']
+      name: "",               // Default empty string
+      path: "",               // Default empty string
+      size: '',                // Default 0
+      extention: "",          // Default empty string
+      date: '',   // Default current time (or use a fixed date)
+      type: "",               // Default empty string
+      id: 0,                 // Default empty string
+      courseCode: "",         // Default empty string
     );
   }
+
+
+  // Factory constructor that handles null
+  factory CourseDetailsEntity.fromJson(Map<String, dynamic>? json) {
+    return json != null
+        ? CourseDetailsEntity._fromJson(json)
+        : CourseDetailsEntity.initial();
+  }
+
+  // Private constructor for actual parsing
+  factory CourseDetailsEntity._fromJson(Map<String, dynamic> json) {
+    return CourseDetailsEntity(
+      name: json['fileName'] as String? ?? "",
+      path: json['filePath'] as String? ?? "",
+      size:  json['size'] as String? ?? "", // Handles both int/double
+      extention: json['fileExtension'] as String? ?? "",
+      date:  json['uploadDateFormatted'] as String? ?? "",
+      type: json['typeFile'] as String? ?? "",
+      id: (json['id'] as num?)?.toInt() ?? 0,
+      courseCode: json['courseCode'] as String? ?? "",
+    );
+  }
+
+
+  // factory CourseDetailsEntity.fromJson(Map<String, dynamic> json) {
+  //   return CourseDetailsEntity(
+  //       name: json['fileName'],
+  //       type: json['typeFile'],
+  //       path: json['filePath'],
+  //       size: json['size'],
+  //       extention:  json['fileExtension'],
+  //       date: json['uploadDateFormatted'],
+  //       id: json['id'],
+  //     courseCode: json['courseCode']
+  //   );
+  // }
 
   Map<String, dynamic> toJson() {
     return {

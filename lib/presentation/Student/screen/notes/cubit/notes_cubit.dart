@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
+import 'package:edu_platt/core/network/failure.dart';
 import 'package:edu_platt/core/network_handler/network_handler.dart';
 import 'package:edu_platt/core/utils/validations/date_validation.dart';
 
@@ -51,7 +52,7 @@ class NotesCubit extends Cubit<NotesState> {
               error.response?.data['message'] ?? 'An unexpected error occurred';
           emit(NotesFailure(errorMessage));
         } else {
-          emit(NotesFailure(NetworkHandler.mapErrorToMessage(error)));
+          emit(NotesFailure(ServerFailure(error.toString())));
         }
       }
     }

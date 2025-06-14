@@ -1,4 +1,6 @@
 import 'package:edu_platt/core/constant/constant.dart';
+import 'package:edu_platt/core/utils/helper_methds/get_friendly_messages.dart';
+import 'package:edu_platt/presentation/sharedWidget/text_error.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_file/internet_file.dart';
 import 'package:internet_file/storage_io.dart';
@@ -43,12 +45,9 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       // Handle errors and update the state
       if (!mounted) return;
       setState(() {
-        _errorMessage = 'Failed to load PDF: $e';
+        _errorMessage =  getUserFriendlyErrorMessage(e);
         _isLoading = false;
       });
-
-      // Print the error to the console
-      print('Error loading PDF: $e');
     }
   }
 
@@ -69,7 +68,13 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator()) // Show loader while loading
           : _errorMessage != null
-          ? Center(child: Text(_errorMessage!)) // Show error message if PDF fails to load
+          ? Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(child: TextError( onPressed:(){
+                    _loadPdf();
+
+                  } , errorMessage:   _errorMessage!)),
+          ) // // Show error message if PDF fails to load
           : PdfViewPinch(
         controller: _pdfController,
       ),

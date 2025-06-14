@@ -60,6 +60,7 @@ class DoctorExamsRemoteDataSourceImpl extends DoctorExamsRemoteDataSource {
       );
 
       print('✅ Request successful');
+      print('create online exam response : ${response.data.toString()}');
       return CreateExamResponse.fromJson(response.data);
     } catch (e, stackTrace) {
       print('❌ Error while creating exam: $e');

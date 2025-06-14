@@ -171,7 +171,7 @@ class _MakeOnlineExamState extends State< UpdateOnlineExam> {
                             maxHeight: 100.h,  // Limit height if needed
                           ),
                           child: MyDatePicker(
-                            date: _examDate,
+                            date:  context.read<OnlineExamBloc>().state.exam.examDate,
                             onChanged: (value) {
                               _examDate = value;
                               context.read<OnlineExamBloc>().add(SetExamDateEvent(_examDate));
@@ -249,9 +249,9 @@ class _MakeOnlineExamState extends State< UpdateOnlineExam> {
                           if (!_formKey.currentState!.validate()) return;
                           context.read<OnlineExamBloc>().add(SetExamCourseTitleEvent(_courseTitle));
                           context.read<OnlineExamBloc>().add(SetExamCourseCodeEvent(_courseCode));
-                          context.read<OnlineExamBloc>().add(const CreateExamEvent());
+                          context.read<OnlineExamBloc>().add(UpdateDoctorExamEvent(examId: widget.examId));
                         },
-                        text: 'Create Online Exam',
+                        text: 'Save changes',
                       ),
                     ),
                   ),

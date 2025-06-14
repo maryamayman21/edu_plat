@@ -131,18 +131,31 @@ class QuizResultScreen extends StatelessWidget {
 
   Widget _buildErrorContent(BuildContext context, ExamError state) {
     if (state.message == 'No internet connection') {
-      return NoWifiWidget(
-        onPressed: () {
-          context.read<ExamBloc>().add(SubmitExamScore(exam));
-        },
+      return Column(
+        children: [
+          NoWifiWidget(
+            onPressed: () {
+              context.read<ExamBloc>().add(SubmitExamScore(exam));
+            },
+          ),
+          SizedBox(height: 10.h,),
+          _buildBackButton(context)
+        ],
       );
     } else {
-      return TextError(errorMessage: state.message,
-      white: true,
-        onPressed: () {
-          context.read<ExamBloc>().add(SubmitExamScore(exam));
-        },
+      return Column(
+        children: [
+          TextError(errorMessage: state.message,
+          white: true,
+            onPressed: () {
+              context.read<ExamBloc>().add(SubmitExamScore(exam));
+            },
+          ),
+          SizedBox(height: 10.h,),
+          _buildBackButton(context)
+        ],
       );
     }
   }
+
 }

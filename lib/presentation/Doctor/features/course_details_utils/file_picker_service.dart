@@ -33,6 +33,7 @@ class FilePickerService {
   Future<FilePickerResult?> pickVideo() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.video,
+
     );
 
     if (result != null && result.files.single.path != null) {

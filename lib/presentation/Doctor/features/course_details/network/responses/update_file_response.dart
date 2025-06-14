@@ -14,7 +14,7 @@ class UpdateFileResponse extends BaseResponse{
    return UpdateFileResponse(
        status: json['success'],
        message: json['message'],
-       course: CourseDetailsEntity.fromJson(json['fileDetails'])
+     course: CourseDetailsEntity.fromJson(json['fileDetails'])
    );
  }
 

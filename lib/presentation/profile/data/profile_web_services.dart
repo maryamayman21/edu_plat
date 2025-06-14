@@ -10,8 +10,8 @@ class ProfileWebServices {
 
   ProfileWebServices(){
     _dio = Dio(BaseOptions(
-      baseUrl: ApiConstants.baseUrl,
-      connectTimeout: Duration(seconds: 10)
+        baseUrl: ApiConstants.baseUrl,
+        connectTimeout: const Duration(seconds: 10)
     ));
   }
 
@@ -31,7 +31,7 @@ class ProfileWebServices {
         ),
       );
     } catch (e) {
-      throw Exception('Failed to upload photo: $e');
+      throw Exception('Failed to upload photo');
     }
   }
   Future<Response> fetchPhoto(String token) async {
@@ -45,7 +45,7 @@ class ProfileWebServices {
         ),
       );
     } catch (e) {
-      throw Exception('Failed to fetch photo: $e');
+      throw Exception('Failed to fetch photo');
     }
   }
   Future<Response> updatePhoneNumber(String token , String phoneNumber) async {
@@ -62,7 +62,7 @@ class ProfileWebServices {
         ),
       );
     } catch (e) {
-      throw Exception('Failed to update phone number : $e');
+      throw Exception('Failed to update phone number');
     }
   }
   Future<Response> fetchPhoneNumber(String token ) async {
@@ -76,7 +76,7 @@ class ProfileWebServices {
         ),
       );
     } catch (e) {
-      throw Exception('Failed to fetch phone number: $e');
+      throw Exception('Failed to fetch phone number');
     }
   }
 
@@ -93,7 +93,7 @@ class ProfileWebServices {
       print('Data fetched successfully!');
       return response;
     } catch (e) {
-      throw Exception('Failed to fetch user data: $e');
+      throw Exception('Failed to fetch user data');
     }
   }
   Future<Response> logout(String token,) async {
@@ -108,11 +108,7 @@ class ProfileWebServices {
       );
       return response;
     } catch (e) {
-      throw Exception('Failed to fetch user data: $e');
+      throw Exception('Failed to fetch user data');
     }
   }
 }
-
-
-
-

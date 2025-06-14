@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:edu_platt/core/network/failure.dart';
 
 
 import '../../../core/cashe/services/profile_cashe_service.dart';
@@ -88,30 +89,17 @@ class ProfilePhotoCubit extends Cubit<ProfilePhotoState> {
       // Fetch from repository
       final token = await tokenService.getToken();
       String? profilePhoto = await profileRepository.fetchProfilePhoto(token!);
-         print('Done');
       if (profilePhoto != null) {
         await profileCacheService.saveProfilePhoto(profilePhoto);
-
-        print('Profile photo cached successfully');
       }
       
       if (!isClosed) emit(ProfilePhotoSuccess(profilePhoto));
       //if (!isClosed) emit(ProfilePhotoSuccess(profilePhoto));
-      print('Retrieved  profile photo from server ');
-    } catch (error) {
-      print(error.toString());
-      if (!isClosed) {
-        if (error is DioError && error.response != null) {
-          // Handle specific API errors
-          print(error.type);
-          final errorMessage =
-              error.response?.data['message'] ?? 'An unexpected error occurred';
-          emit(ProfilePhotoFailure(errorMessage));
-        } else {
-          print(error);
-          emit(ProfilePhotoFailure(NetworkHandler.mapErrorToMessage(error)));
-        }
+    } catch (e) {
+      if (e is DioError) {
+        emit(ProfilePhotoFailure( ServerFailure.fromDiorError(e).message)) ;
       }
+      emit(ProfilePhotoFailure(ServerFailure(e.toString()).message));
     }
   }
 

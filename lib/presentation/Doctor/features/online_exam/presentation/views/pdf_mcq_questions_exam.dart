@@ -1,3 +1,4 @@
+
 import 'package:edu_platt/core/utils/Assets/appAssets.dart';
 import 'package:edu_platt/core/utils/Color/color.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/model/question_model.dart';
@@ -107,6 +108,7 @@ class _PdfExamQuestionsState extends State<PdfExamQuestions> {
     return Column(
       children: [
                MyDatePicker(
+                 dateMode: true,
                  date: _examDate,
                  onChanged: (value) => _examDate = value,
                ),
@@ -132,6 +134,7 @@ class _PdfExamQuestionsState extends State<PdfExamQuestions> {
             children: [
 
               MyDatePicker(
+                dateMode: true,
                 date: _examDate,
                 onChanged: (value) => _examDate = value,
               ),

@@ -52,7 +52,7 @@ class CourseDetailsRepoImp implements CourseDetailsRepo {
         }
 
         //-->this case returns an empty list
-        return left(ServerFailure('Something went wrong'));
+        return left(ServerFailure(response.message?? 'Something went wrong.'));
 
       } catch (e) {
         if (e is DioError) {
@@ -71,13 +71,13 @@ class CourseDetailsRepoImp implements CourseDetailsRepo {
 
             coursesFiles =
             await  courseDetailsLocalDataSource.saveCourseFiles(response.courses!);
-            print('Here 2');
+
             return right(response.courses ?? []);
           }
           return right(response.courses ?? []);
 
         }
-        return left(ServerFailure('Something went wrong'));
+        return left(ServerFailure(response.message?? 'Something went wrong.'));
       }
       catch(e){
         return left(ServerFailure('No internet connection'));
@@ -100,7 +100,7 @@ class CourseDetailsRepoImp implements CourseDetailsRepo {
                await  courseDetailsLocalDataSource.saveCourseFiles(list);
               return right(coursesFiles);
           }
-          return left(ServerFailure('Something went wrong'));
+          return left(ServerFailure(response.message?? 'Something went wrong.'));
 
         } catch (e) {
           if (e is DioError) {
@@ -128,7 +128,7 @@ class CourseDetailsRepoImp implements CourseDetailsRepo {
         coursesFiles = await courseDetailsLocalDataSource.deleteCourseFiles(index, type, courseCode);
         return right(coursesFiles);
         }
-       return left(ServerFailure('Something went wrong'));
+       return left(ServerFailure(response.message?? 'Something went wrong.'));
 
     } catch (e) {
       if (e is DioError) {
@@ -156,7 +156,7 @@ class CourseDetailsRepoImp implements CourseDetailsRepo {
              coursesFiles = await  courseDetailsLocalDataSource.updateCourseFile(index, response.course);
              return right(coursesFiles);
            }
-           return left(ServerFailure('Something went wrong'));
+           return left(ServerFailure(response.message?? 'Something went wrong.'));
 
       } catch (e) {
         if (e is DioError) {

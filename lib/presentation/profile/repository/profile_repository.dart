@@ -22,7 +22,7 @@ class ProfileRepository {
       print('Photo uploaded successfully!');
     } else {
       // Handle failure
-      throw Exception('Failed to upload photo: ${response.data}');
+      throw Exception('Failed to upload photo');
     }
   }
   Future<String?> fetchProfilePhoto(String token ) async {
@@ -35,7 +35,7 @@ class ProfileRepository {
 
     } else {
       // Handle failure
-      throw Exception('Failed to fetch photo: ${response.data}');
+      throw Exception('Failed to fetch photo');
     }
   }
 
@@ -46,7 +46,7 @@ class ProfileRepository {
       print('Phone number updated successfully!');
     } else {
       // Handle failure
-      throw Exception('Failed to update phone number : ${response.data}');
+      throw Exception('Failed to update phone number');
     }
   }
   Future<void> logout(String token) async {
@@ -55,7 +55,7 @@ class ProfileRepository {
       PushNotificationsService.unsubscribeUserToTopics();
     } else {
       // Handle failure
-      throw Exception('Failed to log out : ${response.data}');
+      throw Exception('Failed to log out');
     }
   }
   Future<dynamic> fetchPhoneNumber(String token) async {
@@ -66,7 +66,7 @@ class ProfileRepository {
       return response.data['phoneNumber'];
     } else {
       // Handle failure
-      throw Exception('Failed to fetch phone number : ${response.data}');
+      throw Exception('Failed to fetch phone number ');
     }
   }
   Future<UserModel> fetchUserData(String token) async {
@@ -77,7 +77,7 @@ class ProfileRepository {
       return UserModel.fromJson(response.data);
     } else {
       // Handle failure
-      throw Exception('Failed to fetch user data : ${response.data}');
+      throw Exception('Failed to fetch user data');
     }
   }
 

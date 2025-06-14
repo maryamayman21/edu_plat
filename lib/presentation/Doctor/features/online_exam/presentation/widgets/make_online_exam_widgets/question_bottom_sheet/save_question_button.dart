@@ -37,8 +37,8 @@ class SaveQuestionButton extends StatelessWidget {
       ),
       onPressed: () {
         if (!formKey.currentState!.validate()) return;
-        if (optionTexts.length < 2) {
-          showErrorDialog(context);
+        if (optionTexts.length < 2 || optionTexts.length > 5) {
+          showErrorDialog(context, message: 'Options must be between 2 and 5 ');
           return;
         }
         onlineExamBloc.add(

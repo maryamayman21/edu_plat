@@ -58,7 +58,22 @@ class CourseDetailsViewBody extends StatelessWidget {
         ),
       ],
       child:
-      CustomScrollView(
+      BlocListener<DialogCubit, dynamic>(
+        listener: (context, state)async{
+          // final dialogCubit = context.read<DialogCubit>();
+          if(state?.status  == StatusDialog.SUCCESS){
+            Navigator.pop(context);
+            showSuccessDialog(context, message:  state?.message ?? 'Operation Successful');
+          }
+          if(state?.status  == StatusDialog.LOADING){
+            showLoadingDialog(context);
+          }
+          if(state?.status  == StatusDialog.FAILURE){
+            Navigator.pop(context);
+            showErrorDialog(context, message:  state?.message ?? 'Something went wrong');
+          }
+        },
+  child: CustomScrollView(
               slivers: [
               CourseHeader(courseCode: courseCode),
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
@@ -171,6 +186,7 @@ class CourseDetailsViewBody extends StatelessWidget {
         },
         ),
           ],
-        ),);
+        ),
+),);
   }
 }

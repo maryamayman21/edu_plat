@@ -132,14 +132,14 @@ Future<void> fetchCourseFilesRequest() async {
           fileIndex, materialMap['materialType'], courseCode);
       result.fold((failure) {
         dialogCubit.setStatus('Failure', message:  failure.message);
-        emit(CourseFilesFailure(errorMessage: failure.message));
+      //  emit(CourseFilesFailure(errorMessage: failure.message));
       }, (coursesFiles) {
         if (coursesFiles.isEmpty) {
-          dialogCubit.setStatus('Success');
+          dialogCubit.setStatus('Success', message: 'File deleted successfully.');
           emit(CourseFilesNotFound());
         }
         else {
-          dialogCubit.setStatus('Success');
+          dialogCubit.setStatus('Success', message: 'File deleted successfully.');
           emit(CourseFilesSuccess(coursesFiles: coursesFiles));
         }
       });
@@ -152,16 +152,16 @@ Future<void> fetchCourseFilesRequest() async {
     var result = await courseDetailsRepo.updateCoursesFile(fileIndex , courseFile.type! ,  File(courseFile.path!), courseFile.courseCode);
     result.fold((failure) {
       dialogCubit.setStatus('Failure', message: failure.message);
-      emit(CourseFilesFailure(errorMessage: failure.message));
+      //emit(CourseFilesFailure(errorMessage: failure.message));
     }, (coursesFiles) {
-      if (coursesFiles.isEmpty) {
-        dialogCubit.setStatus('Success');
-        emit(CourseFilesNotFound());
-      }
-      else {
-        dialogCubit.setStatus('Success');
+      // if (coursesFiles.isEmpty) {
+      //   dialogCubit.setStatus('Success');
+      //   emit(CourseFilesNotFound());
+      // }
+      // else {
+        dialogCubit.setStatus('Success', message: 'File updated successfully.');
         emit(CourseFilesSuccess(coursesFiles: coursesFiles));
-      }
+     // }
     });
   }
 

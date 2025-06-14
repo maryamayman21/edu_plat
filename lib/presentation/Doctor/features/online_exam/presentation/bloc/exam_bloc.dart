@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
+import 'package:edu_platt/core/network/failure.dart';
 import 'package:edu_platt/presentation/Doctor/features/course_details/cubit/dialog_cubit.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/delete_exam_request.dart';
 import 'package:edu_platt/presentation/Doctor/features/online_exam/data/network/request/getExamsRequest.dart';
@@ -50,37 +52,140 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
     });
 
 
-    on<DeleteExam>((event, emit) async {
+  //   on<DeleteExam>((event, emit) async {
+  //     // Step 1: Delete the exam
+  //     dialogCubit.setStatus('Loading');
+  //
+  //     final deleteResult = await doctorExamRepoImp.deleteExam(
+  //       DeleteExamRequest(examId: event.id),
+  //     );
+  //
+  //     // Handle the result of the delete operation
+  //     if (deleteResult.isLeft()) {
+  //       // Emit an error state if the delete operation fails
+  //       dialogCubit.setStatus('Failure', message:'Failed to delete file, try again' );
+  //       return;
+  //     }
+  //
+  //     // Step 2: Fetch updated exams after successful deletion
+  //     final fetchResult = await doctorExamRepoImp.getDoctorExams(
+  //       GetExamsRequest(isExamTaken: event.isExamtaken),
+  //     );
+  //
+  //     // Handle the result of the fetch operation
+  //     fetchResult.fold(
+  //           (failure) {
+  //         dialogCubit.setStatus('Failure', message: failure.message);
+  //       },
+  //           (exams) {
+  //             dialogCubit.setStatus('Success');
+  //             if (exams.isEmpty) {
+  //               emit(ExamsIsEmpty());
+  //             }
+  //             else {
+  //               emit(ExamLoaded(exams));
+  //             }
+  //           }
+  //     );
+  //   });
+  // }
+
+  on<DeleteExam>((event, emit) async {
       // Step 1: Delete the exam
       dialogCubit.setStatus('Loading');
+    //   final results = await Future.wait([
+    //   doctorExamRepoImp.deleteExam(
+    //   DeleteExamRequest(examId: event.id),
+    // ),
+    //     doctorExamRepoImp.getDoctorExams(
+    //       GetExamsRequest(isExamTaken: event.isExamtaken),
+    //     ) // Adjust the call as needed
+    //   ]);
+    //   final Either<Failure, String> deleteExamResult = results[0] as Either<Failure, String>;
+    //   final Either<Failure, List<ExamEntity>> getExamResult = results[1] as Either<Failure, List<ExamEntity>>;
+    //
+    //
+    //   deleteExamResult.fold(
+    //         (failure) {
+    //           dialogCubit.setStatus('Failure', message:failure.message );
+    //     },
+    //         (successMessage) {
+    //       // Now handle the registered courses result
+    //           getExamResult.fold(
+    //             (failure) {
+    //               dialogCubit.setStatus('Failure', message: failure.message);
+    //         },
+    //             (exams) {
+    //               dialogCubit.setStatus('Success', message: successMessage);
+    //               if (exams.isEmpty) {
+    //                 print('HEE');
+    //                 emit(ExamsIsEmpty());
+    //               }
+    //               else {
+    //                 print('HELL NO');
+    //                 emit(ExamLoaded(exams));
+    //               }
+    //         },
+    //       );
+    //     },
+    //   );
+    //
+
+
+
+
+
 
       final deleteResult = await doctorExamRepoImp.deleteExam(
         DeleteExamRequest(examId: event.id),
       );
 
-      // Handle the result of the delete operation
       if (deleteResult.isLeft()) {
         // Emit an error state if the delete operation fails
-        dialogCubit.setStatus('Failure', message:'Failed to delete file, try again' );
+
+
+        final error = deleteResult.fold(
+              (failure) => failure.message,  // Extract Failure object
+              (success) => null,     // Not needed here since we checked isLeft()
+        );
+        dialogCubit.setStatus('Failure', message:error?? 'Failed to delete' );
         return;
       }
+      if (deleteResult.isRight()) {
+        // Emit an error state if the delete operation fails
 
-      // Step 2: Fetch updated exams after successful deletion
-      final fetchResult = await doctorExamRepoImp.getDoctorExams(
-        GetExamsRequest(isExamTaken: event.isExamtaken),
-      );
 
-      // Handle the result of the fetch operation
-      fetchResult.fold(
-            (failure) {
-          dialogCubit.setStatus('Failure', message: failure.message);
-        },
-            (exams) {
-          dialogCubit.setStatus('Success');
-          emit(ExamLoaded(exams));
-        },
-      );
+        final success = deleteResult.fold(
+              (failure) => null,  // Extract Failure object
+              (success) => success,     // Not needed here since we checked isLeft()
+        );
+
+        final fetchResult = await doctorExamRepoImp.getDoctorExams(
+          GetExamsRequest(isExamTaken: event.isExamtaken),
+        );
+
+
+        fetchResult.fold(
+                (failure) {
+              dialogCubit.setStatus('Failure', message: failure.message);
+            },
+                (exams) {
+                  dialogCubit.setStatus('Success', message:success?? 'Exam deleted successfully' );
+
+                  if (exams.isEmpty) {
+                emit(ExamsIsEmpty());
+              }
+              else {
+                emit(ExamLoaded(exams));
+              }
+            }
+        );
+
+
+      }
+
+
     });
-  }
+      }
 
 }

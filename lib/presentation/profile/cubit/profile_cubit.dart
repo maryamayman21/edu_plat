@@ -132,9 +132,9 @@ class ProfileCubit extends Cubit<ProfileState> {
     String? role = await tokenService.getRule();
     if(role== 'Student'){
       await clearNotesCache();
-    //  await clearCoursesCache();
+      //  await clearCoursesCache();
     }else{
-   //   await clearCoursesCache();
+      //   await clearCoursesCache();
     }
   }
 
@@ -146,35 +146,3 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
