@@ -149,7 +149,7 @@ class _Gpa_CalculatorState extends State<Gpa_Calculator>with SingleTickerProvide
                                   onPressed: () => context.read<GpaCubit>().fetchGpa(),
                                   icon:  Icon(Icons.refresh),
                                   label:  Text(state.message,style:
-                                  TextStyle(fontSize: 15.sp,fontWeight: FontWeight.bold,color: Colors.red),),
+                                  TextStyle(fontSize: 13.sp,fontWeight: FontWeight.bold,color: Colors.red),),
                                 )
                               ],
                             );
