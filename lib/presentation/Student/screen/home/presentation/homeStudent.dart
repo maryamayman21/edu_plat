@@ -82,13 +82,13 @@ class _HomeStudentState extends State<HomeStudentScreen>
       },
       child: Scaffold(
         drawer: const Drawerr(),
-        appBar:  AppBar(
+        appBar:  (selectedIndex == 4) ? null : AppBar(
         elevation: 0,
-        backgroundColor: (selectedIndex == 4 || selectedIndex == 3||selectedIndex == 2)
+        backgroundColor: (  selectedIndex == 3||selectedIndex == 2)
             ? color.primaryColor
             : (selectedIndex == 1 ? color.primaryColor : Colors.transparent),
         scrolledUnderElevation: 0,
-        toolbarHeight: (selectedIndex == 4 || selectedIndex == 3||selectedIndex == 2)
+        toolbarHeight: ( selectedIndex == 3||selectedIndex == 2 )
             ? 60.h
             : (selectedIndex == 1 ? 80.h : 130.h),
         shape: selectedIndex == 1
@@ -99,7 +99,7 @@ class _HomeStudentState extends State<HomeStudentScreen>
             bottomRight: Radius.circular(30.r),
           ),
         ),
-        title: (selectedIndex == 4 || selectedIndex == 3||selectedIndex == 2)
+        title: ( selectedIndex == 3||selectedIndex == 2)
             ? Text(
           selectedIndex == 2 ? "Chat" : (selectedIndex == 4 ? "Profile" : "Exams"),          style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Colors.white,
@@ -129,19 +129,21 @@ class _HomeStudentState extends State<HomeStudentScreen>
           ],
         )),
         centerTitle: true,
-          actions: [
+          actions: selectedIndex == 0
+              ? [
             BlocBuilder<NotificationCounterCubit, int>(
               builder: (context, count) {
                 return Stack(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.notifications,
+                      icon: const Icon(
+                        Icons.notifications,
                         color: Colors.grey,
                       ),
                       onPressed: () {
                         Navigator.push(
                           context,
-                         CustomPageRoute(page:  const NotificationCenterScreen()),
+                          CustomPageRoute(page: const NotificationCenterScreen()),
                         );
                       },
                     ),
@@ -162,8 +164,10 @@ class _HomeStudentState extends State<HomeStudentScreen>
                 );
               },
             ),
-          ],
-      ),
+          ]
+              : [],
+
+        ),
 
       body: tabs[selectedIndex],
         bottomNavigationBar: BottomNavigationBar(

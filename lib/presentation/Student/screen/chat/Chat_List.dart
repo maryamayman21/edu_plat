@@ -25,7 +25,6 @@ class ChatList extends StatefulWidget {
 }
 
 class _ChatListState extends State<ChatList> with SingleTickerProviderStateMixin{
-  bool showDoctorsChatDot = true;
 
 
 
@@ -111,7 +110,7 @@ class _ChatListState extends State<ChatList> with SingleTickerProviderStateMixin
                       child: GestureDetector(
                         onTap: () async {
                           setState(() {
-                            showDoctorsChatDot = false;
+                            // showDoctorsChatDot = false;
                           });
 
                           String? token = await TokenService().getToken();
@@ -143,23 +142,23 @@ class _ChatListState extends State<ChatList> with SingleTickerProviderStateMixin
                               child: Center(
                                 child: Text(
                                   'Doctors Chat',
-                                  style: TextStyle(color: Colors.white, fontSize: 23.sp, fontWeight: FontWeight.bold),
+                                  style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
-                            if (showDoctorsChatDot)
-                              Positioned(
-                                top: 10,
-                                right: 10,
-                                child: Container(
-                                  width: 15,
-                                  height: 15,
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              ),
+                            // if (showDoctorsChatDot)
+                            //   Positioned(
+                            //     top: 10,
+                            //     right: 10,
+                            //     child: Container(
+                            //       width: 15,
+                            //       height: 15,
+                            //       decoration: BoxDecoration(
+                            //         color: Colors.red,
+                            //         shape: BoxShape.circle,
+                            //       ),
+                            //     ),
+                            //   ),
                           ],
                         ),
                       ),
@@ -201,7 +200,7 @@ class _ChatListState extends State<ChatList> with SingleTickerProviderStateMixin
                 'Community Chat',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 23.sp,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),

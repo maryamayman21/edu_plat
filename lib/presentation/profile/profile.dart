@@ -7,6 +7,7 @@ import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
 import 'package:edu_platt/core/cashe/services/profile_cashe_service.dart';
 import 'package:edu_platt/core/file_picker/file_picker_service.dart';
 import 'package:edu_platt/presentation/Auth/service/token_service.dart';
+import 'package:edu_platt/presentation/Doctor/features/home/presentation/widgets/doctor_drawer.dart';
 import 'package:edu_platt/presentation/notification/presentation/cubit/notification_counter_cubit.dart';
 import 'package:edu_platt/presentation/profile/cubit/phone_cubit.dart';
 import 'package:edu_platt/presentation/profile/cubit/profile_cubit.dart';
@@ -48,6 +49,28 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor:color.primaryColor,
+        scrolledUnderElevation: 0,
+        toolbarHeight:70.h,
+        shape:RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30.r),
+            bottomRight: Radius.circular(30.r),
+          ),
+        ),
+        title: Text(
+          "Profile",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: Colors.white,
+            fontSize: 22.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        centerTitle: true,
+
+      ),
       body: SingleChildScrollView(
           child: Padding(
               padding: EdgeInsets.symmetric(vertical: 50.h, horizontal: 20.w),

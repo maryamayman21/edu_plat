@@ -26,7 +26,6 @@ class Chatlistdoctor extends StatefulWidget {
 }
 
 class _ChatlistdoctorState extends State<Chatlistdoctor> with SingleTickerProviderStateMixin{
-  bool showStudentsChatDot = true;
 
   @override
   Widget build(BuildContext context) {
@@ -63,16 +62,7 @@ class _ChatlistdoctorState extends State<Chatlistdoctor> with SingleTickerProvid
               ),
             ),
           centerTitle: true,
-          actions: [
-            Padding(
-              padding: REdgeInsets.only(right: 10),
-              child: Icon(
-                Icons.notifications_active,
-                color: Colors.grey,
-                size: 30.r,
-              ),
-            ),
-          ],
+
         ),
         body: Container(
           width: double.infinity,
@@ -142,7 +132,6 @@ class _ChatlistdoctorState extends State<Chatlistdoctor> with SingleTickerProvid
                     child: GestureDetector(
                       onTap: () async{
                         setState(() {
-                          showStudentsChatDot = false;
                         });
 
                         String? token = await TokenService().getToken();
@@ -174,23 +163,22 @@ class _ChatlistdoctorState extends State<Chatlistdoctor> with SingleTickerProvid
                             child: Center(
                               child: Text(
                                 'Students Chat',
-                                style: TextStyle(color: Colors.white, fontSize: 23.sp, fontWeight: FontWeight.bold),
+                                style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
-                          if (showStudentsChatDot)
-                            Positioned(
-                              top: 10,
-                              right: 10,
-                              child: Container(
-                                width: 15,
-                                height: 15,
-                                decoration: const BoxDecoration(
-                                  color: Colors.red,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                            ),
+                            // Positioned(
+                            //   top: 10,
+                            //   right: 10,
+                            //   child: Container(
+                            //     width: 15,
+                            //     height: 15,
+                            //     decoration: const BoxDecoration(
+                            //       color: Colors.red,
+                            //       shape: BoxShape.circle,
+                            //     ),
+                            //   ),
+                            // ),
                         ],
                       ),
                     ),
@@ -231,7 +219,7 @@ class _ChatlistdoctorState extends State<Chatlistdoctor> with SingleTickerProvid
                 'Community Chat',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 23.sp,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),

@@ -32,10 +32,10 @@ class GpaCubit extends Cubit<GpaState> {
         if (cachedGpa != null && cachedGpa['gpa'] != 0.0) {
           emit(GpaLoaded(GpaModel(gpa: cachedGpa['gpa']!)));
         } else {
-          emit(GpaError("Failed to fetch GPA: $e"));
+          emit(GpaError(_extractMessage(e.toString())));
         }
       } catch (cacheError) {
-        emit(GpaError("Failed to fetch GPA from cache: $cacheError"));
+        emit(GpaError(_extractMessage(cacheError.toString())));
       }
     }
   }
@@ -55,7 +55,13 @@ class GpaCubit extends Cubit<GpaState> {
       emit(GpaLoaded(GpaModel(gpa: gpa)));
       //await gpaCacheService.saveGpa(gpa);
     } catch (e) {
-      emit(GpaError("Failed to update GPA: $e"));
+      emit(GpaError("${_extractMessage(e.toString())}"));
     }
+  }
+  String _extractMessage(String error) {
+    if (error.toLowerCase().startsWith('exception:')) {
+      return error.substring(10).trim();
+    }
+    return error;
   }
 }

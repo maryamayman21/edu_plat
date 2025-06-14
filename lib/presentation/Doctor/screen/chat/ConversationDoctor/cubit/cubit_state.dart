@@ -9,8 +9,11 @@ class ChatLoading extends DoctorChatState {}
 
 class ChatLoaded extends DoctorChatState {
   final List<StudentModel> students;
-  ChatLoaded(this.students);
+  final bool hasUnread;
+
+  ChatLoaded(this.students, {this.hasUnread = false});
 }
+
 
 class ChatError extends DoctorChatState {
   final String message;

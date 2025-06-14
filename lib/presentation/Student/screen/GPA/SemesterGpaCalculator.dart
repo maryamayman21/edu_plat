@@ -176,69 +176,106 @@ class _SemestergpacalculatorState extends State<Semestergpacalculator> {
   }
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TitleWidget(text: "Credit"),
-            TitleWidget(text: "SGPA"),
-            TitleWidget(text: "Remove"),
-          ],
-        ),
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.all(10.h),
-            itemCount: semesters.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(vertical: 5.h),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(width: 5.w,),
-                        SizedBox(
-                          width: 100.w,
-                          child: SgpaWidget(controller: semesters[index]["credit"], textColor: Colors.pinkAccent),
-                        ),
-                        SizedBox(
-                          width: 100.w,
-                          child: SgpaWidget(controller: semesters[index]["sgpa"], textColor: color.primaryColor),
-                        ),
-                        SizedBox(width: 20.w,),
-                        IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.red),
-                          onPressed: () => removeSemester(index),
-                        ),
-                        SizedBox(width: 40.w),
-                      ],
-                    ),
-                    Divider(thickness: 2.r, color: Colors.white),
-                  ],
+    return LayoutBuilder(
+        builder: (context, constraints) {
+          return Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: MediaQuery
+                      .of(context)
+                      .viewInsets
+                      .bottom + 20.h),
+                
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          TitleWidget(text: "Credit"),
+                          TitleWidget(text: "SGPA"),
+                          TitleWidget(text: "Remove"),
+                        ],
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.all(10.h),
+                        itemCount: semesters.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5.h),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(width: 5.w,),
+                                    SizedBox(
+                                      width: 100.w,
+                                      child: SgpaWidget(
+                                          controller: semesters[index]["credit"],
+                                          textColor: Colors.pinkAccent),
+                                    ),
+                                    SizedBox(
+                                      width: 100.w,
+                                      child: SgpaWidget(
+                                          controller: semesters[index]["sgpa"],
+                                          textColor: color.primaryColor),
+                                    ),
+                                    SizedBox(width: 20.w,),
+                                    IconButton(
+                                      icon: const Icon(
+                                          Icons.delete, color: Colors.red),
+                                      onPressed: () => removeSemester(index),
+                                    ),
+                                    SizedBox(width: 40.w),
+                                  ],
+                                ),
+                                Divider(thickness: 2.r, color: Colors.white),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                
+                    ],
+                  ),
                 ),
-              );
-            },
+              ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10.h),
+            color: Colors.transparent,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CourseWidget(icon: Icons.add,
+                  text: "Add Semester",
+                  onTap: addSemester,),
+                Padding(
+                  padding: REdgeInsets.all(20.0),
+                  child: InkWell(
+                    onTap: () {
+                      calculateSGPA(context);
+                    },
+                    child: TitleWidget(
+                        text: "                    Calculate                    "),
+                  ),
+                ),
+              ],
+
+
+            ),
+
           ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CourseWidget(icon: Icons.add, text: "Add Semester",onTap: addSemester,),
-          ],),
-        Padding(
-          padding: REdgeInsets.all(20.0),
-          child: InkWell(
-            onTap:(){
-              calculateSGPA(context);
-            } ,
-            child: TitleWidget(
-                text: "                    Calculate                    "),
-          ),
-        ),
-      ],
+
+
+            ],
+          );
+        }
     );
   }
 }

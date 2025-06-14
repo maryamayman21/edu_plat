@@ -103,18 +103,18 @@ class _CourseHeaderState extends State<CourseHeader>with SingleTickerProviderSta
                   icon: const Icon(Icons.chat, color: color.primaryColor),
                 ),
               ),
-              if (_showNotificationDot)
-                Positioned(
-                  top: 1,
-                  child:  Container(
-                      width: 15.w,
-                      height: 20.h,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
+              // if (_showNotificationDot)
+              //   Positioned(
+              //     top: 1,
+              //     child:  Container(
+              //         width: 15.w,
+              //         height: 20.h,
+              //         decoration: const BoxDecoration(
+              //           shape: BoxShape.circle,
+              //           color: Colors.red,
+              //         ),
+              //       ),
+              //     ),
 
             ],
           ),

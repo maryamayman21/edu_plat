@@ -14,8 +14,13 @@ class GPARepository {
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
       return GpaModel.fromJson(response.data);
+    }on DioException catch (e) {
+      // Dio-specific error
+      final msg = e.response?.data['message'] ??"Check your internet connection or try again later." ;
+      throw Exception(msg);
     } catch (e) {
-      throw Exception("Failed to fetch GPA: $e");
+      // Generic error
+      throw Exception('Check your internet connection or try again later.');
     }
   }
 
@@ -30,11 +35,15 @@ class GPARepository {
 
       if (response.statusCode == 200 && response.data['success'] == true) {
         return GpaModel(gpa: gpa);
-      } else {
-        throw Exception("Failed to update GPA: ${response.data['message']}");
+      }else {
+        final errorMsg = response.data['message'] ?? "Check your internet connection or try again later.";
+        throw Exception(errorMsg);
       }
+    } on DioException catch (e) {
+      final msg = e.response?.data['message'] ??"Check your internet connection or try again later.";
+      throw Exception(msg);
     } catch (e) {
-      throw Exception(" Error updating GPA: $e");
+      throw Exception("Check your internet connection or try again later.");
     }
   }
 }

@@ -28,56 +28,12 @@ class ConvirationDoctorWedgit extends StatefulWidget {
 }
 
 class _ConvirationDoctorWedgitState extends State<ConvirationDoctorWedgit> {
-  Map<String, int> unreadMessagesCount = {};
-  DateTime? lastOpened;
 
   @override
   void initState() {
     super.initState();
-    _setupUnreadMessagesListener();
   }
 
-  void _setupUnreadMessagesListener() {
-    final profileState = context.read<ProfileCubit>().state;
-    final currentUserEmail = profileState is ProfileLoaded ? profileState.userModel.email : "";
-
-    if (currentUserEmail.isEmpty) return;
-
-    FirebaseFirestore.instance
-        .collectionGroup('messages')
-        .where('receiverId', isEqualTo: currentUserEmail)
-        .where('isRead', isEqualTo: false)
-        .snapshots()
-        .listen((snapshot) {
-      // تحديث العداد عند استلام رسائل جديدة
-      _updateUnreadCounts();
-    });
-  }
-
-  void _updateUnreadCounts() async {
-    // إعادة حساب جميع الرسائل غير المقروءة
-    // ... تنفيذ منطق حساب الرسائل غير المقروءة لكل محادثة
-    setState(() {});
-  }
-  Future<void> getUnreadCount(String studentEmail, String doctorEmail) async {
-    final roomId = "${studentEmail}_$doctorEmail";
-    final prefs = await SharedPreferences.getInstance();
-    final lastOpenedMillis = prefs.getInt('lastOpenedPrivate') ?? 0;
-    final lastOpened = DateTime.fromMillisecondsSinceEpoch(lastOpenedMillis);
-
-    final snapshot = await FirebaseFirestore.instance
-        .collection('chats')
-        .doc(roomId)
-        .collection('messages')
-        .where('receiverId', isEqualTo: doctorEmail) // للطبيب
-        .where('createdAt', isGreaterThan: Timestamp.fromDate(lastOpened))
-        .where('isRead', isEqualTo: false)
-        .get();
-
-    setState(() {
-      unreadMessagesCount[roomId] = snapshot.docs.length;
-    });
-  }
 
 
 
@@ -121,7 +77,6 @@ class _ConvirationDoctorWedgitState extends State<ConvirationDoctorWedgit> {
                       if (profileState is ProfileLoaded) {
                         doctorEmail = profileState.userModel.email ?? "";
                       }
-                      getUnreadCount(student.email!, doctorEmail);
 
                       return Padding(
                         padding: REdgeInsets.all(8.0),
