@@ -63,6 +63,7 @@ class _AddMcqQuestionWidgetState extends State<AddMcqQuestionWidget> {
                           AddOptionButton(
                             isWrittenExam: widget.isWrittenExam,
                             onAddOption: () {
+
                               if(_optionTexts.length < 5) {
                                 setState(() => _optionTexts.add(''));
                               }
@@ -86,7 +87,7 @@ class _AddMcqQuestionWidgetState extends State<AddMcqQuestionWidget> {
                             optionTexts: _optionTexts,
                             questionDegree: _questionDegree,
                             pdfExamBloc: widget.pdfExamBloc,
-                      
+                      isWritten: widget.isWrittenExam,
                           ),
                       
                         ],

@@ -80,8 +80,8 @@ Future<void> fetchCourseFilesRequest() async {
     var result = await courseDetailsRepo.saveCoursesFiles(UploadFileRequest(file:File(courseFile.path!) , type: courseFile.type, courseCode: courseCode),);
     result.fold((failure) {
       if(materialMap['materialType'] == courseFile.type){
-        dialogCubit.setStatus('Failure', message: failure.message);
-       // emit(CourseFilesFailure(errorMessage: failure.message));
+        //dialogCubit.setStatus('Failure', message: failure.message);
+        emit(CourseFilesFailure(errorMessage: failure.message));
       }
 
       statusCubit.clearStatus();

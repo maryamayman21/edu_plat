@@ -108,7 +108,7 @@ class ViewStudentDegreesView extends StatelessWidget {
     return Positioned(
       left: 0,
       right: 0,
-      bottom: 0,
+      bottom: 75,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 16.w),
         color: Colors.white,

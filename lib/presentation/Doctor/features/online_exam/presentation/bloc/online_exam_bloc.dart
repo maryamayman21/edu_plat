@@ -239,14 +239,19 @@ class OnlineExamBloc extends Bloc<OnlineExamEvent, OnlineExamState> {
 
   void _handleAddOptionEvent(
       AddOptionEvent event, Emitter<OnlineExamState> emit) {
+    final currentOptions = state.exam.question[event.questionIndex].options;
+    if (currentOptions.length >= 5) {
+      return; // Don't add if there are already 5 or more options
+    }
+
     final updatedQuestions = List<QuestionModel>.from(state.exam.question);
     updatedQuestions[event.questionIndex] =
         updatedQuestions[event.questionIndex].copyWith(
-      options: [
-        ...updatedQuestions[event.questionIndex].options,
-        OptionModel(text: '')
-      ],
-    );
+          options: [
+            ...currentOptions,
+            OptionModel(text: '')
+          ],
+        );
 
     emit(state.copyWith(exam: state.exam.copyWith(question: updatedQuestions)));
   }
