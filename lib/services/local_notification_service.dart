@@ -102,7 +102,7 @@ class LocalNotificationService {
        'Don\'t forget! You have a task waiting for you.',
         tz.TZDateTime.from(note.date!, tz.local),
         platformChannelSpecifics,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
         payload: note.title,
@@ -218,7 +218,7 @@ class LocalNotificationService {
     final scheduledDate =  tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10));
    log('scheduled time $scheduledDate');
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       id,
       taskModel.title,
       taskModel.description,
