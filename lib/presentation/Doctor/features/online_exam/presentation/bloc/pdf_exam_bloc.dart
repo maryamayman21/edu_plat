@@ -123,18 +123,23 @@ class PDFExamBloc extends Bloc<PDFExamEvent, PDFExamState> {
         state.copyWith(exam: state.exam.copyWith(questions: updatedQuestions)));
   }
 
-  void _handleAddOptionEvent(AddOptionEvent event, Emitter<PDFExamState> emit) {
+  void _handleAddOptionEvent(
+      AddOptionEvent event, Emitter<PDFExamState> emit) {
+    final currentOptions = state.exam.questions[event.questionIndex].options;
+    if (currentOptions.length >= 5) {
+      return; // Don't add if there are already 5 or more options
+    }
+
     final updatedQuestions = List<QuestionModel>.from(state.exam.questions);
     updatedQuestions[event.questionIndex] =
         updatedQuestions[event.questionIndex].copyWith(
-      options: [
-        ...updatedQuestions[event.questionIndex].options,
-        OptionModel(text: '')
-      ],
-    );
-    print('ADD OPTION EVENT IN BLOC');
-    emit(
-        state.copyWith(exam: state.exam.copyWith(questions: updatedQuestions)));
+          options: [
+            ...currentOptions,
+            OptionModel(text: '')
+          ],
+        );
+
+    emit(state.copyWith(exam: state.exam.copyWith(questions: updatedQuestions)));
   }
 
   void _handleRemoveOptionEvent(
@@ -225,7 +230,7 @@ class PDFExamBloc extends Bloc<PDFExamEvent, PDFExamState> {
     bool isExamValid = true;
 
     for (var question in exam.questions) {
-      final hasEnoughOptions = question.options.length >= 2;
+      final hasEnoughOptions = question.options.length >= 2 && question.options.length < 5;
 
       final hasEmptyOptionField =
           question.options.any((element) => element.text.isEmpty);

@@ -12,6 +12,7 @@ class QuestionInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (input) => input?.trim().isEmpty ?? true ? 'Enter valid question' : null,
       decoration: InputDecoration(
         hintText: 'Enter Question',

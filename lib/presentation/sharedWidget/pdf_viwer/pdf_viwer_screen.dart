@@ -1,4 +1,5 @@
 import 'package:edu_platt/core/constant/constant.dart';
+
 import 'package:edu_platt/core/utils/helper_methds/get_friendly_messages.dart';
 import 'package:edu_platt/presentation/sharedWidget/text_error.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,8 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       });
     } catch (e) {
       // Handle errors and update the state
-      if (!mounted) return;
+      print(' ERRROOORRRR ${e.toString()}');
+
       setState(() {
         _errorMessage =  getUserFriendlyErrorMessage(e);
         _isLoading = false;

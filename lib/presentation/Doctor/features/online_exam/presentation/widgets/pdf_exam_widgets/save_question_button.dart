@@ -11,6 +11,7 @@ class McqSaveQuestionButton extends StatelessWidget {
   final List<String> optionTexts;
   final String? questionDegree;
   final PDFExamBloc pdfExamBloc;
+   final bool isWritten;
 
 
   const McqSaveQuestionButton({
@@ -19,7 +20,7 @@ class McqSaveQuestionButton extends StatelessWidget {
     required this.questionController,
     required this.optionTexts,
     required this.questionDegree,
-    required this.pdfExamBloc,
+    required this.pdfExamBloc,  this.isWritten = false,
   });
 
   @override
@@ -35,8 +36,11 @@ class McqSaveQuestionButton extends StatelessWidget {
       ),
       onPressed: () {
         if (!formKey.currentState!.validate()) return;
-        if (optionTexts.length < 2) {
-          showErrorDialog(context);
+        if (optionTexts.length < 2 && !isWritten ) {
+          showErrorDialog(context, message: 'Options must be between 2 and 5');
+          return;
+        }else if(optionTexts.length < 2 && isWritten){
+          showErrorDialog(context, message: 'Questions must be between 2 and 5');
           return;
         }
         pdfExamBloc.add(
@@ -46,7 +50,6 @@ class McqSaveQuestionButton extends StatelessWidget {
             options: optionTexts,
           ),
         );
-        print('Question added');
         Navigator.pop(context);
       },
     );

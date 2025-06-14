@@ -11,9 +11,11 @@ String getUserFriendlyErrorMessage(dynamic error) {
   } else if (error is FormatException) {
     return 'Invalid media format. Please try another file.';
   } else if (error is PlatformException) {
-    return 'Cant access media.';
-  }
-  else {
+    if (error.code == 'PdfRendererException') {
+      return 'Could not open the PDF file. The file might be corrupted or in an unsupported format.';
+    }
+    return 'Could not access the media. Please try another file.';
+  } else {
     return 'Failed to load media. Please try again later.';
   }
 }
