@@ -59,16 +59,17 @@ class ProfilePhotoCubit extends Cubit<ProfilePhotoState> {
       }
 
     } catch (e) {
-      emit(ProfilePhotoFailure("Failed to select photo: $e"));
+      emit(ProfilePhotoFailure("Failed to select photo"));
     }
   }
 
   Future<void> _uploadAndCachePhoto(String? token, File? image, String imagebase64) async {
     try {
-      await profileCacheService.saveProfilePhoto(imagebase64);
       await profileRepository.uploadProfilePhoto(token!, image);
+      //await profileCacheService.saveProfilePhoto(imagebase64);
     } catch (e) {
-      emit(ProfilePhotoFailure("Failed to upload photo: $e"));
+      emit(ProfilePhotoFailure("Failed to upload photo"));
+       // throw Exception('"Failed to upload photo"');
     }
   }
 

@@ -136,16 +136,16 @@ class _DoctorDrawerState extends State<DoctorDrawer>
           SizedBox(
             height: 30.h,
           ),
+          // FadeTransition(
+          //     opacity: _fadeAnimations[0],
+          //     child: ContainerDrawer(
+          //       icons: Icons.home,
+          //       text: "Home",
+          //       onTap: () {
+          //         Navigator.pushNamed(context, AppRouters.doctorHomeRoute );                },
+          //     )),
           FadeTransition(
-              opacity: _fadeAnimations[0],
-              child: ContainerDrawer(
-                icons: Icons.home,
-                text: "Home",
-                onTap: () {
-                  Navigator.pushNamed(context, AppRouters.doctorHomeRoute );                },
-              )),
-          FadeTransition(
-            opacity: _fadeAnimations[1],
+            opacity: _fadeAnimations[0],
             child: ContainerDrawer(
                 icons: Icons.golf_course,
                 text: "Register Courses",
@@ -155,7 +155,7 @@ class _DoctorDrawerState extends State<DoctorDrawer>
                 }),
           ),
               FadeTransition(
-                opacity: _fadeAnimations[2],
+                opacity: _fadeAnimations[1],
                 child: ContainerDrawer(
                     icons: Icons.golf_course, text: "Lecture Schedule", onTap: () {
                   Navigator.pushNamed(context, AppRouters.pdfFileScreen , arguments: 'LectureSchedule');
@@ -163,7 +163,7 @@ class _DoctorDrawerState extends State<DoctorDrawer>
                 }),
               ),
               FadeTransition(
-                opacity: _fadeAnimations[3],
+                opacity: _fadeAnimations[2],
                 child: ContainerDrawer(
                     icons: Icons.schema, text: "Labs Schedule", onTap: () {
                   Navigator.pushNamed(context, AppRouters.pdfFileScreen , arguments: 'LabSchedule');
@@ -171,7 +171,7 @@ class _DoctorDrawerState extends State<DoctorDrawer>
                 }),
               ),
               FadeTransition(
-                  opacity: _fadeAnimations[4],
+                  opacity: _fadeAnimations[3],
                   child: ContainerDrawer(
                       icons: Icons.schedule, text: "Exam Schedule", onTap: () {
                     Navigator.pushNamed(context, AppRouters.pdfFileScreen , arguments: 'ExamSchedule');
@@ -210,7 +210,7 @@ class _DoctorDrawerState extends State<DoctorDrawer>
   child: BlocBuilder<ProfileCubit, ProfileState>(
   builder: (context, state) {
     return FadeTransition(
-                opacity: _fadeAnimations[5],
+                opacity: _fadeAnimations[4],
                 child: ContainerDrawer(
                     icons: Icons.logout,
                     text: "Logout",

@@ -131,20 +131,20 @@ class _DrawerrState extends State<Drawerr> with SingleTickerProviderStateMixin {
           SizedBox(
             height: 30.h,
           ),
-          FadeTransition(
-              opacity: _fadeAnimations[0],
-              child: ContainerDrawer(
-                icons: Icons.home,
-                text: "Home",
-                onTap: () {
-                  Navigator.pushNamed(context, AppRouters.HomeStudent);
-                      // NavigationHelper.navigateWithAnimation(
-                  //     context, const HomeStudentScreen());
-                 // Navigator.pop(context);  // no need to push new screen
-                },
-              )),
+          // FadeTransition(
+          //     opacity: _fadeAnimations[0],
+          //     child: ContainerDrawer(
+          //       icons: Icons.home,
+          //       text: "Home",
+          //       onTap: () {
+          //         Navigator.pushNamed(context, AppRouters.HomeStudent);
+          //             // NavigationHelper.navigateWithAnimation(
+          //         //     context, const HomeStudentScreen());
+          //        // Navigator.pop(context);  // no need to push new screen
+          //       },
+          //     )),
               FadeTransition(
-                opacity: _fadeAnimations[1],
+                opacity: _fadeAnimations[0],
                 child: ContainerDrawer(
                     icons: Icons.golf_course,
                     text: "Register Courses",
@@ -187,7 +187,7 @@ class _DrawerrState extends State<Drawerr> with SingleTickerProviderStateMixin {
                 }),
           ),
               FadeTransition(
-                opacity: _fadeAnimations[4],
+                opacity: _fadeAnimations[5],
                 child: ContainerDrawer(
                     icons: Icons.integration_instructions_outlined,
                     text: "GPA Calculator",

@@ -91,7 +91,7 @@ class ProfileView extends StatelessWidget {
     if (state is ProfilePhotoFailure) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(state.errorMessage)),
+            content: Text('No internet connection')),
       );
     }
 
@@ -171,7 +171,7 @@ class ProfileView extends StatelessWidget {
                         if (state is ProfileError) {
                           ScaffoldMessenger.of(context).showSnackBar(
                              SnackBar(
-                                content: Text(state.errorMessage)),
+                                content: Text("No internet conncetion")),
                           );
                         }
                       },
