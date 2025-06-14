@@ -147,10 +147,10 @@ class _NotesState extends State<Notes> {
                   return Column(
                     children: [
                       Image.asset(AppAssets.nnoNotesFound),
-                      const Text('No Tasks yet.',
+                       Text('No Tasks yet.',
                         style: TextStyle(
                             color: color.primaryColor,
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Roboto-Mono'
                         ),

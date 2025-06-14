@@ -45,6 +45,7 @@ class NotesCubit extends Cubit<NotesState> {
       //   emit(NotesFailure('Registration failed'));
       // }
     } catch (error) {
+
       if (!isClosed) {
         if (error is DioError && error.response != null) {
           // Handle specific API errors

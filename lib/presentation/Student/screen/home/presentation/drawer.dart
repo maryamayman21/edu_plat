@@ -137,7 +137,7 @@ class _DrawerrState extends State<Drawerr> with SingleTickerProviderStateMixin {
           //       icons: Icons.home,
           //       text: "Home",
           //       onTap: () {
-          //         Navigator.pushNamed(context, AppRouters.HomeStudent);
+          //         Navigator.pushReplacementNamed(context, AppRouters.HomeStudent);
           //             // NavigationHelper.navigateWithAnimation(
           //         //     context, const HomeStudentScreen());
           //        // Navigator.pop(context);  // no need to push new screen
