@@ -4,13 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SgpaWidget extends StatefulWidget {
   final TextEditingController controller;
   final Color textColor;
-  const SgpaWidget({required this.controller,required this.textColor,});
+  final bool allowDecimal;
+  const SgpaWidget({required this.controller,required this.textColor,  this.allowDecimal=false});
 
   @override
   State<SgpaWidget> createState() => _SgpaWidgetState();
 
-  static bool _isNumeric(String str) {
-    final numericRegex = RegExp(r'^\d*\.?\d*$');
+  static bool _isNumeric(String str, bool allowDecimal) {
+    final numericRegex = allowDecimal
+        ? RegExp(r'^\d*\.?\d*$') // يسمح بالفاصلة العشرية
+        : RegExp(r'^\d*$');      // أرقام صحيحة فقط
     return numericRegex.hasMatch(str);
   }
 }
@@ -35,8 +38,11 @@ class _SgpaWidgetState extends State<SgpaWidget> {
             border: InputBorder.none,
           ),
           onChanged: (value) {
-            if (!SgpaWidget._isNumeric(value)) {
-              widget.controller.text = value.replaceAll(RegExp(r'[^0-9.]'), ''); // ✅ السماح بنقطة واحدة فقط
+            if (!SgpaWidget._isNumeric(value, widget.allowDecimal)) {
+              widget.controller.text = value.replaceAll(
+                widget.allowDecimal ? RegExp(r'[^0-9.]') : RegExp(r'[^0-9]'),
+                '',
+              );
               widget.controller.selection = TextSelection.fromPosition(
                 TextPosition(offset: widget.controller.text.length),
               );

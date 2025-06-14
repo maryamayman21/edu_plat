@@ -27,9 +27,12 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 class _ChatScreenState extends State<ChatScreen> {
+  late TextEditingController _textController;
+
   @override
   void initState() {
     super.initState();
+    _textController = TextEditingController();
     _saveLastOpenedTime();
   }
 
@@ -39,6 +42,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
   @override
   void dispose() {
+    _textController.dispose();
+
     _saveLastOpenedTime(); // حفظ آخر وقت عند الخروج من الشاشة
     super.dispose();
   }
@@ -207,6 +212,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     "id": user?.email,
                                     "name": user?.userName,
                                   });
+                                  _textController.clear();
                                   _controller.animateTo(0,
                                       duration: Duration(seconds: 1),
                                       curve: Curves.fastOutSlowIn);
