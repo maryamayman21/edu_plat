@@ -75,10 +75,9 @@ void main() async {
     ]);
   } catch (e) {
     log('Initialization error: $e');
-
   }
-  runApp(MyApp(
-  ));
+  runApp(MyApp()
+  );
 }
 
 class MyApp extends StatelessWidget {

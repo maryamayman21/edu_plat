@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
 import 'package:edu_platt/core/cashe/services/notes_cache_service.dart';
 import 'package:edu_platt/core/network/failure.dart';
+import 'package:edu_platt/core/utils/helper_methds/clear_all_notifications.dart';
 import '../../../core/cashe/services/profile_cashe_service.dart';
 import '../../../core/file_picker/file_picker_service.dart';
 import '../../../core/localDB/secureStorage/secure_stoarge.dart';
@@ -100,7 +101,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       final token = await tokenService.getToken();
       await profileRepository.logout(token!);
 
-
+      await clearAllNotifications();
       await clearUserData();
       await  profileCacheService.clearProfileCache();
       await  profileCacheService.clearPhoneNumberCache();
