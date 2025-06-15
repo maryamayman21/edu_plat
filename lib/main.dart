@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:edu_platt/config/theme/theme.dart';
 import 'package:edu_platt/core/cashe/services/course_cashe_service.dart';
@@ -61,12 +63,20 @@ void main() async {
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Labs');
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Exams');
   await Hive.openBox<List<Map<String, List<CourseDetailsEntity>>>>('Videos');
-  await Future.wait([
-    PushNotificationsService.init(),
-    LocalNotificationService.init(),
+  // await Future.wait([
+  //   PushNotificationsService.init(),
+  //   LocalNotificationService.init(),
+  //
+  // ]);
+  try {
+    await Future.wait([
+      PushNotificationsService.initializePushNotifications(),
+      LocalNotificationService.init(),
+    ]);
+  } catch (e) {
+    log('Initialization error: $e');
 
-  ]);
-
+  }
   runApp(MyApp(
   ));
 }

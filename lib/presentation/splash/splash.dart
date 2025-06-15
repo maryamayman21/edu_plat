@@ -18,7 +18,14 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-
+  void showNotificationWarning() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Notifications may not work at this time'),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
   @override
   void initState() {
     super.initState();
@@ -42,10 +49,16 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       if (status == AnimationStatus.completed) {
         final prefs = await SharedPreferences.getInstance();
         final bool isUserLoggedIn = prefs.getBool('isLogged') ?? false;
+        final bool isNotificationServiceDisabled = prefs.getBool('isNotificationServiceDisabled') ?? false;
 
         // final launchDetails = await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
         // final didLaunchFromNotification = launchDetails?.didNotificationLaunchApp ?? false;
         // final payload = launchDetails?.notificationResponse?.payload;
+
+          if(isNotificationServiceDisabled){
+            showNotificationWarning();
+          }
+
 
         if (isUserLoggedIn) {
           final String? role = await SecureStorageService.read('role');
