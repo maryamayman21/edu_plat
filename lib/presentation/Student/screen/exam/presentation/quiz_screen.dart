@@ -132,20 +132,23 @@ class _ExamdetailsState extends State<QuizScreen>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: 100.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              QuestionTimer(
-                iconData: Icons.grade,
-                questionData: currentQuestion.marks.toString(),
-                questionText: 'marks',
-              ),
-              QuestionTimer(
-                questionData: formatTime(timeRemaining),
-                questionText: 'min',
-                iconData: Icons.timer,
-              ),
-            ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                QuestionTimer(
+                  iconData: Icons.grade,
+                  questionData: currentQuestion.marks.toString(),
+                  questionText: 'marks',
+                ),
+                QuestionTimer(
+                  questionData: formatTime(timeRemaining),
+                  questionText: 'min',
+                  iconData: Icons.timer,
+                ),
+              ],
+            ),
           ),
           SizedBox(height: 60.h),
           Text(
