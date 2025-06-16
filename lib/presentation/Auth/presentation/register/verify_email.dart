@@ -66,6 +66,8 @@ class _VerifypasswordState extends State<VerifyEmail> {
             }
           },
           child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 64.h),
               child: Column(

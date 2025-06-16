@@ -57,114 +57,118 @@ class _StudentOrDoctorState extends State<StudentOrDoctor>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SlideTransition(
-            position: _slideAnimation,
-            child: FadeTransition(
-              opacity: _opacityAnimation,
-              child: Container(
-                height: 230.h,
-                decoration: BoxDecoration(
-                    color: color.primaryColor,
-                    image: DecorationImage(
-                      image: const AssetImage(AppAssets.image),
-                      fit: BoxFit.fitHeight,
-                      colorFilter: ColorFilter.mode(
-                        Colors.white.withOpacity(0.7), //
-                        BlendMode.dstATop, //
-                      ),
-                    ),
-                    borderRadius: BorderRadius.only(
-                        bottomRight: const Radius.circular(10).r,
-                        bottomLeft: const Radius.circular(10).r)),
-              ),
-            ),
-          ),
-          SizedBox(height: 100.h),
-          Padding(
-            padding: REdgeInsets.all(20.0),
-            child: SlideTransition(
-              position: _slideAnimationButton1,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SlideTransition(
+              position: _slideAnimation,
               child: FadeTransition(
                 opacity: _opacityAnimation,
-                child: ElevatedButton(
-                    onPressed: () {
-                      //Navigate to register screen
-                      Navigator.pushNamed(
-                          context, AppRouters.registerRoute);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 10,
-                      shadowColor: Colors.black.withOpacity(1),
-                      minimumSize: Size(100.w, 130.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10).r,
+                child: Container(
+                  height: 230.h,
+                  decoration: BoxDecoration(
+                      color: color.primaryColor,
+                      image: DecorationImage(
+                        image: const AssetImage(AppAssets.image),
+                        fit: BoxFit.fitHeight,
+                        colorFilter: ColorFilter.mode(
+                          Colors.white.withOpacity(0.7), //
+                          BlendMode.dstATop, //
+                        ),
                       ),
-                    ),
-                    child: Text("Student",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium
-                            ?.copyWith(
-                          color: color.primaryColor,
-                          shadows: [
-                            Shadow(
-                              color: Colors.grey.withOpacity(1),
-                              // Shadow color
-                              offset: const Offset(2, 2),
-                              // Position of the shadow
-                              blurRadius: 10.r, // How blurry the shadow is
-                            ),
-                          ],
-                        ))),
+                      borderRadius: BorderRadius.only(
+                          bottomRight: const Radius.circular(10).r,
+                          bottomLeft: const Radius.circular(10).r)),
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 30.h,
-          ),
-          Padding(
-            padding: REdgeInsets.all(20.0),
-            child: SlideTransition(
-              position: _slideAnimationButton2,
-              child: FadeTransition(
-                opacity: _opacityAnimation,
-                child: ElevatedButton(
-                    onPressed: () {
-                      //Navigate to login
-                      Navigator.pushNamed(
-                          context, AppRouters.loginStudentRoute , arguments: true);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 10,
-                      shadowColor: Colors.black.withOpacity(1),
-                      minimumSize: Size(100.w, 130.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10).r,
+            SizedBox(height: 100.h),
+            Padding(
+              padding: REdgeInsets.all(20.0),
+              child: SlideTransition(
+                position: _slideAnimationButton1,
+                child: FadeTransition(
+                  opacity: _opacityAnimation,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        //Navigate to register screen
+                        Navigator.pushNamed(
+                            context, AppRouters.loginStudentRoute,
+                            arguments: false
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        elevation: 10,
+                        shadowColor: Colors.black.withOpacity(1),
+                        minimumSize: Size(100.w, 130.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10).r,
+                        ),
                       ),
-                    ),
-                    child: Text("Doctor",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium
-                            ?.copyWith(
-                          color: color.primaryColor,
-                          shadows: [
-                            Shadow(
-                              color: Colors.grey.withOpacity(1),
-                              // Shadow color
-                              offset: const Offset(2, 2),
-                              // Position of the shadow
-                              blurRadius: 10.r, // How blurry the shadow is
-                            ),
-                          ],
-                        ))),
+                      child: Text("Student",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(
+                            color: color.primaryColor,
+                            shadows: [
+                              Shadow(
+                                color: Colors.grey.withOpacity(1),
+                                // Shadow color
+                                offset: const Offset(2, 2),
+                                // Position of the shadow
+                                blurRadius: 10.r, // How blurry the shadow is
+                              ),
+                            ],
+                          ))),
+                ),
               ),
             ),
-          ),
-        ],
+            SizedBox(
+              height: 30.h,
+            ),
+            Padding(
+              padding: REdgeInsets.all(20.0),
+              child: SlideTransition(
+                position: _slideAnimationButton2,
+                child: FadeTransition(
+                  opacity: _opacityAnimation,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        //Navigate to login
+                        Navigator.pushNamed(
+                            context, AppRouters.loginStudentRoute , arguments: true);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        elevation: 10,
+                        shadowColor: Colors.black.withOpacity(1),
+                        minimumSize: Size(100.w, 130.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10).r,
+                        ),
+                      ),
+                      child: Text("Doctor",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(
+                            color: color.primaryColor,
+                            shadows: [
+                              Shadow(
+                                color: Colors.grey.withOpacity(1),
+                                // Shadow color
+                                offset: const Offset(2, 2),
+                                // Position of the shadow
+                                blurRadius: 10.r, // How blurry the shadow is
+                              ),
+                            ],
+                          ))),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

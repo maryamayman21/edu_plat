@@ -194,17 +194,34 @@ class _PdfExamQuestionsState extends State<PdfExamQuestions> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.black54,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (modalContext) {
-        return Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: SingleChildScrollView(
-            child: AddMcqQuestionWidget(
-              isWrittenExam: widget.isWrittenExam,
-              pdfExamBloc: pdfExamBloc,
+        return GestureDetector(
+          onTap: () => FocusScope.of(modalContext).unfocus(),
+          behavior: HitTestBehavior.opaque,
+          child: Container(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(modalContext).size.height * 0.85,
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(modalContext).scaffoldBackgroundColor,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(modalContext).viewInsets.bottom,
+                top: 12.h,
+              ),
+              child: SingleChildScrollView(
+                child: AddMcqQuestionWidget(
+                  isWrittenExam: widget.isWrittenExam,
+                  pdfExamBloc: pdfExamBloc,
+                ),
+              ),
             ),
           ),
         );

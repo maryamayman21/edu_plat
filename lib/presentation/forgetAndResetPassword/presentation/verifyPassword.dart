@@ -61,6 +61,8 @@ class _VerifypasswordState extends State<Verifypassword> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 64.h),
             child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

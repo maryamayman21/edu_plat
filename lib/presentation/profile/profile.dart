@@ -39,12 +39,21 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ProfileView();
+    return ProfileView();
   }
 }
 
-class ProfileView extends StatelessWidget {
-  const ProfileView({super.key});
+class ProfileView extends StatefulWidget {
+   ProfileView({super.key});
+
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  String? phoneNumber = '';
+
+  bool isEditable = false;
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +238,7 @@ class ProfileView extends StatelessWidget {
   },
   child: BlocBuilder<PhoneCubit, PhoneState>(
                                     builder: (context, state) {
-                                      String? phoneNumber;
+                                     // String? phoneNumber;
                                       if (state is PhoneNumberSuccess) {
                                         phoneNumber = state.phoneNumber;
                                         print(
@@ -244,43 +253,91 @@ class ProfileView extends StatelessWidget {
                                       return Profilefield(
                                         title: "Mobile number",
                                         value: '1007848603',
-                                        isEditable: true,
+                                        isEditable: isEditable,
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
                                               vertical: 0.h),
-                                          child: IntlPhoneField(
-                                              controller: context
-                                                  .read<PhoneCubit>()
-                                                  .phoneController,
-                                              decoration: InputDecoration(
-                                                labelStyle: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    color: Colors.black),
-                                                border: OutlineInputBorder(
-                                                  borderSide: BorderSide.none,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20.r),
-                                                ),
-                                                filled: true,
-                                                fillColor: Colors.white,
-                                                counterText: "",
-                                              ),
-                                              dropdownTextStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              initialCountryCode: 'EG',
-                                              onSubmitted: (phone) {
-                                                context
-                                                    .read<PhoneCubit>()
-                                                    .updatePhoneNumber(phone);
-                                              },
-                                              onCountryChanged: (country) {},
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: IntlPhoneField(
 
-                                              ///TODO : TEST
-                                              initialValue: phoneNumber ?? ""),
+                                                    controller: context
+                                                        .read<PhoneCubit>()
+                                                        .phoneController,
+                                                    decoration: InputDecoration(
+                                                      labelStyle: TextStyle(
+                                                          fontSize: 14.sp,
+                                                          color: Colors.black),
+                                                      border: OutlineInputBorder(
+                                                        borderSide: BorderSide.none,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                20.r),
+                                                      ),
+                                                      filled: true,
+                                                      fillColor: Colors.white,
+                                                      counterText: "",
+                                                    ),
+                                                    dropdownTextStyle: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16.sp,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                    keyboardType: TextInputType.phone,
+                                                    initialCountryCode: 'EG',
+                                                    // onSubmitted: (phone) {
+                                                    //   context
+                                                    //       .read<PhoneCubit>()
+                                                    //       .updatePhoneNumber(phone);
+                                                    // },
+                                                    onChanged: (newPhoneNumber){
+                                                      phoneNumber = newPhoneNumber.number;
+                                                    },
+                                                    onCountryChanged: (country) {},
+                                                      enabled: isEditable,
+                                                 validator: (value){
+
+
+                                                      if(value?.number == null || value!.number.isEmpty){
+                                                        return 'Phone number cannot be empty';
+                                                      }
+                                                      return null;
+                                                 },
+                                                    ///TODO : TEST
+                                                    initialValue: phoneNumber ?? ""),
+                                              ),Padding(
+                                                padding: const EdgeInsets.all(1.0),
+                                                child: IconButton(
+                                                  onPressed:(){
+                                                   setState(() {
+                                                     isEditable = !isEditable;
+                                                   });
+                                                  },
+                                                  icon : const Icon(Icons.edit),
+                                                  color: color.primaryColor,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(1.0),
+                                                child: IconButton(
+                                                 onPressed:(){
+                                      if(phoneNumber!.isNotEmpty && isEditable == true){
+                                      context
+                                          .read<PhoneCubit>()
+                                          .updatePhoneNumber(phoneNumber ?? "");
+                                      setState(() {
+                                        isEditable = !isEditable;
+                                      });
+                                      };
+
+                                      },
+                                                 icon : const Icon(Icons.check),
+                                                  color: color.primaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       );
                                     },

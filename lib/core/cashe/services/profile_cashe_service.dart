@@ -16,6 +16,7 @@ class ProfileCacheService {
     await _baseCacheService.save('userProfilePhoto', profilePhoto);
   }
   Future<void> savePhoneNumber(String phoneNumber) async {
+    print('phone number in cache $phoneNumber');
     await _baseCacheService.save('userPhoneNumber', phoneNumber);
   }
 

@@ -31,9 +31,10 @@ class PhoneCubit extends Cubit<PhoneState> {
       await profileRepository.updatePhoneNumber(token!, phoneNumber);
       await profileCacheService.savePhoneNumber(phoneNumber);
       final cachedPhoneNumber = await profileCacheService.getPhoneNumber();
-
       if (cachedPhoneNumber != null) {
+        phoneController.clear();
         phoneController.text = phoneNumber;
+        print(cachedPhoneNumber);
         emit(PhoneNumberSuccess(cachedPhoneNumber));
       } else {
         emit(PhoneNumberFailure("Failed to retrieve cached phone number."));

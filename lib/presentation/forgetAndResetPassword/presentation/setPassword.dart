@@ -67,6 +67,8 @@ class _SetpasswordState extends State<Setpassword> {
                 }
               },
               child: SingleChildScrollView(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+
                 child: Form(
                   key: formKey,
                   child: Padding(

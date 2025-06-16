@@ -64,6 +64,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             }
           },
           child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+
             child: Form(
               key: formKey,
               child: Padding(
@@ -315,7 +317,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onPressed: () {
                             Navigator.pushReplacementNamed(
                                 context, AppRouters.loginStudentRoute,
-                                arguments: false);
+                                arguments: false
+                            );
                           },
                           child: Text(Strings.login,
                               style: Theme.of(context)

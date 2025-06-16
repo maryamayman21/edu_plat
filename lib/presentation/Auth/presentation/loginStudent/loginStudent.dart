@@ -67,7 +67,9 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
      }
     },
   child: SingleChildScrollView(
-        child: Form(
+    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+
+    child: Form(
           key: formKey,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 90.h),
