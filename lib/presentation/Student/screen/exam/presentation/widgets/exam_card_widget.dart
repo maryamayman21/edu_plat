@@ -30,12 +30,15 @@ class ExamCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    studentExam.examTitle,
-                    style: TextStyle(
-                      fontSize: 22.sp, // Slightly smaller for better balance
-                      fontWeight: FontWeight.bold,
-                      color: color.primaryColor,
+                  Expanded(
+                    child: Text(
+                      studentExam.examTitle,
+                      style: TextStyle(
+                        fontSize: 22.sp, // Slightly smaller for better balance
+                        fontWeight: FontWeight.bold,
+                        color: color.primaryColor,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Container(

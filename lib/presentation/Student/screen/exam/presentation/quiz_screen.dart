@@ -120,6 +120,7 @@ class _ExamdetailsState extends State<QuizScreen>
   void dispose() {
     _noScreenshot.screenshotOn();
     _timer?.cancel();
+    print('disposing quiz screen.');
     super.dispose();
   }
 
@@ -133,6 +134,7 @@ class _ExamdetailsState extends State<QuizScreen>
         children: [
           SizedBox(height: 100.h),
           SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 30.w),
             scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -142,6 +144,7 @@ class _ExamdetailsState extends State<QuizScreen>
                   questionData: currentQuestion.marks.toString(),
                   questionText: 'marks',
                 ),
+                SizedBox(width: 15.h),
                 QuestionTimer(
                   questionData: formatTime(timeRemaining),
                   questionText: 'min',

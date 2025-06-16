@@ -9,13 +9,14 @@ import 'package:edu_platt/presentation/Routes/custom_AppRoutes.dart';
 import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/cubit/Chat_cubit.dart';
 import 'package:edu_platt/presentation/Student/screen/Private_chat/Conversation/doctorModel/modelDoctor.dart';
 import 'package:edu_platt/presentation/profile/cubit/profile_cubit.dart';
+import 'package:edu_platt/presentation/profile/data/profile_web_services.dart';
 import 'package:edu_platt/presentation/profile/repository/profile_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../profile/data/profile_web_services.dart';
+
 
 
 
@@ -108,7 +109,7 @@ class _ConvirationWedgitState extends State<ConvirationWedgit> {
             child: BlocBuilder<ChatCubit, ChatState>(
               builder: (context, state) {
                 if (state is ChatLoading) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (state is ChatLoaded) {
                   return ListView.builder(
                     itemCount: state.doctors.length,
@@ -129,7 +130,7 @@ class _ConvirationWedgitState extends State<ConvirationWedgit> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: ListTile(
-                                    contentPadding: EdgeInsets.all(12),
+                                    contentPadding: const EdgeInsets.all(12),
                                     leading: Stack(
                                       children: [
                                         CircleAvatar(
@@ -139,7 +140,7 @@ class _ConvirationWedgitState extends State<ConvirationWedgit> {
                                               ? MemoryImage(doctor.imageBytes!)
                                               : null,
                                           child: doctor.imageBytes == null
-                                              ? Icon(Icons.person, color: Colors.white, size: 40)
+                                              ? const Icon(Icons.person, color: Colors.white, size: 40)
                                               : null,
                                         ),
 
@@ -154,7 +155,7 @@ class _ConvirationWedgitState extends State<ConvirationWedgit> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    trailing: Icon(Icons.chat, color: Colors.grey),
+                                    trailing: const Icon(Icons.chat, color: Colors.grey),
 
                                     onTap: () {
                                       if (doctor.id != null && doctor.name != null && doctor.email != null) {
@@ -168,7 +169,7 @@ class _ConvirationWedgitState extends State<ConvirationWedgit> {
                                         );
                                       } else {
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text("Doctor data is incomplete!")),
+                                          const SnackBar(content: Text("Doctor data is incomplete!")),
                                         );
                                       }
                                         },
@@ -179,7 +180,7 @@ class _ConvirationWedgitState extends State<ConvirationWedgit> {
                     },
                   );
                 } else {
-                  return Center(child: Text("No doctors found"));
+                  return const Center(child: Text("No doctors found"));
                 }
               },
             ),
